@@ -1,0 +1,10 @@
+#!/bin/bash
+FILES=$(prettier --no-editorconfig -l .)
+if [ ! -z "$FILES" ]
+then
+  echo "Commit aborted"
+  echo
+  echo "You need to run prettier!"
+  exit 1
+fi
+exit 0
