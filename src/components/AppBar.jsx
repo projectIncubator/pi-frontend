@@ -2,16 +2,15 @@ import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar as MUIAppBar } from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import EcoIcon from '@material-ui/icons/Eco';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ChatIcon from '@material-ui/icons/Chat';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import Logo from './Logo';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -22,14 +21,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     display: 'flex',
     justifyContent: 'space-between'
-  },
-  logo: {
-    display: 'flex'
-  },
-  logoText: {
-    color: theme.palette.text.primary,
-    textDecoration: 'none',
-    fontWeight: 400
   },
   navigation: {
     flex: 1
@@ -112,14 +103,7 @@ export default function AppBar() {
       variant="outlined"
     >
       <Toolbar variant="dense" className={classes.toolBar} disableGutters>
-        <div className={classes.logo}>
-          <EcoIcon style={{ color: green[500] }} fontSize="default" />
-          <Typography variant="h6" noWrap>
-            <Link to="/dashboard" className={classes.logoText}>
-              projectIncubator
-            </Link>
-          </Typography>
-        </div>
+        <Logo />
         <div className={classes.navigation}>
           <Container fixed className={classes.menu}>
             <Typography className={classes.menuItems}>
