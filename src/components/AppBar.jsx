@@ -1,11 +1,11 @@
 import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { NavLink, Link } from 'react-router-dom';
+import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar as MUIAppBar } from '@material-ui/core';
 import { green } from '@material-ui/core/colors';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import EcoIcon from '@material-ui/icons/Eco';
@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     display: 'flex'
   },
+  logoText: {
+    color: theme.palette.text.primary,
+    textDecoration: 'none',
+    fontWeight: 400
+  },
   navigation: {
     flex: 1
   },
@@ -41,12 +46,16 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(3)
     },
     '& > a': {
+      textDecoration: 'none',
       color: theme.palette.text.secondary,
       '&:hover': {
         textDecoration: 'none',
         color: theme.palette.text.primary
       }
     }
+  },
+  activeMenu: {
+    color: theme.palette.text.primary
   },
   search: {
     position: 'relative',
@@ -92,6 +101,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AppBar() {
   const classes = useStyles();
+  const theme = useTheme();
+  const activeLinkColor = theme.palette.text.primary;
 
   return (
     <MUIAppBar
@@ -104,21 +115,23 @@ export default function AppBar() {
         <div className={classes.logo}>
           <EcoIcon style={{ color: green[500] }} fontSize="default" />
           <Typography variant="h6" noWrap>
-            projectIncubator
+            <Link to="/dashboard" className={classes.logoText}>
+              projectIncubator
+            </Link>
           </Typography>
         </div>
         <div className={classes.navigation}>
           <Container fixed className={classes.menu}>
             <Typography className={classes.menuItems}>
-              <Link href="#" onClick={(e) => e.preventDefault()}>
+              <NavLink to="/dashboard" activeStyle={{ color: activeLinkColor }}>
                 Dashboard
-              </Link>
-              <Link href="#" onClick={(e) => e.preventDefault()}>
+              </NavLink>
+              <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
                 Explore
-              </Link>
-              <Link href="#" onClick={(e) => e.preventDefault()}>
+              </NavLink>
+              <NavLink to="/search" activeStyle={{ color: activeLinkColor }}>
                 Search
-              </Link>
+              </NavLink>
             </Typography>
             <div className={classes.search}>
               <TextField
