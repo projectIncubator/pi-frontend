@@ -8,22 +8,20 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    drawer: {
-      width: theme.dimensions.drawerWidth,
-      flexShrink: 0
-    },
-    drawerPaper: {
-      width: theme.dimensions.drawerWidth
-    },
-    // necessary for content to be below app bar
-    toolbar: {
-      // ...theme.mixins.toolbar,
-      minHeight: 48
-    }
-  })
-);
+const useStyles = makeStyles((theme) => ({
+  drawer: {
+    width: theme.dimensions.drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: theme.dimensions.drawerWidth,
+    overflow: 'hidden'
+  },
+  // necessary for content to be below app bar
+  toolbar: {
+    minHeight: 48
+  }
+}));
 
 export default function SideBar() {
   const classes = useStyles();
