@@ -37,10 +37,8 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(3)
     },
     '& > a': {
-      textDecoration: 'none',
       color: theme.palette.text.secondary,
       '&:hover': {
-        textDecoration: 'none',
         color: theme.palette.text.primary
       }
     }

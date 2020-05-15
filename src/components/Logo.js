@@ -13,7 +13,7 @@ const styles = (theme) => ({
   },
   white: {
     '& > *': {
-      color: theme.palette.white
+      color: theme.palette.common.white
     }
   }
 });
