@@ -9,21 +9,21 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     width: '100%',
-    height: '100%',
+    height: '100%'
   },
   leftChild: {
     width: '42%',
     backgroundColor: theme.palette.primary.dark,
     '& > *': {
-      color: theme.palette.common.white,
+      color: theme.palette.common.white
     },
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     '& > p': {
-      margin: theme.spacing(20,18,20,20),
-      fontSize: '1.8rem',
+      margin: theme.spacing(20, 18, 20, 20),
+      fontSize: '1.8rem'
     }
     // style={{ backgroundColor: '#228B22' }}
   },
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    margin: theme.spacing(0,0,12,0)
+    margin: theme.spacing(0, 0, 11, 0)
   },
   buttons: {
     display: 'flex',
@@ -51,34 +51,41 @@ const useStyles = makeStyles((theme) => ({
       // Margin 5px 2px = top bottom 5, left right 2
       // Margin 5px 2px 1px = top 5, left right 2 bottom 1
       // Margin 5px 2px 1px 0px = top right bottom left <-- same for padding
-      margin: theme.spacing(1,0),
-    },
+      margin: theme.spacing(1, 0)
+    }
   }
 }));
 
 function SignIn(props) {
   const classes = useStyles();
   return (
-      <div className={classes.root}>
-        <div className={classes.leftChild}>
-          <Logo size='large' color='white'/>
-          <Typography> Connect with others to work on meaningful projects today!</Typography>
-        </div>
-        <div className={classes.rightChild}>
-          <h1> Welcome Back </h1>
-          <div className={classes.buttons}>
-              <TextField id="outlined-basic" label="Email" variant="outlined" />
-              <TextField id="outlined-basic" label="Password" variant="outlined" />
-              <Button variant="contained" color="primary">
-                Sign In
-              </Button>
-              <Divider variant="middle" />
-              <Button variant="contained" color="secondary" startIcon={<FaGoogle />}>
-                Sign in with Google
-              </Button>
-          </div>
+    <div className={classes.root}>
+      <div className={classes.leftChild}>
+        <Logo size="large" color="white" />
+        <Typography>
+          {' '}
+          Connect with others to work on meaningful projects today!
+        </Typography>
+      </div>
+      <div className={classes.rightChild}>
+        <h1> Welcome Back </h1>
+        <div className={classes.buttons}>
+          <TextField id="outlined-basic" label="Email" variant="outlined" />
+          <TextField id="outlined-basic" label="Password" variant="outlined" />
+          <Button variant="contained" color="primary">
+            Sign In
+          </Button>
+          <Divider variant="middle" />
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<FaGoogle />}
+          >
+            Sign in with Google
+          </Button>
         </div>
       </div>
+    </div>
   );
 }
 

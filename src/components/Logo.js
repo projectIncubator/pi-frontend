@@ -25,10 +25,14 @@ const styles = (theme) => ({
   }
 });
 
-function Logo({ classes, color , size}) {
+function Logo({ classes, color, size }) {
   return (
     <Link to="/">
-      <div className={`${classes[color] || classes.primary} ${classes[size] || classes.default}`}>
+      <div
+        className={`${classes[color] || classes.primary} ${
+          classes[size] || classes.default
+        }`}
+      >
         <EcoIcon />
         <Typography variant="h6" component="span">
           ProjectIncubator
