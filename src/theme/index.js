@@ -1,4 +1,4 @@
-import { green } from '@material-ui/core/colors';
+import { green, blue } from '@material-ui/core/colors';
 
 export default {
   overrides: {

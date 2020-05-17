@@ -1,9 +1,12 @@
 import React from 'react';
-import {makeStyles, withStyles} from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { TextField, Button, Typography } from '@material-ui/core';
+import { blue } from '@material-ui/core/colors';
 import Logo from '../components/Logo';
 import { FaGoogle } from 'react-icons/fa';
+import { FaFacebookSquare} from "react-icons/all";
+
 import Divider from '@material-ui/core/Divider';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -13,8 +16,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import {FaFacebookSquare} from "react-icons/all";
-import {blue} from "@material-ui/core/colors";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +79,7 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
+
 function SignIn(props) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
@@ -100,86 +102,66 @@ function SignIn(props) {
     event.preventDefault();
   };
   return (
-    <div className={classes.root}>
-      <div className={classes.leftChild}>
-        <Logo size="large" color="white" />
-        <Typography>
-          {' '}
-          Connect with others to work on meaningful projects today!
-        </Typography>
-      </div>
-      <div className={classes.rightChild}>
-        <h1> Welcome Back </h1>
-        <div className={classes.buttons}>
-          <FormControl>
-            <TextField
-                id="outlined-email"
-                label="Email"
-                variant="outlined"
-                // required=true
-            />
-          </FormControl>
-          <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <OutlinedInput
-                id="outlined-adornment-password"
-                type={values.showPassword ? 'text' : 'password'}
-                value={values.password}
-                onChange={handleChange('password')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                labelWidth={70}
-            />
-          </FormControl>
-          <Button variant="contained" color="primary">
-            Sign In
-          </Button>
-          <Divider variant="middle" />
-          <Button
-            variant="contained"
-            type="submit"
-            color="secondary"
-            startIcon={<FaGoogle />}
-          >
-            Sign in with Google
-          </Button>
-          <ColorButton variant="contained" color="primary" className={classes.margin} startIcon={<FaFacebookSquare/>}>
-            Sign up with Facebook
-          </ColorButton>
+      <div className={classes.root}>
+        <div className={classes.leftChild}>
+          <Logo size="large" color="white" />
+          <Typography>
+            {' '}
+            Connect with others to work on meaningful projects today!
+          </Typography>
+        </div>
+        <div className={classes.rightChild}>
+          <h1> Sign Up </h1>
+          <div className={classes.buttons}>
+            <FormControl>
+              <TextField
+                  id="outlined-email"
+                  label="Email"
+                  variant="outlined"
+                  // required=true
+              />
+            </FormControl>
+            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? 'text' : 'password'}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                      >
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  labelWidth={70}
+              />
+            </FormControl>
+            <Button variant="contained" color="primary">
+              Sign Up
+            </Button>
+            <Divider variant="middle" />
+            <Button
+                variant="contained"
+                type="submit"
+                color="secondary"
+                startIcon={<FaGoogle />}
+            >
+              Sign up with Google
+            </Button>
+            <ColorButton variant="contained" color="primary" className={classes.margin} startIcon={<FaFacebookSquare/>}>
+              Sign up with Facebook
+            </ColorButton>
+          </div>
         </div>
       </div>
-    </div>
   );
 }
 
 export default SignIn;
-
-//
-// export default class Counter extends Component {
-//   state = {
-//     count: 0
-//   };
-//   render() {
-//     return (
-//       <React.Fragment>
-//         <span> {this.state.count} </span>
-//         <button>Increment</button>
-//       </React.Fragment>
-//     );
-//   }
-//
-//   formatCount() {
-//     const { count } = this.state;
-//     return count === 0 ? "Zero" : count;
-//   }
-// }
