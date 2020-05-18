@@ -46,7 +46,7 @@ function Page({
 
 Page.defaultProps = {
   fullWidth: false,
-  noBars: true,
+  noBars: false,
   requireAuth: false
 };
 
