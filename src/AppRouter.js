@@ -12,11 +12,11 @@ function AppRouter() {
   return (
     <BrowserRouter>
       <Switch>
-        <Page path="/" component={Landing} exact />
-        <Page path="/dashboard" component={Dashboard} exact withBars />
-        <Page path="/explore" component={Explore} exact withBars />
-        <Page path="/search" component={Search} exact withBars />
-        <Page path="/user" component={Profile} exact withBars />
+        <Page path="/" component={Landing} exact noBars />
+        <Page path="/dashboard" component={Dashboard} exact />
+        <Page path="/explore" component={Explore} exact />
+        <Page path="/search" component={Search} exact />
+        <Page path="/user" component={Profile} exact />
       </Switch>
     </BrowserRouter>
   );

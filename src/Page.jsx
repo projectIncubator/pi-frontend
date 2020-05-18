@@ -16,11 +16,13 @@ function Page({
   classes,
   component: Component,
   fullWidth,
+  noBars,
   requireAuth,
-  withBars,
   ...rest
 }) {
-  return withBars ? (
+  return noBars ? (
+    <Route {...rest} render={(props) => <Component {...props} />} />
+  ) : (
     <>
       <AppBar />
       <SideBar />
@@ -39,17 +41,21 @@ function Page({
         />
       </div>
     </>
-  ) : (
-    <Route {...rest} render={(props) => <Component {...props} />} />
   );
 }
+
+Page.defaultProps = {
+  fullWidth: false,
+  noBars: true,
+  requireAuth: false
+};
 
 Page.propTypes = {
   classes: PropTypes.object.isRequired,
   component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
-  fullWidth: PropTypes.bool,
-  requireAuth: PropTypes.bool,
-  withBars: PropTypes.bool,
+  fullWidth: PropTypes.bool.isRequired,
+  noBars: PropTypes.bool.isRequired,
+  requireAuth: PropTypes.bool.isRequired,
   rest: PropTypes.object
 };
 
