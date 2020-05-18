@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { withStyles } from '@material-ui/styles';
+import { Container } from '@material-ui/core';
 import AppBar from './components/AppBar';
 import SideBar from './components/SideBar';
 
@@ -11,27 +12,45 @@ const styles = (theme) => ({
   }
 });
 
-function WithBars({ classes, path, component: Component, ...rest }) {
-  return (
+function Page({
+  classes,
+  component: Component,
+  fullWidth,
+  requireAuth,
+  withBars,
+  ...rest
+}) {
+  return withBars ? (
     <>
       <AppBar />
       <SideBar />
       <div className={classes.root}>
         <Route
-          path={path}
           {...rest}
-          render={(props) => <Component {...props} />}
+          render={(props) =>
+            fullWidth ? (
+              <Component {...props} />
+            ) : (
+              <Container maxWidth="lg">
+                <Component {...props} />
+              </Container>
+            )
+          }
         />
       </div>
     </>
+  ) : (
+    <Route {...rest} render={(props) => <Component {...props} />} />
   );
 }
 
-WithBars.propTypes = {
+Page.propTypes = {
   classes: PropTypes.object.isRequired,
-  path: PropTypes.string.isRequired,
   component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  fullWidth: PropTypes.bool,
+  requireAuth: PropTypes.bool,
+  withBars: PropTypes.bool,
   rest: PropTypes.object
 };
 
-export default withStyles(styles)(WithBars);
+export default withStyles(styles)(Page);
