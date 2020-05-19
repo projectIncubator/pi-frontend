@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -27,7 +26,7 @@ function Dashboard() {
   const classes = useStyles();
 
   return (
-    <Container className={classes.root} maxWidth="lg" disableGutters>
+    <div className={classes.root}>
       <Paper variant="outlined" className={classes.content} square>
         <Grid container spacing={2}>
           <Grid item lg={6} xs={12}>
@@ -99,7 +98,7 @@ function Dashboard() {
           />
         ))}
       </Paper>
-    </Container>
+    </div>
   );
 }
 

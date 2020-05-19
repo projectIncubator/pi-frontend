@@ -1,20 +1,22 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch } from 'react-router-dom';
 
-import WithBars from './WithBars';
+import Page from './Page';
 import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
+import Profile from './pages/Profile';
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={Landing} />
-        <WithBars exact path="/dashboard" component={Dashboard} />
-        <WithBars exact path="/explore" component={Explore} />
-        <WithBars exact path="/search" component={Search} />
+        <Page path="/" component={Landing} exact noBars />
+        <Page path="/dashboard" component={Dashboard} exact />
+        <Page path="/explore" component={Explore} exact />
+        <Page path="/search" component={Search} exact />
+        <Page path="/user" component={Profile} exact />
       </Switch>
     </BrowserRouter>
   );
