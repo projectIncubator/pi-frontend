@@ -8,7 +8,11 @@ import SideBar from './components/SideBar';
 
 const styles = (theme) => ({
   root: {
+    height: '100%',
     padding: `50px 0 0 ${theme.dimensions.drawerWidth}`
+  },
+  container: {
+    height: '100%'
   }
 });
 
@@ -33,7 +37,7 @@ function Page({
             fullWidth ? (
               <Component {...props} />
             ) : (
-              <Container maxWidth="lg">
+              <Container className={classes.container} maxWidth="lg">
                 <Component {...props} />
               </Container>
             )

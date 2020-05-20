@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/styles';
-import { Button, Container, Grid, Typography } from '@material-ui/core';
+import {
+  Button,
+  Container,
+  Grid,
+  Typography,
+  withStyles
+} from '@material-ui/core';
 import {
   Build as BuildIcon,
   Create as CreateIcon,
@@ -18,7 +23,7 @@ const styles = (theme) => ({
     top: '0',
     left: '0',
     backgroundColor: theme.palette.primary.dark,
-    zIndex: '1000',
+    zIndex: theme.zIndex.appBar,
     '& > div': {
       height: '100%',
       display: 'flex',
@@ -29,17 +34,16 @@ const styles = (theme) => ({
   authBtnContainer: {
     display: 'flex',
     alignItems: 'center',
-    '& a, button': {
+    '& > * + *': {
+      margin: theme.spacing(0, 0, 0, 2)
+    },
+    '& > a, button': {
       color: theme.palette.common.white,
       borderColor: theme.palette.common.white,
       '&:hover': {
         color: theme.palette.primary.light,
-        borderColor: theme.palette.primary.light,
-        transition: theme.transitions.create()
+        borderColor: theme.palette.primary.light
       }
-    },
-    '& a:not(:first-of-type)': {
-      margin: theme.spacing(0, 0, 0, 2)
     }
   },
   content: {
@@ -64,11 +68,7 @@ const styles = (theme) => ({
         },
         '& button': {
           color: theme.palette.common.white,
-          backgroundColor: theme.palette.primary.dark,
-          '&:hover': {
-            opacity: '0.8',
-            transition: theme.transitions.create()
-          }
+          backgroundColor: theme.palette.primary.dark
         }
       }
     },
@@ -113,16 +113,12 @@ function Landing({ classes }) {
       <div className={classes.content}>
         <section>
           <div>
-            <Typography variant="h4" component="p">
-              ProjectIncubator
-            </Typography>
-            <Typography variant="h5" component="p">
+            <Typography variant="h4">ProjectIncubator</Typography>
+            <Typography variant="h5">
               A platform that fosters collaboration on meaningful projects.
             </Typography>
             <Link to="/dashboard">
-              <Button color="primary" variant="contained">
-                GET STARTED
-              </Button>
+              <Button>GET STARTED</Button>
             </Link>
           </div>
         </section>
@@ -132,15 +128,13 @@ function Landing({ classes }) {
               <Grid item xs={12} md={4}>
                 <div className={classes.featureContainer}>
                   <BuildIcon />
-                  <Typography component="p">
-                    Handy tools to manage your project.
-                  </Typography>
+                  <Typography>Handy tools to manage your project.</Typography>
                 </div>
               </Grid>
               <Grid item xs={12} md={4}>
                 <div className={classes.featureContainer}>
                   <ForumIcon />
-                  <Typography component="p">
+                  <Typography>
                     Discuss issues with your teammates with our built-in
                     discussion board.
                   </Typography>
@@ -149,7 +143,7 @@ function Landing({ classes }) {
               <Grid item xs={12} md={4}>
                 <div className={classes.featureContainer}>
                   <CreateIcon />
-                  <Typography component="p">
+                  <Typography>
                     Create or join projects you care about.
                   </Typography>
                 </div>
