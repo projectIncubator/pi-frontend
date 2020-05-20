@@ -1,9 +1,8 @@
-import React from 'react';
-import {makeStyles, withStyles} from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { TextField, Button, Typography } from '@material-ui/core';
 import Logo from '../components/Logo';
-import { FaGoogle } from 'react-icons/fa';
 import Divider from '@material-ui/core/Divider';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -13,9 +12,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import {FaFacebookSquare} from "react-icons/all";
-import {blue} from "@material-ui/core/colors";
-
+import FacebookButton from '../components/FacebookButton';
+import GoogleButton from '../components/GoogleButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(20, 18, 20, 20),
       fontSize: '1.8rem'
     }
-    // style={{ backgroundColor: '#228B22' }}
   },
   rightChild: {
     width: '58%',
@@ -50,42 +47,21 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center', <- removing these made the button wide
-    // alignItems: 'center',
-    // '& *' everything under the parent including all the decendants
-    // '& > div, button' everything under the parent that is a div or a button
-    // '& > div:first-child' for the div that is the first child of the parent
-    // '& > div:not(:first-child)' inverted condition of the above
-    // '&:hover' when you hover over the parent -> do...
-    // *** CSS Selectors React (W3 Schools)
     '& > *': {
-      // Margin 1 value = margin all around
-      // Margin 5px 2px = top bottom 5, left right 2
-      // Margin 5px 2px 1px = top 5, left right 2 bottom 1
-      // Margin 5px 2px 1px 0px = top right bottom left <-- same for padding
       margin: theme.spacing(1, 0)
     }
   }
 }));
 
-const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: blue[500],
-    '&:hover': {
-      backgroundColor: blue[700],
-    },
-  },
-}))(Button);
-
 function SignIn(props) {
   const classes = useStyles();
+  const [email, setEmail] = useState('');
   const [values, setValues] = React.useState({
     amount: '',
     password: '',
     weight: '',
     weightRange: '',
-    showPassword: false,
+    showPassword: false
   });
 
   const handleChange = (prop) => (event) => {
@@ -99,6 +75,13 @@ function SignIn(props) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const submitLogin = (email, password) => {
+    // http call -> backend
+    console.log(email);
+    console.log(password);
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.leftChild}>
@@ -113,49 +96,49 @@ function SignIn(props) {
         <div className={classes.buttons}>
           <FormControl>
             <TextField
-                id="outlined-email"
-                label="Email"
-                variant="outlined"
-                // required=true
+              id="outlined-email"
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </FormControl>
-          <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+          <FormControl
+            className={clsx(classes.margin, classes.textField)}
+            variant="outlined"
+          >
             <InputLabel htmlFor="password">Password</InputLabel>
             <OutlinedInput
-                id="outlined-adornment-password"
-                type={values.showPassword ? 'text' : 'password'}
-                value={values.password}
-                onChange={handleChange('password')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                    >
-                      {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                labelWidth={70}
+              id="outlined-adornment-password"
+              type={values.showPassword ? 'text' : 'password'}
+              value={values.password}
+              onChange={handleChange('password')}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={70}
             />
           </FormControl>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => submitLogin(email, values.password)}
+          >
             Sign In
           </Button>
           <Divider variant="middle" />
-          <Button
-            variant="contained"
-            type="submit"
-            color="secondary"
-            startIcon={<FaGoogle />}
-          >
-            Sign in with Google
-          </Button>
-          <ColorButton variant="contained" color="primary" className={classes.margin} startIcon={<FaFacebookSquare/>}>
-            Sign up with Facebook
-          </ColorButton>
+          <FacebookButton>Sign up with Facebook</FacebookButton>
+          <GoogleButton>Sign up with Google</GoogleButton>
         </div>
       </div>
     </div>
@@ -163,23 +146,3 @@ function SignIn(props) {
 }
 
 export default SignIn;
-
-//
-// export default class Counter extends Component {
-//   state = {
-//     count: 0
-//   };
-//   render() {
-//     return (
-//       <React.Fragment>
-//         <span> {this.state.count} </span>
-//         <button>Increment</button>
-//       </React.Fragment>
-//     );
-//   }
-//
-//   formatCount() {
-//     const { count } = this.state;
-//     return count === 0 ? "Zero" : count;
-//   }
-// }

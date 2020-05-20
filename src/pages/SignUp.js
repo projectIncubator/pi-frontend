@@ -1,11 +1,9 @@
-import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import { TextField, Button, Typography } from '@material-ui/core';
-import { blue } from '@material-ui/core/colors';
 import Logo from '../components/Logo';
-import { FaGoogle } from 'react-icons/fa';
-import { FaFacebookSquare} from "react-icons/all";
+// import { FaGoogle } from 'react-icons/fa';
 
 import Divider from '@material-ui/core/Divider';
 
@@ -16,7 +14,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
+import FacebookButton from '../components/FacebookButton';
+import GoogleButton from '../components/GoogleButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(20, 18, 20, 20),
       fontSize: '1.8rem'
     }
-    // style={{ backgroundColor: '#228B22' }}
   },
   rightChild: {
     width: '58%',
@@ -51,44 +49,30 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center', <- removing these made the button wide
-    // alignItems: 'center',
-    // '& *' everything under the parent including all the decendants
-    // '& > div, button' everything under the parent that is a div or a button
-    // '& > div:first-child' for the div that is the first child of the parent
-    // '& > div:not(:first-child)' inverted condition of the above
-    // '&:hover' when you hover over the parent -> do...
-    // *** CSS Selectors React (W3 Schools)
     '& > *': {
-      // Margin 1 value = margin all around
-      // Margin 5px 2px = top bottom 5, left right 2
-      // Margin 5px 2px 1px = top 5, left right 2 bottom 1
-      // Margin 5px 2px 1px 0px = top right bottom left <-- same for padding
       margin: theme.spacing(1, 0)
     }
   }
 }));
 
-const ColorButton = withStyles((theme) => ({
-  root: {
-    color: theme.palette.getContrastText(blue[500]),
-    backgroundColor: blue[500],
-    '&:hover': {
-      backgroundColor: blue[700],
-    },
-  },
-}))(Button);
-
-
-function SignIn(props) {
+function SignUp(props) {
+  const state = [
+    'credentials', // Credentials is where the user provides their login information (email, password)
+    'name' // Name is where the user provides First Name, Last Name
+  ];
+  const [progress, setProgress] = useState(state[0]);
   const classes = useStyles();
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     amount: '',
     password: '',
     weight: '',
     weightRange: '',
-    showPassword: false,
+    showPassword: false
   });
+
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -98,32 +82,44 @@ function SignIn(props) {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const submitFields = (email, password, firstName, lastName) => {
+    // http call -> backend
+    console.log(email);
+    console.log(password);
+    console.log(firstName);
+    console.log(lastName);
   };
+
   return (
-      <div className={classes.root}>
-        <div className={classes.leftChild}>
-          <Logo size="large" color="white" />
-          <Typography>
-            {' '}
-            Connect with others to work on meaningful projects today!
-          </Typography>
-        </div>
-        <div className={classes.rightChild}>
-          <h1> Sign Up </h1>
-          <div className={classes.buttons}>
-            <FormControl>
-              <TextField
+    <div className={classes.root}>
+      <div className={classes.leftChild}>
+        <Logo size="large" color="white" />
+        <Typography>
+          {' '}
+          Connect with others to work on meaningful projects today!
+        </Typography>
+      </div>
+      <div className={classes.rightChild}>
+        <h1> Sign Up </h1>
+        <div className={classes.buttons}>
+          {progress === 'credentials' && (
+            <>
+              <FormControl>
+                <TextField
                   id="outlined-email"
                   label="Email"
                   variant="outlined"
-                  // required=true
-              />
-            </FormControl>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <OutlinedInput
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </FormControl>
+              <FormControl
+                className={clsx(classes.margin, classes.textField)}
+                variant="outlined"
+              >
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <OutlinedInput //TODO: At password pressing tab should bring you straight to the submit button
                   id="outlined-adornment-password"
                   type={values.showPassword ? 'text' : 'password'}
                   value={values.password}
@@ -131,37 +127,70 @@ function SignIn(props) {
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
                       >
-                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                        {values.showPassword ? (
+                          <Visibility />
+                        ) : (
+                          <VisibilityOff />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
                   labelWidth={70}
-              />
-            </FormControl>
-            <Button variant="contained" color="primary">
-              Sign Up
-            </Button>
-            <Divider variant="middle" />
-            <Button
+                />
+              </FormControl>
+              <Button
                 variant="contained"
-                type="submit"
-                color="secondary"
-                startIcon={<FaGoogle />}
-            >
-              Sign up with Google
-            </Button>
-            <ColorButton variant="contained" color="primary" className={classes.margin} startIcon={<FaFacebookSquare/>}>
-              Sign up with Facebook
-            </ColorButton>
-          </div>
+                color="primary"
+                onClick={() => setProgress(state[1])}
+              >
+                Sign Up
+              </Button>
+              <Divider variant="middle" />
+              <FacebookButton>Sign up with Facebook</FacebookButton>
+              <GoogleButton>Sign up with Google</GoogleButton>
+            </>
+          )}
+          {progress === 'name' && (
+            <>
+              <FormControl>
+                <TextField
+                  id="outlined-firstname"
+                  label="FirstName"
+                  variant="outlined"
+                  required
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <TextField
+                  id="outlined-LastName"
+                  label="LastName"
+                  variant="outlined"
+                  required
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </FormControl>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  submitFields(email, values.password, firstName, lastName)
+                }
+              >
+                Sign Up
+              </Button>
+            </>
+          )}
         </div>
       </div>
+    </div>
   );
 }
 
-export default SignIn;
+export default SignUp;
