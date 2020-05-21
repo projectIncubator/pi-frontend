@@ -1,21 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { Button, Paper, Typography, makeStyles } from '@material-ui/core';
 import PetsIcon from '@material-ui/icons/Pets';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginBottom: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    margin: theme.spacing(0, 0, 1),
+    padding: theme.spacing(1, 2)
   },
   icon: {
     paddingRight: theme.spacing(2),
@@ -53,13 +47,15 @@ function ProjectCard({
     state,
     logo,
     owner,
-    themes
+    themes,
+    contributions
   },
   variant
 }) {
   const classes = useStyles();
+
   return (
-    <Paper variant="outlined" className={classes.root}>
+    <Paper className={classes.root}>
       <div className={classes.icon}>
         <PetsIcon color="inherit" />
       </div>
@@ -104,7 +100,8 @@ ProjectCard.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired
     }).isRequired,
-    themes: PropTypes.arrayOf(PropTypes.string).isRequired
+    themes: PropTypes.arrayOf(PropTypes.string).isRequired,
+    contributions: PropTypes.arrayOf(PropTypes.string)
   }).isRequired,
   variant: PropTypes.oneOf(['default', 'profile']).isRequired
 };
