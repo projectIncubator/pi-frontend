@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 import { Link, useParams } from 'react-router-dom';
 import clsx from 'clsx';
 import {
-  Avatar,
-  Box,
   Button,
   Divider,
   Grid,
-  Link as MUILink,
   Paper,
   Typography,
   withStyles
 } from '@material-ui/core';
-import { Link as LinkIcon } from '@material-ui/icons';
+import UserInfo from '../components/UserInfo';
+import ProjectCard from '../components/ProjectCard';
 
 // mock data
 const projects = [
@@ -26,7 +24,12 @@ const projects = [
     endDate: new Date(2020, 11, 31).getTime(),
     state: 'ongoing',
     logo:
-      'https://i.cbc.ca/1.5492764.1586704776!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/medical-swab.jpg'
+      'https://i.cbc.ca/1.5492764.1586704776!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/medical-swab.jpg',
+    themes: ['medicine', 'healthcare', 'politics'],
+    owner: {
+      id: '456',
+      name: 'Alexander Bergholm'
+    }
   },
   {
     id: '222',
@@ -37,7 +40,12 @@ const projects = [
     endDate: new Date(2020, 3, 30).getTime(),
     state: 'completed',
     logo:
-      'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg'
+      'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
+    themes: ['environmental', 'politics'],
+    owner: {
+      id: '456',
+      name: 'Alexander Bergholm'
+    }
   }
 ];
 
@@ -54,7 +62,7 @@ const users = [
     following: ['456', '789'],
     followers: ['456'],
     interested: [projects[0], projects[1]],
-    contributing: [],
+    contributing: [projects[1]],
     createdProjects: []
   },
   {
@@ -71,7 +79,7 @@ const users = [
     followers: ['123'],
     interested: [],
     contributing: [],
-    createdProjects: [projects[0]]
+    createdProjects: [projects[0], projects[1]]
   },
   {
     id: '789',
@@ -95,59 +103,6 @@ const styles = (theme) => ({
     padding: theme.spacing(3),
     borderTop: 'none'
   },
-  userInfo: {
-    '& > *': {
-      margin: theme.spacing(1, 0)
-    }
-  },
-  avatar: {
-    margin: theme.spacing(0, 0, 2),
-    padding: theme.spacing(1),
-    '& > div, img, svg': {
-      width: '100%',
-      height: 'auto'
-    }
-  },
-  social: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > div': {
-      margin: theme.spacing(0, 0, 1),
-      '& > * + *': {
-        margin: theme.spacing(0, 0, 0, 2)
-      }
-    }
-  },
-  link: {
-    display: 'flex',
-    alignItems: 'center',
-    '& > a': {
-      margin: theme.spacing(0, 0, 0, 1)
-    }
-  },
-  bio: {
-    margin: theme.spacing(3, 0)
-  },
-  interested: {
-    '& > a': {
-      display: 'flex',
-      alignItems: 'center',
-      margin: theme.spacing(0, 0, 1),
-      '&:hover': {
-        textDecoration: 'underline'
-      },
-      '& > span': {
-        width: '24px',
-        height: '24px',
-        margin: theme.spacing(0, 1, 0, 0)
-      },
-      '& > p': {
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis'
-      }
-    }
-  },
   notfound: {
     height: '100%',
     '& > div': {
@@ -158,6 +113,9 @@ const styles = (theme) => ({
       justifyContent: 'center',
       padding: theme.spacing(0, 0, 20)
     }
+  },
+  projects: {
+    margin: theme.spacing(1, 0)
   }
 });
 
@@ -178,85 +136,68 @@ function Profile({ classes }) {
 
   if (fetching) return <></>;
 
-  return !user ? (
-    <Paper className={clsx(classes.root, classes.notfound)}>
-      <div>
-        <Typography variant="h5" gutterBottom>
-          Sorry, the profile you are looking for could not be found.
-        </Typography>
-        <Link to="/dashboard">
-          <Button>GO HOME</Button>
-        </Link>
-      </div>
-    </Paper>
-  ) : (
+  if (!user) {
+    return (
+      <Paper className={clsx(classes.root, classes.notfound)}>
+        <div>
+          <Typography variant="h5" gutterBottom>
+            Sorry, the profile you are looking for could not be found.
+          </Typography>
+          <Link to="/dashboard">
+            <Button>GO HOME</Button>
+          </Link>
+        </div>
+      </Paper>
+    );
+  }
+
+  const userInfo = {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    imgSrc: user.imgSrc,
+    bio: user.bio,
+    link: user.link,
+    username: user.username,
+    followingCount: user.following.length,
+    followersCount: user.followers.length,
+    interested: user.interested.map(({ id, title, logo }) => ({
+      id,
+      title,
+      logo
+    }))
+  };
+
+  return (
     <Paper className={classes.root}>
       <Grid container spacing={2}>
-        <Grid className={classes.userInfo} item xs={12} md={3}>
-          <Paper className={classes.avatar}>
-            <Avatar alt={user.username} src={user.imgSrc} variant="square" />
-          </Paper>
-          <Typography variant="h5">
-            {user.firstName} {user.lastName}
-          </Typography>
-          {user.link && (
-            <div className={classes.link}>
-              <LinkIcon />
-              <MUILink
-                href={user.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {user.link}
-              </MUILink>
-            </div>
-          )}
-          <div className={classes.social}>
-            <div>
-              <MUILink href="">
-                <Box fontWeight="fontWeightBold" component="span">
-                  {user.following.length}&nbsp;
-                </Box>
-                Following
-              </MUILink>
-              <MUILink href="">
-                <Box fontWeight="fontWeightBold" component="span">
-                  {user.followers.length}&nbsp;
-                </Box>
-                {user.followers.length === 1 ? 'Follower' : 'Followers'}
-              </MUILink>
-            </div>
-            <Button>Follow</Button>
-          </div>
-          <div className={classes.bio}>
-            <Typography>{user.bio}</Typography>
-          </div>
-          {Boolean(user.interested.length) && (
-            <div className={classes.interested}>
-              <Typography gutterBottom>Interested in projects</Typography>
-              {user.interested.map((project, index) => (
-                <Link key={index} to={`/project/${project.id}`}>
-                  <Avatar
-                    alt={project.title}
-                    component="span"
-                    src={project.logo}
-                  />
-                  <Typography>{project.title}</Typography>
-                </Link>
-              ))}
-            </div>
-          )}
+        <Grid item xs={12} md={3}>
+          <UserInfo user={userInfo} />
         </Grid>
         <Grid item xs={12} md={9}>
           <Typography variant="h5" gutterBottom>
             Projects
           </Typography>
           <Divider />
-          {!Boolean(user.contributing.length + user.createdProjects.length) ? (
-            <Typography>This user does not have any projects yet.</Typography>
-          ) : (
-            <div></div>
-          )}
+          <div className={classes.projects}>
+            {!Boolean(
+              user.contributing.length + user.createdProjects.length
+            ) ? (
+              <Typography>This user does not have any projects yet.</Typography>
+            ) : (
+              <>
+                {[...user.createdProjects, ...user.contributing].map(
+                  (project, index) => (
+                    <ProjectCard
+                      key={index}
+                      project={project}
+                      variant="profile"
+                    />
+                  )
+                )}
+              </>
+            )}
+          </div>
         </Grid>
       </Grid>
     </Paper>

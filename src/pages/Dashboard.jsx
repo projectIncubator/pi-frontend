@@ -7,6 +7,42 @@ import Typography from '@material-ui/core/Typography';
 import FeedItem from '../components/FeedItem';
 import ProjectCard from '../components/ProjectCard';
 
+// mock data
+const projects = [
+  {
+    id: '111',
+    title: 'Coronavirus Testing BC',
+    oneliner:
+      'Some description about the project, Not the project abstract. Just one or two lines!',
+    startDate: new Date(2020, 4, 1).getTime(),
+    endDate: new Date(2020, 11, 31).getTime(),
+    state: 'ongoing',
+    logo:
+      'https://i.cbc.ca/1.5492764.1586704776!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/medical-swab.jpg',
+    themes: ['medicine', 'healthcare', 'politics'],
+    owner: {
+      id: '456',
+      name: 'Alexander Bergholm'
+    }
+  },
+  {
+    id: '222',
+    title: 'Kitsilano Community Engagement',
+    oneliner:
+      'Some description about the project, Not the project abstract. Just one or two lines!',
+    startDate: new Date(2019, 10, 15).getTime(),
+    endDate: new Date(2020, 3, 30).getTime(),
+    state: 'completed',
+    logo:
+      'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
+    themes: ['environmental', 'politics'],
+    owner: {
+      id: '456',
+      name: 'Alexander Bergholm'
+    }
+  }
+];
+
 const useStyles = makeStyles((theme) => ({
   content: {
     borderTop: 'none',
@@ -29,48 +65,16 @@ function Dashboard() {
           <Typography variant="h5" className={classes.header}>
             Current Projects
           </Typography>
-          {[
-            {
-              project: 'Coronavirus Testing BC',
-              owner: 'Alexander Bergholm',
-              themes: ['medicine', 'healthcare', 'politics']
-            },
-            {
-              project: 'Water Pollution BC',
-              owner: 'World Health Organization',
-              themes: ['environmental', 'politics']
-            }
-          ].map((item) => (
-            <ProjectCard
-              key={item.project}
-              project={item.project}
-              owner={item.owner}
-              themes={item.themes}
-            />
+          {projects.map((item, index) => (
+            <ProjectCard key={index} project={item} />
           ))}
         </Grid>
         <Grid item lg={6} xs={12}>
           <Typography variant="h5" className={classes.header}>
             Followed Projects
           </Typography>
-          {[
-            {
-              project: 'Coronavirus Testing BC',
-              owner: 'Alexander Bergholm',
-              themes: ['medicine', 'healthcare', 'politics']
-            },
-            {
-              project: 'Water Pollution BC',
-              owner: 'World Health Organization',
-              themes: ['environmental', 'politics']
-            }
-          ].map((item) => (
-            <ProjectCard
-              key={item.project}
-              project={item.project}
-              owner={item.owner}
-              themes={item.themes}
-            />
+          {projects.map((item, index) => (
+            <ProjectCard key={index} project={item} />
           ))}
         </Grid>
       </Grid>

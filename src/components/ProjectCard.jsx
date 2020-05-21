@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -42,7 +43,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function ProjectCard(props) {
+function ProjectCard({
+  project: {
+    id,
+    title,
+    oneliner,
+    startDate,
+    endDate,
+    state,
+    logo,
+    owner,
+    themes
+  },
+  variant
+}) {
   const classes = useStyles();
   return (
     <Paper variant="outlined" className={classes.root}>
@@ -51,16 +65,16 @@ function ProjectCard(props) {
       </div>
       <div className={classes.projectHeader}>
         <Typography variant="h6" className={classes.projectName}>
-          {props.project}
+          {title}
         </Typography>
         <Typography variant="body2" className={classes.projectOwner}>
-          Created by {props.owner}
+          Created by {owner.name}
         </Typography>
       </div>
       <div className={classes.themes}>
-        {props.themes.map((theme, index) => (
+        {themes.map((theme, index) => (
           <Button
-            key={props.project + '-' + theme}
+            key={title + '-' + theme}
             variant="outlined"
             color={index % 2 === 0 ? 'primary' : 'secondary'}
             size="small"
@@ -72,5 +86,27 @@ function ProjectCard(props) {
     </Paper>
   );
 }
+
+ProjectCard.defaultProps = {
+  variant: 'default'
+};
+
+ProjectCard.propTypes = {
+  project: PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    oneliner: PropTypes.string.isRequired,
+    startDate: PropTypes.number.isRequired,
+    endDate: PropTypes.number.isRequired,
+    state: PropTypes.string.isRequired,
+    logo: PropTypes.string.isRequired,
+    owner: PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
+    }).isRequired,
+    themes: PropTypes.arrayOf(PropTypes.string).isRequired
+  }).isRequired,
+  variant: PropTypes.oneOf(['default', 'profile']).isRequired
+};
 
 export default ProjectCard;
