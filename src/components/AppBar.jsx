@@ -10,6 +10,10 @@ import Container from '@material-ui/core/Container';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ChatIcon from '@material-ui/icons/Chat';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import Hidden from '@material-ui/core/Hidden';
+import MenuIcon from '@material-ui/icons/Menu';
+
+import MobileMenu from './MobileMenu';
 import Logo from './Logo';
 
 const useStyles = makeStyles((theme) => ({
@@ -101,37 +105,47 @@ export default function AppBar() {
       variant="outlined"
     >
       <Toolbar variant="dense" className={classes.toolBar} disableGutters>
+        <Hidden mdUp>
+          <MobileMenu />
+        </Hidden>
         <Logo />
-        <div className={classes.navigation}>
-          <Container fixed className={classes.menu}>
-            <Typography className={classes.menuItems}>
-              <NavLink to="/dashboard" activeStyle={{ color: activeLinkColor }}>
-                Dashboard
-              </NavLink>
-              <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
-                Explore
-              </NavLink>
-              <NavLink to="/search" activeStyle={{ color: activeLinkColor }}>
-                Search
-              </NavLink>
-            </Typography>
-            <div className={classes.search}>
-              <TextField
-                id="search-field"
-                placeholder="Search..."
-                variant="outlined"
-                size="small"
-              />
-            </div>
-          </Container>
-        </div>
+        <Hidden smDown>
+          <div className={classes.navigation}>
+            <Container fixed className={classes.menu}>
+              <Typography className={classes.menuItems}>
+                <NavLink
+                  to="/dashboard"
+                  activeStyle={{ color: activeLinkColor }}
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
+                  Explore
+                </NavLink>
+                <NavLink to="/search" activeStyle={{ color: activeLinkColor }}>
+                  Search
+                </NavLink>
+              </Typography>
+              <div className={classes.search}>
+                <TextField
+                  id="search-field"
+                  placeholder="Search..."
+                  variant="outlined"
+                  size="small"
+                />
+              </div>
+            </Container>
+          </div>
+        </Hidden>
         <div className={classes.account}>
-          <IconButton>
-            <ChatIcon />
-          </IconButton>
-          <IconButton>
-            <NotificationsIcon />
-          </IconButton>
+          <Hidden smDown>
+            <IconButton>
+              <ChatIcon />
+            </IconButton>
+            <IconButton>
+              <NotificationsIcon />
+            </IconButton>
+          </Hidden>
           <IconButton>
             <AccountCircleIcon />
           </IconButton>
