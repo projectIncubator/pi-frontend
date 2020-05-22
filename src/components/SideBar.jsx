@@ -44,6 +44,7 @@ export default function SideBar() {
         <List>
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <Tooltip
+              key={'tooltip-' + text}
               title={text}
               placement="right"
               TransitionComponent={Zoom}
@@ -61,6 +62,7 @@ export default function SideBar() {
         <List>
           {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <Tooltip
+              key={'tooltip-' + text}
               title={text}
               placement="right"
               TransitionComponent={Zoom}
