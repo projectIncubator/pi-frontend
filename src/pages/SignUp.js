@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { TextField, Button, Typography } from '@material-ui/core';
+
+import {
+  makeStyles,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  FormHelperText,
+  Divider
+} from '@material-ui/core';
+
 import Logo from '../components/Logo';
-// import { FaGoogle } from 'react-icons/fa';
-
-import Divider from '@material-ui/core/Divider';
-
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import FacebookButton from '../components/FacebookButton';
 import GoogleButton from '../components/GoogleButton';
 
@@ -35,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     '& > p': {
       margin: theme.spacing(20, 18, 20, 20),
-      fontSize: '1.8rem'
+      fontSize: '1.8rem',
+      textAlign: 'center'
     }
   },
   rightChild: {
@@ -55,39 +59,113 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function SignUp(props) {
-  const state = [
+function SignUp() {
+  const siteState = [
     'credentials', // Credentials is where the user provides their login information (email, password)
     'name' // Name is where the user provides First Name, Last Name
   ];
-  const [progress, setProgress] = useState(state[0]);
-  const classes = useStyles();
-  const [values, setValues] = useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false
+
+  const [state, setState] = useState({
+    email: {
+      value: '',
+      error: false,
+      errorText: ''
+    },
+    password: {
+      value: '',
+      show: false,
+      error: false,
+      errorText: ''
+    },
+    names: {
+      firstName: '',
+      lastName: '',
+      errorF: false,
+      errorL: false,
+      errorTextF: '',
+      errorTextL: ''
+    }
   });
 
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [progress, setProgress] = useState(siteState[0]);
+  const classes = useStyles();
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (prop) => (newValue) => {
+    setState({ ...state, [prop]: newValue });
   };
+
+  function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  function validateName(name) {
+    var re = /^[A-Za-z-ÁÀȦÂÄǞǍĂĀÃÅǺǼǢĆĊĈČĎḌḐḒÉÈĖÊËĚĔĒẼE̊ẸǴĠĜǦĞG̃ĢĤḤáàȧâäǟǎăāãåǻǽǣćċĉčďḍḑḓéèėêëěĕēẽe̊ẹǵġĝǧğg̃ģĥḥÍÌİÎÏǏĬĪĨỊĴĶǨĹĻĽĿḼM̂M̄ʼNŃN̂ṄN̈ŇN̄ÑŅṊÓÒȮȰÔÖȪǑŎŌÕȬŐỌǾƠíìiîïǐĭīĩịĵķǩĺļľŀḽm̂m̄ŉńn̂ṅn̈ňn̄ñņṋóòôȯȱöȫǒŏōõȭőọǿơP̄ŔŘŖŚŜṠŠȘṢŤȚṬṰÚÙÛÜǓŬŪŨŰŮỤẂẀŴẄÝỲŶŸȲỸŹŻŽẒǮp̄ŕřŗśŝṡšşṣťțṭṱúùûüǔŭūũűůụẃẁŵẅýỳŷÿȳỹźżžẓǯßœŒçÇ\-]{1,15}$/;
+    return re.test(String(name).toLowerCase());
+  }
+
+  function validatePassword(password) {
+    var re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@:$!%*#?&])[A-Za-z\d@$!:%*#?&]{8,}$/;
+    return re.test(String(password));
+  }
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setState({ ...state, [state.password.show]: ![state.password.show] });
   };
 
-  const submitFields = (email, password, firstName, lastName) => {
-    // http call -> backend
-    console.log(email);
-    console.log(password);
-    console.log(firstName);
-    console.log(lastName);
+  const validateAndProgress = () => {
+    let isError = false;
+    const newState = { ...state };
+
+    if (!validateEmail(state.email.value)) {
+      isError = true;
+      newState.email = {
+        ...state.email,
+        error: true,
+        errorText: 'Needs to be a valid email address.'
+      };
+    }
+
+    if (!validatePassword(state.password.value)) {
+      isError = true;
+      newState.password = {
+        ...state.password,
+        value: '',
+        error: true,
+        errorText: 'Needs to be a valid password.'
+      };
+    }
+
+    if (!isError) {
+      newState.email = { ...state.email, error: false, errorText: '' };
+      newState.password = { ...state.password, error: false, errorText: '' };
+      setProgress(siteState[1]);
+    }
+    setState(newState);
+
+    return isError;
+  };
+
+  const validateNamesAndSubmit = () => {
+    let isError = false;
+    const newState = { ...state };
+    const errF = validateName(state.names.firstName);
+    const errL = validateName(state.names.lastName);
+
+    if (!errF || !errL) {
+      isError = true;
+    }
+    newState.names = {
+      ...state.names,
+      errorF: !errF,
+      errorL: !errL,
+      errorTextF: !errF ? 'Needs to be a valid name.' : '',
+      errorTextL: !errL ? 'Needs to be a valid name.' : ''
+    };
+
+    setState(newState);
+
+    return isError;
   };
 
   return (
@@ -95,7 +173,6 @@ function SignUp(props) {
       <div className={classes.leftChild}>
         <Logo size="large" color="white" />
         <Typography>
-          {' '}
           Connect with others to work on meaningful projects today!
         </Typography>
       </div>
@@ -106,12 +183,19 @@ function SignUp(props) {
             <>
               <FormControl>
                 <TextField
+                  error={state.email.error}
                   id="outlined-email"
                   label="Email"
                   variant="outlined"
+                  value={state.email.value}
+                  onChange={(e) =>
+                    handleChange('email')({
+                      ...state.email,
+                      value: e.target.value
+                    })
+                  }
+                  helperText={state.email.errorText}
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
               </FormControl>
               <FormControl
@@ -119,11 +203,17 @@ function SignUp(props) {
                 variant="outlined"
               >
                 <InputLabel htmlFor="password">Password</InputLabel>
-                <OutlinedInput //TODO: At password pressing tab should bring you straight to the submit button
+                <OutlinedInput
+                  error={state.password.error}
                   id="outlined-adornment-password"
-                  type={values.showPassword ? 'text' : 'password'}
-                  value={values.password}
-                  onChange={handleChange('password')}
+                  type={state.password.show ? 'text' : 'password'}
+                  value={state.password.value}
+                  onChange={(e) =>
+                    handleChange('password')({
+                      ...state.password,
+                      value: e.target.value
+                    })
+                  }
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -131,7 +221,7 @@ function SignUp(props) {
                         onClick={handleClickShowPassword}
                         edge="end"
                       >
-                        {values.showPassword ? (
+                        {state.password.show ? (
                           <Visibility />
                         ) : (
                           <VisibilityOff />
@@ -141,11 +231,14 @@ function SignUp(props) {
                   }
                   labelWidth={70}
                 />
+                <FormHelperText id="my-helper-text" error>
+                  {state.password.errorText}
+                </FormHelperText>
               </FormControl>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setProgress(state[1])}
+                onClick={() => validateAndProgress()}
               >
                 Sign Up
               </Button>
@@ -158,30 +251,42 @@ function SignUp(props) {
             <>
               <FormControl>
                 <TextField
+                  error={state.names.errorF}
                   id="outlined-firstname"
                   label="FirstName"
                   variant="outlined"
                   required
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={state.names.firstName}
+                  onChange={(e) =>
+                    handleChange('names')({
+                      ...state.names,
+                      firstName: e.target.value
+                    })
+                  }
+                  helperText={state.names.errorTextF}
                 />
               </FormControl>
               <FormControl>
                 <TextField
+                  error={state.names.errorL}
                   id="outlined-LastName"
                   label="LastName"
                   variant="outlined"
                   required
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={state.names.lastName}
+                  onChange={(e) =>
+                    handleChange('names')({
+                      ...state.names,
+                      lastName: e.target.value
+                    })
+                  }
+                  helperText={state.names.errorTextL}
                 />
               </FormControl>
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() =>
-                  submitFields(email, values.password, firstName, lastName)
-                }
+                onClick={() => validateNamesAndSubmit()}
               >
                 Sign Up
               </Button>

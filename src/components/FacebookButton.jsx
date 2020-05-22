@@ -1,4 +1,4 @@
-import { Button, withStyles } from '@material-ui/core';
+import { Button, withStyles, propTypes } from '@material-ui/core';
 import { FaFacebookSquare } from 'react-icons/all';
 import React from 'react';
 

@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import { TextField, Button, Typography } from '@material-ui/core';
-import Logo from '../components/Logo';
-import Divider from '@material-ui/core/Divider';
 
-import IconButton from '@material-ui/core/IconButton';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import {
+  makeStyles,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  FormHelperText,
+  Divider
+} from '@material-ui/core';
+
+import Logo from '../components/Logo';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import FacebookButton from '../components/FacebookButton';
 import GoogleButton from '../components/GoogleButton';
 
@@ -50,36 +55,83 @@ const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: theme.spacing(1, 0)
     }
+  },
+  signIn: {
+    backgroundColor: theme.palette.primary.dark
   }
 }));
 
-function SignIn(props) {
+function SignIn() {
   const classes = useStyles();
-  const [email, setEmail] = useState('');
-  const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false
+
+  const [state, setState] = useState({
+    email: {
+      value: '',
+      error: false,
+      errorText: ''
+    },
+    password: {
+      value: '',
+      show: false,
+      error: false,
+      errorText: ''
+    }
   });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (prop) => (newValue) => {
+    setState({ ...state, [prop]: newValue });
   };
 
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setState({ ...state, [state.password.show]: ![state.password.show] });
   };
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  function validatePassword(password) {
+    var re = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@:$!%*#?&])[A-Za-z\d@$!:%*#?&]{8,}$/;
+    return re.test(String(password));
+  }
+
+  const validateForm = () => {
+    let isError = false;
+
+    const newState = { ...state };
+
+    if (!validateEmail(state.email.value)) {
+      isError = true;
+      newState.email = {
+        ...state.email,
+        error: true,
+        errorText: 'Needs to be a valid email address.'
+      };
+    }
+
+    if (!validatePassword(state.password.value)) {
+      isError = true;
+      newState.password = {
+        ...state.password,
+        value: '',
+        error: true,
+        errorText: 'Needs to be a valid password.'
+      };
+    }
+
+    if (!isError) {
+      newState.email = { ...state.email, error: false, errorText: '' };
+      newState.password = { ...state.password, error: false, errorText: '' };
+    }
+
+    setState(newState);
+    return isError;
   };
 
   const submitLogin = (email, password) => {
-    // http call -> backend
-    console.log(email);
-    console.log(password);
+    const err = validateForm();
+    // if no err -> backend, else no
   };
 
   return (
@@ -87,7 +139,6 @@ function SignIn(props) {
       <div className={classes.leftChild}>
         <Logo size="large" color="white" />
         <Typography>
-          {' '}
           Connect with others to work on meaningful projects today!
         </Typography>
       </div>
@@ -96,11 +147,15 @@ function SignIn(props) {
         <div className={classes.buttons}>
           <FormControl>
             <TextField
+              error={state.email.error}
               id="outlined-email"
               label="Email"
               variant="outlined"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={state.email.value}
+              onChange={(e) =>
+                handleChange('email')({ ...state.email, value: e.target.value })
+              }
+              helperText={state.email.errorText}
               required
             />
           </FormControl>
@@ -110,35 +165,42 @@ function SignIn(props) {
           >
             <InputLabel htmlFor="password">Password</InputLabel>
             <OutlinedInput
+              error={state.password.error}
               id="outlined-adornment-password"
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              onChange={handleChange('password')}
+              type={state.password.show ? 'text' : 'password'}
+              value={state.password.value}
+              onChange={(e) =>
+                handleChange('password')({
+                  ...state.password,
+                  value: e.target.value
+                })
+              }
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                    {state.password.show ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
               }
               labelWidth={70}
             />
+            <FormHelperText id="my-helper-text" error>
+              {state.password.errorText}
+            </FormHelperText>
           </FormControl>
           <Button
-            variant="contained"
-            color="primary"
-            onClick={() => submitLogin(email, values.password)}
+            className={classes.signIn}
+            onClick={() => submitLogin(state.email.value, state.password.value)}
           >
             Sign In
           </Button>
           <Divider variant="middle" />
-          <FacebookButton>Sign up with Facebook</FacebookButton>
-          <GoogleButton>Sign up with Google</GoogleButton>
+          <FacebookButton>Sign in with Facebook</FacebookButton>
+          <GoogleButton>Sign in with Google</GoogleButton>
         </div>
       </div>
     </div>

@@ -19,8 +19,8 @@ function AppRouter() {
         <Page path="/explore" component={Explore} exact />
         <Page path="/search" component={Search} exact />
         <Page path="/user/:username" component={Profile} exact />
-        <Page path="/login" component={SignIn} exact />
-        <Page path="/signup" component={SignUp} exact />
+        <Page path="/login" component={SignIn} exact noBars />
+        <Page path="/signup" component={SignUp} exact noBars />
       </Switch>
     </BrowserRouter>
   );
