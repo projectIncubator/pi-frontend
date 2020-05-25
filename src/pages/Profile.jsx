@@ -51,6 +51,25 @@ function Profile({ classes }) {
     setFetching(false);
   }, [username]);
 
+  const getUserInfo = (user) => {
+    return {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      imgSrc: user.imgSrc,
+      bio: user.bio,
+      link: user.link,
+      username: user.username,
+      followingCount: user.following.length,
+      followersCount: user.followers.length,
+      interested: user.interested.map(({ id, title, logo }) => ({
+        id,
+        title,
+        logo
+      }))
+    };
+  };
+
   if (fetching) return <></>;
 
   if (!user) {
@@ -66,59 +85,46 @@ function Profile({ classes }) {
         </div>
       </Paper>
     );
+  } else {
+    const userInfo = getUserInfo(user);
+
+    return (
+      <Paper className={classes.root}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={3}>
+            <UserInfo user={userInfo} />
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <Typography variant="h5" gutterBottom>
+              Projects
+            </Typography>
+            <Divider />
+            <div className={classes.projects}>
+              {!Boolean(
+                user.contributing.length + user.createdProjects.length
+              ) ? (
+                <Typography>
+                  This user does not have any projects yet.
+                </Typography>
+              ) : (
+                <>
+                  {[...user.createdProjects, ...user.contributing].map(
+                    (project, index) => (
+                      <ProjectCard
+                        key={index}
+                        project={project}
+                        variant="profile"
+                      />
+                    )
+                  )}
+                </>
+              )}
+            </div>
+          </Grid>
+        </Grid>
+      </Paper>
+    );
   }
-
-  const userInfo = {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    imgSrc: user.imgSrc,
-    bio: user.bio,
-    link: user.link,
-    username: user.username,
-    followingCount: user.following.length,
-    followersCount: user.followers.length,
-    interested: user.interested.map(({ id, title, logo }) => ({
-      id,
-      title,
-      logo
-    }))
-  };
-
-  return (
-    <Paper className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
-          <UserInfo user={userInfo} />
-        </Grid>
-        <Grid item xs={12} md={9}>
-          <Typography variant="h5" gutterBottom>
-            Projects
-          </Typography>
-          <Divider />
-          <div className={classes.projects}>
-            {!Boolean(
-              user.contributing.length + user.createdProjects.length
-            ) ? (
-              <Typography>This user does not have any projects yet.</Typography>
-            ) : (
-              <>
-                {[...user.createdProjects, ...user.contributing].map(
-                  (project, index) => (
-                    <ProjectCard
-                      key={index}
-                      project={project}
-                      variant="profile"
-                    />
-                  )
-                )}
-              </>
-            )}
-          </div>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
 }
 
 Profile.propTypes = {

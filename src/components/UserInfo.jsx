@@ -5,6 +5,7 @@ import {
   Avatar,
   Box,
   Button,
+  Grid,
   Link as MUILink,
   Paper,
   Typography,
@@ -26,21 +27,16 @@ const styles = (theme) => ({
       height: 'auto'
     }
   },
-  social: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > div': {
-      margin: theme.spacing(0, 0, 1),
-      '& > * + *': {
-        margin: theme.spacing(0, 0, 0, 2)
-      }
-    }
-  },
   link: {
     display: 'flex',
     alignItems: 'center',
     '& > a': {
       margin: theme.spacing(0, 0, 0, 1)
+    }
+  },
+  social: {
+    '& > div': {
+      marginBottom: theme.spacing(1)
     }
   },
   bio: {
@@ -83,60 +79,80 @@ function UserInfo({
     interested
   }
 }) {
-  return (
-    <div className={classes.root}>
+  const avatarSection = (
+    <section>
       <Paper className={classes.avatar}>
         <Avatar alt={username} src={imgSrc} variant="square" />
       </Paper>
       <Typography variant="h5">
         {firstName} {lastName}
       </Typography>
-      {link && (
-        <div className={classes.link}>
-          <LinkIcon />
-          <MUILink
-            className={classes.ellipsis}
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {link}
-          </MUILink>
-        </div>
-      )}
-      <div className={classes.social}>
-        <div>
-          <MUILink href="">
-            <Box fontWeight="fontWeightBold" component="span">
-              {followingCount}&nbsp;
-            </Box>
-            Following
-          </MUILink>
+    </section>
+  );
+
+  const linkSection = Boolean(link) && (
+    <section className={classes.link}>
+      <LinkIcon />
+      <MUILink
+        className={classes.ellipsis}
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {link}
+      </MUILink>
+    </section>
+  );
+
+  const socialSection = (
+    <section className={classes.social}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
           <MUILink href="">
             <Box fontWeight="fontWeightBold" component="span">
               {followersCount}&nbsp;
             </Box>
             {followersCount === 1 ? 'Follower' : 'Followers'}
           </MUILink>
-        </div>
-        <Button>Follow</Button>
-      </div>
-      <div className={classes.bio}>
-        <Typography>{bio}</Typography>
-      </div>
-      {Boolean(interested.length) && (
-        <div className={classes.interested}>
-          <Typography gutterBottom>Interested in projects</Typography>
-          {interested.map((project, index) => (
-            <Link key={index} to={`/project/${project.id}`}>
-              <Avatar alt={project.title} component="span" src={project.logo} />
-              <Typography className={classes.ellipsis}>
-                {project.title}
-              </Typography>
-            </Link>
-          ))}
-        </div>
-      )}
+        </Grid>
+        <Grid item xs={6}>
+          <MUILink href="">
+            <Box fontWeight="fontWeightBold" component="span">
+              {followingCount}&nbsp;
+            </Box>
+            Following
+          </MUILink>
+        </Grid>
+      </Grid>
+      <Button fullWidth>Follow</Button>
+    </section>
+  );
+
+  const bioSection = (
+    <section className={classes.bio}>
+      <Typography>{bio}</Typography>
+    </section>
+  );
+
+  const interestedSection = Boolean(interested.length) && (
+    <section className={classes.interested}>
+      <Typography gutterBottom>Interested in projects</Typography>
+      {interested.map((project, index) => (
+        <Link key={index} to={`/project/${project.id}`}>
+          <Avatar alt={project.title} component="span" src={project.logo} />
+          <Typography className={classes.ellipsis}>{project.title}</Typography>
+        </Link>
+      ))}
+    </section>
+  );
+
+  return (
+    <div className={classes.root}>
+      {avatarSection}
+      {linkSection}
+      {socialSection}
+      {bioSection}
+      {interestedSection}
     </div>
   );
 }
