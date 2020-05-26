@@ -27,8 +27,8 @@ const useStyles = makeStyles({
 export default function MobileMenu() {
   const classes = useStyles();
   const theme = useTheme();
-  const activeLinkColor = theme.palette.text.primary;
   const [isOpen, setIsOpen] = React.useState(false);
+  const activeLinkColor = theme.palette.text.primary;
 
   const toggleDrawer = (open) => (event) => {
     if (

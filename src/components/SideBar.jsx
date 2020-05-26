@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -26,8 +27,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SideBar() {
+export default function SideBar(props) {
   const classes = useStyles();
+  const { currentProjects, followedProjects } = props;
 
   return (
     <Hidden smDown>
@@ -42,7 +44,7 @@ export default function SideBar() {
         <div className={classes.toolbar} />
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {currentProjects.map((text, index) => (
             <Tooltip
               key={'tooltip-' + text}
               title={text}
@@ -60,7 +62,7 @@ export default function SideBar() {
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          {followedProjects.map((text, index) => (
             <Tooltip
               key={'tooltip-' + text}
               title={text}
@@ -80,3 +82,21 @@ export default function SideBar() {
     </Hidden>
   );
 }
+
+SideBar.defaultProps = {
+  currentProjects: [
+    'Save The Whales',
+    'Clean New York, New York',
+    'Wreck Wreck Beach'
+  ],
+  followedProjects: [
+    'Project projectIncubator',
+    'Pay Respects to Harambe',
+    'Build Sustainable Housing in Vancouver'
+  ]
+};
+
+SideBar.propTypes = {
+  currentProjects: PropTypes.array,
+  followingProjects: PropTypes.array
+};

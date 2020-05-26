@@ -6,6 +6,7 @@ import {
   withStyles,
   useTheme
 } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
 import { AppBar as MUIAppBar } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -278,3 +279,5 @@ export default function AppBar() {
     </MUIAppBar>
   );
 }
+
+AppBar.propTypes = {};
