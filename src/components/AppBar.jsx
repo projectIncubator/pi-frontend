@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+  fade,
+  makeStyles,
+  withStyles,
+  useTheme
+} from '@material-ui/core/styles';
 import { AppBar as MUIAppBar } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ChatIcon from '@material-ui/icons/Chat';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
-import MenuIcon from '@material-ui/icons/Menu';
+import Fade from '@material-ui/core/Fade';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ChatIcon from '@material-ui/icons/Chat';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PersonIcon from '@material-ui/icons/Person';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
@@ -73,29 +89,66 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  inputRoot: {
-    color: 'inherit'
+  searchInput: {
+    fontSize: '1rem',
+    padding: theme.spacing(1, 2)
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch'
-      }
+  accountButton: {
+    borderColor: theme.palette.action.disabled
+  },
+  menuList: {
+    padding: theme.spacing(0),
+    width: 220,
+    '&:focus': {
+      outline: 'none'
     }
   },
-  account: {}
+  listItemIcon: {
+    // minWidth: 42 // this creates equal spacing around the menuitem icon
+  },
+  divider: {
+    margin: theme.spacing(1, 0)
+  }
 }));
+
+const StyledMenu = withStyles((theme) => ({
+  paper: {
+    // borderTop: 'none',
+    marginTop: 14,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 20
+    }
+  }
+}))((props) => (
+  <Menu
+    getContentAnchorEl={null}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    TransitionComponent={Fade}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    height: 40
+  }
+}))(MenuItem);
 
 export default function AppBar() {
   const classes = useStyles();
   const theme = useTheme();
   const activeLinkColor = theme.palette.text.primary;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <MUIAppBar
@@ -132,12 +185,17 @@ export default function AppBar() {
                   placeholder="Search..."
                   variant="outlined"
                   size="small"
+                  InputProps={{
+                    classes: {
+                      input: classes.searchInput
+                    }
+                  }}
                 />
               </div>
             </Container>
           </div>
         </Hidden>
-        <div className={classes.account}>
+        <div>
           <Hidden smDown>
             <IconButton>
               <ChatIcon />
@@ -146,9 +204,75 @@ export default function AppBar() {
               <NotificationsIcon />
             </IconButton>
           </Hidden>
-          <IconButton>
-            <AccountCircleIcon />
-          </IconButton>
+          <Hidden smDown>
+            <Button
+              className={classes.accountButton}
+              aria-controls="fade-menu"
+              aria-haspopup="true"
+              endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+              color="inherit"
+              variant="outlined"
+              onClick={handleClick}
+            >
+              Alexander Bergholm
+            </Button>
+          </Hidden>
+          <Hidden mdUp>
+            <IconButton>
+              <AccountCircleIcon
+                aria-controls="fade-menu"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={handleClick}
+                fontSize="default"
+              />
+            </IconButton>
+          </Hidden>
+
+          <StyledMenu
+            id="account-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            keepMounted
+          >
+            <MenuList className={classes.menuList}>
+              <Hidden mdUp>
+                <StyledMenuItem>
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <ChatIcon />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Chat</Typography>
+                </StyledMenuItem>
+                <StyledMenuItem>
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <NotificationsIcon />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Notifications</Typography>
+                </StyledMenuItem>
+                <Divider className={classes.divider} />
+              </Hidden>
+
+              <StyledMenuItem>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <PersonIcon />
+                </ListItemIcon>
+                <Typography variant="inherit">Profile</Typography>
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <Typography variant="inherit">Settings</Typography>
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <Typography variant="inherit">Logout</Typography>
+              </StyledMenuItem>
+            </MenuList>
+          </StyledMenu>
         </div>
       </Toolbar>
     </MUIAppBar>
