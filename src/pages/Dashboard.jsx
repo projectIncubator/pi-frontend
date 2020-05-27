@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import FeedItem from '../components/FeedItem';
 import ProjectCard from '../components/ProjectCard';
+import { projects } from '../mocks';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -29,48 +30,16 @@ function Dashboard() {
           <Typography variant="h5" className={classes.header}>
             Current Projects
           </Typography>
-          {[
-            {
-              project: 'Coronavirus Testing BC',
-              owner: 'Alexander Bergholm',
-              themes: ['medicine', 'healthcare', 'politics']
-            },
-            {
-              project: 'Water Pollution BC',
-              owner: 'World Health Organization',
-              themes: ['environmental', 'politics']
-            }
-          ].map((item) => (
-            <ProjectCard
-              key={item.project}
-              project={item.project}
-              owner={item.owner}
-              themes={item.themes}
-            />
+          {projects.map((item, index) => (
+            <ProjectCard key={index} project={item} />
           ))}
         </Grid>
         <Grid item lg={6} xs={12}>
           <Typography variant="h5" className={classes.header}>
             Followed Projects
           </Typography>
-          {[
-            {
-              project: 'Coronavirus Testing BC',
-              owner: 'Alexander Bergholm',
-              themes: ['medicine', 'healthcare', 'politics']
-            },
-            {
-              project: 'Water Pollution BC',
-              owner: 'World Health Organization',
-              themes: ['environmental', 'politics']
-            }
-          ].map((item) => (
-            <ProjectCard
-              key={item.project}
-              project={item.project}
-              owner={item.owner}
-              themes={item.themes}
-            />
+          {projects.map((item, index) => (
+            <ProjectCard key={index} project={item} />
           ))}
         </Grid>
       </Grid>
