@@ -6,7 +6,6 @@ import {
   withStyles,
   useTheme
 } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import { AppBar as MUIAppBar } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -117,7 +116,7 @@ const StyledMenu = withStyles((theme) => ({
     // borderTop: 'none',
     marginTop: 14,
     [theme.breakpoints.down('sm')]: {
-      marginTop: 20
+      marginTop: 10
     }
   }
 }))((props) => (
@@ -135,6 +134,8 @@ const StyledMenuItem = withStyles((theme) => ({
     height: 40
   }
 }))(MenuItem);
+
+const MiddleWare = ({ children, ...props }) => children(props); // removes warning for Hidden within MenuList
 
 export default function AppBar() {
   const classes = useStyles();
@@ -219,14 +220,12 @@ export default function AppBar() {
             </Button>
           </Hidden>
           <Hidden mdUp>
-            <IconButton>
-              <AccountCircleIcon
-                aria-controls="fade-menu"
-                aria-haspopup="true"
-                color="inherit"
-                onClick={handleClick}
-                fontSize="default"
-              />
+            <IconButton
+              onClick={handleClick}
+              aria-controls="fade-menu"
+              aria-haspopup="true"
+            >
+              <AccountCircleIcon color="inherit" fontSize="default" />
             </IconButton>
           </Hidden>
 
@@ -238,22 +237,25 @@ export default function AppBar() {
             keepMounted
           >
             <MenuList className={classes.menuList}>
-              <Hidden mdUp>
-                <StyledMenuItem>
-                  <ListItemIcon className={classes.listItemIcon}>
-                    <ChatIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">Chat</Typography>
-                </StyledMenuItem>
-                <StyledMenuItem>
-                  <ListItemIcon className={classes.listItemIcon}>
-                    <NotificationsIcon />
-                  </ListItemIcon>
-                  <Typography variant="inherit">Notifications</Typography>
-                </StyledMenuItem>
-                <Divider className={classes.divider} />
-              </Hidden>
-
+              <MiddleWare>
+                {(props) => (
+                  <Hidden mdUp>
+                    <StyledMenuItem {...props}>
+                      <ListItemIcon className={classes.listItemIcon}>
+                        <ChatIcon />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Chat</Typography>
+                    </StyledMenuItem>
+                    <StyledMenuItem {...props}>
+                      <ListItemIcon className={classes.listItemIcon}>
+                        <NotificationsIcon />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Notifications</Typography>
+                    </StyledMenuItem>
+                    <Divider className={classes.divider} />
+                  </Hidden>
+                )}
+              </MiddleWare>
               <StyledMenuItem>
                 <ListItemIcon className={classes.listItemIcon}>
                   <PersonIcon />
