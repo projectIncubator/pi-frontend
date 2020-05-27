@@ -9,7 +9,10 @@ import SideBar from './components/SideBar';
 const styles = (theme) => ({
   root: {
     height: '100%',
-    padding: `50px 0 0 ${theme.dimensions.drawerWidth}`
+    [theme.breakpoints.up('md')]: {
+      padding: `50px 0 0 ${theme.dimensions.drawerWidth}`
+    },
+    padding: '50px 0 0 0'
   },
   container: {
     height: '100%'

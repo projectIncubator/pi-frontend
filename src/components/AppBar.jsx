@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
+import {
+  fade,
+  makeStyles,
+  withStyles,
+  useTheme
+} from '@material-ui/core/styles';
 import { AppBar as MUIAppBar } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import ChatIcon from '@material-ui/icons/Chat';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import Divider from '@material-ui/core/Divider';
+import Hidden from '@material-ui/core/Hidden';
+import Fade from '@material-ui/core/Fade';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ChatIcon from '@material-ui/icons/Chat';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PersonIcon from '@material-ui/icons/Person';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+
+import MobileMenu from './MobileMenu';
 import Logo from './Logo';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,29 +89,68 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  inputRoot: {
-    color: 'inherit'
+  searchInput: {
+    fontSize: '1rem',
+    padding: theme.spacing(1, 2)
   },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '12ch',
-      '&:focus': {
-        width: '20ch'
-      }
+  accountButton: {
+    borderColor: theme.palette.action.disabled
+  },
+  menuList: {
+    padding: theme.spacing(0),
+    width: 220,
+    '&:focus': {
+      outline: 'none'
     }
   },
-  account: {}
+  listItemIcon: {
+    // minWidth: 42 // this creates equal spacing around the menuitem icon
+  },
+  divider: {
+    margin: theme.spacing(1, 0)
+  }
 }));
+
+const StyledMenu = withStyles((theme) => ({
+  paper: {
+    // borderTop: 'none',
+    marginTop: 14,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 10
+    }
+  }
+}))((props) => (
+  <Menu
+    getContentAnchorEl={null}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    TransitionComponent={Fade}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    height: 40
+  }
+}))(MenuItem);
+
+const MiddleWare = ({ children, ...props }) => children(props); // removes warning for Hidden within MenuList
 
 export default function AppBar() {
   const classes = useStyles();
   const theme = useTheme();
   const activeLinkColor = theme.palette.text.primary;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <MUIAppBar
@@ -101,42 +160,126 @@ export default function AppBar() {
       variant="outlined"
     >
       <Toolbar variant="dense" className={classes.toolBar} disableGutters>
+        <Hidden mdUp>
+          <MobileMenu />
+        </Hidden>
         <Logo />
-        <div className={classes.navigation}>
-          <Container fixed className={classes.menu}>
-            <Typography className={classes.menuItems}>
-              <NavLink to="/dashboard" activeStyle={{ color: activeLinkColor }}>
-                Dashboard
-              </NavLink>
-              <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
-                Explore
-              </NavLink>
-              <NavLink to="/search" activeStyle={{ color: activeLinkColor }}>
-                Search
-              </NavLink>
-            </Typography>
-            <div className={classes.search}>
-              <TextField
-                id="search-field"
-                placeholder="Search..."
-                variant="outlined"
-                size="small"
-              />
-            </div>
-          </Container>
-        </div>
-        <div className={classes.account}>
-          <IconButton>
-            <ChatIcon />
-          </IconButton>
-          <IconButton>
-            <NotificationsIcon />
-          </IconButton>
-          <IconButton>
-            <AccountCircleIcon />
-          </IconButton>
+        <Hidden smDown>
+          <div className={classes.navigation}>
+            <Container fixed className={classes.menu}>
+              <Typography className={classes.menuItems}>
+                <NavLink
+                  to="/dashboard"
+                  activeStyle={{ color: activeLinkColor }}
+                >
+                  Dashboard
+                </NavLink>
+                <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
+                  Explore
+                </NavLink>
+                <NavLink to="/search" activeStyle={{ color: activeLinkColor }}>
+                  Search
+                </NavLink>
+              </Typography>
+              <div className={classes.search}>
+                <TextField
+                  id="search-field"
+                  placeholder="Search..."
+                  variant="outlined"
+                  size="small"
+                  InputProps={{
+                    classes: {
+                      input: classes.searchInput
+                    }
+                  }}
+                />
+              </div>
+            </Container>
+          </div>
+        </Hidden>
+        <div>
+          <Hidden smDown>
+            <IconButton>
+              <ChatIcon />
+            </IconButton>
+            <IconButton>
+              <NotificationsIcon />
+            </IconButton>
+          </Hidden>
+          <Hidden smDown>
+            <Button
+              className={classes.accountButton}
+              aria-controls="fade-menu"
+              aria-haspopup="true"
+              endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+              color="inherit"
+              variant="outlined"
+              onClick={handleClick}
+            >
+              Alexander Bergholm
+            </Button>
+          </Hidden>
+          <Hidden mdUp>
+            <IconButton
+              onClick={handleClick}
+              aria-controls="fade-menu"
+              aria-haspopup="true"
+            >
+              <AccountCircleIcon color="inherit" fontSize="default" />
+            </IconButton>
+          </Hidden>
+
+          <StyledMenu
+            id="account-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            keepMounted
+          >
+            <MenuList className={classes.menuList}>
+              <MiddleWare>
+                {(props) => (
+                  <Hidden mdUp>
+                    <StyledMenuItem {...props}>
+                      <ListItemIcon className={classes.listItemIcon}>
+                        <ChatIcon />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Chat</Typography>
+                    </StyledMenuItem>
+                    <StyledMenuItem {...props}>
+                      <ListItemIcon className={classes.listItemIcon}>
+                        <NotificationsIcon />
+                      </ListItemIcon>
+                      <Typography variant="inherit">Notifications</Typography>
+                    </StyledMenuItem>
+                    <Divider className={classes.divider} />
+                  </Hidden>
+                )}
+              </MiddleWare>
+              <StyledMenuItem>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <PersonIcon />
+                </ListItemIcon>
+                <Typography variant="inherit">Profile</Typography>
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <SettingsIcon />
+                </ListItemIcon>
+                <Typography variant="inherit">Settings</Typography>
+              </StyledMenuItem>
+              <StyledMenuItem>
+                <ListItemIcon className={classes.listItemIcon}>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <Typography variant="inherit">Logout</Typography>
+              </StyledMenuItem>
+            </MenuList>
+          </StyledMenu>
         </div>
       </Toolbar>
     </MUIAppBar>
   );
 }
+
+AppBar.propTypes = {};
