@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   fade,
@@ -28,9 +28,12 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import WbSunnyIcon from '@material-ui/icons/WbSunny';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
 
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
+import { GeneralContext } from '../contexts';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -114,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
 const StyledMenu = withStyles((theme) => ({
   paper: {
     // borderTop: 'none',
+    borderRadius: 4,
     marginTop: 14,
     [theme.breakpoints.down('sm')]: {
       marginTop: 10
@@ -135,13 +139,15 @@ const StyledMenuItem = withStyles((theme) => ({
   }
 }))(MenuItem);
 
-const MiddleWare = ({ children, ...props }) => children(props); // removes warning for Hidden within MenuList
+// removes warning for Hidden within MenuList
+const MiddleWare = ({ children, ...props }) => children(props);
 
 export default function AppBar() {
   const classes = useStyles();
+  const { isDarkMode, setIsDarkMode } = useContext(GeneralContext);
   const theme = useTheme();
-  const activeLinkColor = theme.palette.text.primary;
   const [anchorEl, setAnchorEl] = useState(null);
+  const activeLinkColor = theme.palette.text.primary;
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -262,6 +268,14 @@ export default function AppBar() {
                 </ListItemIcon>
                 <Typography variant="inherit">Profile</Typography>
               </StyledMenuItem>
+              <StyledMenuItem onClick={() => setIsDarkMode(!isDarkMode)}>
+                <ListItemIcon className={classes.listItemIcon}>
+                  {isDarkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
+                </ListItemIcon>
+                <Typography variant="inherit">
+                  Turn Lights {isDarkMode ? 'On' : 'Off'}
+                </Typography>
+              </StyledMenuItem>
               <StyledMenuItem>
                 <ListItemIcon className={classes.listItemIcon}>
                   <SettingsIcon />
@@ -281,5 +295,3 @@ export default function AppBar() {
     </MUIAppBar>
   );
 }
-
-AppBar.propTypes = {};

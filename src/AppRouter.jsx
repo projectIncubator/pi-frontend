@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 import Page from './Page';
 import SignIn from './pages/SignIn';
@@ -9,20 +10,32 @@ import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
 import Profile from './pages/Profile';
+import lightTheme from './theme/lightTheme';
+import darkTheme from './theme/darkTheme';
+import { GeneralContext } from './contexts';
+import { CssBaseline } from '@material-ui/core';
+
+const light = createMuiTheme(lightTheme);
+const dark = createMuiTheme(darkTheme);
 
 function AppRouter() {
+  const { isDarkMode } = useContext(GeneralContext);
+
   return (
-    <BrowserRouter>
-      <Switch>
-        <Page path="/" component={Landing} exact noBars />
-        <Page path="/dashboard" component={Dashboard} exact />
-        <Page path="/explore" component={Explore} exact />
-        <Page path="/search" component={Search} exact />
-        <Page path="/user/:username" component={Profile} exact />
-        <Page path="/login" component={SignIn} exact noBars />
-        <Page path="/signup" component={SignUp} exact noBars />
-      </Switch>
-    </BrowserRouter>
+    <MuiThemeProvider theme={isDarkMode ? dark : light}>
+      <CssBaseline />
+      <BrowserRouter>
+        <Switch>
+          <Page path="/" component={Landing} exact noBars />
+          <Page path="/dashboard" component={Dashboard} exact />
+          <Page path="/explore" component={Explore} exact />
+          <Page path="/search" component={Search} exact />
+          <Page path="/user/:username" component={Profile} exact />
+          <Page path="/login" component={SignIn} exact noBars />
+          <Page path="/signup" component={SignUp} exact noBars />
+        </Switch>
+      </BrowserRouter>
+    </MuiThemeProvider>
   );
 }
 
