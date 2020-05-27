@@ -17,6 +17,7 @@ export default {
     }
   },
   palette: {
+    type: 'dark',
     primary: {
       light: green['300'],
       main: green['400'],
