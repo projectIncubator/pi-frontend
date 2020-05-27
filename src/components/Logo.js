@@ -15,13 +15,24 @@ const styles = (theme) => ({
     '& > *': {
       color: theme.palette.common.white
     }
+  },
+  default: {},
+  small: {},
+  large: {
+    '& > *': {
+      fontSize: '2rem'
+    }
   }
 });
 
-function Logo({ classes, color }) {
+function Logo({ classes, color, size }) {
   return (
     <Link to="/">
-      <div className={classes[color] || classes.primary}>
+      <div
+        className={`${classes[color] || classes.primary} ${
+          classes[size] || classes.default
+        }`}
+      >
         <EcoIcon />
         <Typography variant="h6" component="span">
           ProjectIncubator
@@ -33,7 +44,8 @@ function Logo({ classes, color }) {
 
 Logo.propTypes = {
   classes: PropTypes.object.isRequired,
-  color: PropTypes.oneOf(['primary', 'white'])
+  color: PropTypes.oneOf(['primary', 'white']),
+  size: PropTypes.oneOf(['small', 'large'])
 };
 
 export default withStyles(styles)(Logo);
