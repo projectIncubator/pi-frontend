@@ -33,7 +33,8 @@ import Brightness2Icon from '@material-ui/icons/Brightness2';
 
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
-import { GeneralContext } from '../contexts';
+import { ThemeContext } from '../contexts';
+import { useAuth } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -144,9 +145,10 @@ const MiddleWare = ({ children, ...props }) => children(props);
 
 export default function AppBar() {
   const classes = useStyles();
-  const { isDarkMode, setIsDarkMode } = useContext(GeneralContext);
+  const { isDarkMode, setIsDarkMode } = useContext(ThemeContext);
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const { isAuthenticated, logout, user } = useAuth();
   const activeLinkColor = theme.palette.text.primary;
   const open = Boolean(anchorEl);
 
@@ -174,12 +176,14 @@ export default function AppBar() {
           <div className={classes.navigation}>
             <Container fixed className={classes.menu}>
               <Typography className={classes.menuItems}>
-                <NavLink
-                  to="/dashboard"
-                  activeStyle={{ color: activeLinkColor }}
-                >
-                  Dashboard
-                </NavLink>
+                {isAuthenticated && (
+                  <NavLink
+                    to="/dashboard"
+                    activeStyle={{ color: activeLinkColor }}
+                  >
+                    Dashboard
+                  </NavLink>
+                )}
                 <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
                   Explore
                 </NavLink>
@@ -222,7 +226,7 @@ export default function AppBar() {
               variant="outlined"
               onClick={handleClick}
             >
-              Alexander Bergholm
+              {user ? user.email : 'Not logged in'}
             </Button>
           </Hidden>
           <Hidden mdUp>
@@ -282,7 +286,7 @@ export default function AppBar() {
                 </ListItemIcon>
                 <Typography variant="inherit">Settings</Typography>
               </StyledMenuItem>
-              <StyledMenuItem>
+              <StyledMenuItem onClick={() => logout()}>
                 <ListItemIcon className={classes.listItemIcon}>
                   <ExitToAppIcon />
                 </ListItemIcon>
