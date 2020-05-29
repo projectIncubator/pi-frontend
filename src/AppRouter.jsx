@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
 import Profile from './pages/Profile';
+import Project from './pages/Project/Project';
 import lightTheme from './theme/lightTheme';
 import darkTheme from './theme/darkTheme';
 import { GeneralContext } from './contexts';
@@ -26,13 +27,17 @@ function AppRouter() {
       <CssBaseline />
       <BrowserRouter>
         <Switch>
+          {/*No Bars*/}
           <Page path="/" component={Landing} exact noBars />
+          <Page path="/login" component={SignIn} exact noBars />
+          <Page path="/signup" component={SignUp} exact noBars />
+
+          {/*With Bars*/}
           <Page path="/dashboard" component={Dashboard} exact />
           <Page path="/explore" component={Explore} exact />
           <Page path="/search" component={Search} exact />
           <Page path="/user/:username" component={Profile} exact />
-          <Page path="/login" component={SignIn} exact noBars />
-          <Page path="/signup" component={SignUp} exact noBars />
+          <Page path="/project/:projectId" component={Project} fullWidth />
         </Switch>
       </BrowserRouter>
     </MuiThemeProvider>
