@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
-import { Eco as EcoIcon } from '@material-ui/icons';
+import Eco from '../assets/logo.png';
 
 const styles = (theme) => ({
   primary: {
@@ -15,6 +15,13 @@ const styles = (theme) => ({
     '& > *': {
       color: theme.palette.common.white
     }
+  },
+  icon: {
+    height: 20,
+    paddingRight: 4
+  },
+  text: {
+    fontWeight: 400
   },
   default: {},
   small: {},
@@ -33,8 +40,8 @@ function Logo({ classes, color, size }) {
           classes[size] || classes.default
         }`}
       >
-        <EcoIcon />
-        <Typography variant="h6" component="span">
+        <img src={Eco} className={classes.icon} />
+        <Typography variant="h6" component="span" className={classes.text}>
           ProjectIncubator
         </Typography>
       </div>
