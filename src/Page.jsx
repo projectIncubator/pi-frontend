@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
-import { withStyles } from '@material-ui/styles';
-import { Container } from '@material-ui/core';
+import { Container, withStyles } from '@material-ui/core';
 import AppBar from './components/AppBar';
 import SideBar from './components/SideBar';
+import { useAuth } from './hooks';
 
 const styles = (theme) => ({
   root: {
@@ -27,6 +27,14 @@ function Page({
   requireAuth,
   ...rest
 }) {
+  const { isAuthenticated, loading, loginWithRedirect } = useAuth();
+
+  if (loading) {
+    return <></>;
+  } else if (requireAuth && !isAuthenticated) {
+    return loginWithRedirect();
+  }
+
   return noBars ? (
     <Route {...rest} render={(props) => <Component {...props} />} />
   ) : (

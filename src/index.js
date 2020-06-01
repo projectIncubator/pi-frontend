@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { GeneralProvider } from './contexts';
+import { AuthProvider, ThemeProvider } from './contexts';
 import AppRouter from './AppRouter';
 import './index.css';
 
 ReactDOM.render(
-  <GeneralProvider>
-    <AppRouter />
-  </GeneralProvider>,
+  <AuthProvider>
+    <ThemeProvider>
+      <AppRouter />
+    </ThemeProvider>
+  </AuthProvider>,
   document.getElementById('root')
 );

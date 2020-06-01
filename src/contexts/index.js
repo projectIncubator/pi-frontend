@@ -1,13 +1,9 @@
-import React, { createContext, useState } from 'react';
+import { Auth0Context, Auth0Provider } from './AuthProvider';
+import { ThemeContext, ThemeProvider } from './ThemeProvider';
 
-export const GeneralContext = createContext();
-
-export function GeneralProvider(props) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  return (
-    <GeneralContext.Provider value={{ isDarkMode, setIsDarkMode }}>
-      {props.children}
-    </GeneralContext.Provider>
-  );
-}
+export {
+  Auth0Context as AuthContext,
+  Auth0Provider as AuthProvider,
+  ThemeContext,
+  ThemeProvider
+};

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
   Button,
   Container,
   Grid,
+  Link as MUILink,
   Typography,
   withStyles
 } from '@material-ui/core';
@@ -14,6 +15,7 @@ import {
   Forum as ForumIcon
 } from '@material-ui/icons';
 import Logo from '../components/Logo';
+import { useAuth } from '../hooks';
 
 const styles = (theme) => ({
   header: {
@@ -42,7 +44,8 @@ const styles = (theme) => ({
       borderColor: theme.palette.common.white,
       '&:hover': {
         color: theme.palette.primary.light,
-        borderColor: theme.palette.primary.light
+        borderColor: theme.palette.primary.light,
+        cursor: 'pointer'
       }
     }
   },
@@ -97,16 +100,26 @@ const styles = (theme) => ({
 });
 
 function Landing({ classes }) {
+  const { isAuthenticated, loading, loginWithRedirect } = useAuth();
+
+  if (loading) {
+    return <></>;
+  } else if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
     <>
       <header className={classes.header}>
         <Container maxWidth="lg">
           <Logo color="white" />
           <div className={classes.authBtnContainer}>
-            <Link to="/login">Log In</Link>
-            <Link to="/signup">
+            <MUILink underline="none" onClick={() => loginWithRedirect()}>
+              Log In
+            </MUILink>
+            <MUILink underline="none" onClick={() => loginWithRedirect()}>
               <Button variant="outlined">Sign Up</Button>
-            </Link>
+            </MUILink>
           </div>
         </Container>
       </header>
@@ -117,7 +130,7 @@ function Landing({ classes }) {
             <Typography variant="h5">
               A platform that fosters collaboration on meaningful projects.
             </Typography>
-            <Link to="/dashboard">
+            <Link to="/explore">
               <Button>GET STARTED</Button>
             </Link>
           </div>
