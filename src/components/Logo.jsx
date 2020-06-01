@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/styles';
-import { Typography } from '@material-ui/core';
+import clsx from 'clsx';
+import { Typography, withStyles } from '@material-ui/core';
 import Eco from '../assets/logo.png';
 
 const styles = (theme) => ({
@@ -36,11 +36,9 @@ function Logo({ classes, color, size }) {
   return (
     <Link to="/">
       <div
-        className={`${classes[color] || classes.primary} ${
-          classes[size] || classes.default
-        }`}
+        className={clsx(classes[color], classes[size])}
       >
-        <img src={Eco} className={classes.icon} />
+        <img alt="Logo" src={Eco} className={classes.icon} />
         <Typography variant="h6" component="span" className={classes.text}>
           ProjectIncubator
         </Typography>
@@ -49,10 +47,15 @@ function Logo({ classes, color, size }) {
   );
 }
 
+Logo.defaultProps = {
+  color: 'primary',
+  size: 'default'
+};
+
 Logo.propTypes = {
   classes: PropTypes.object.isRequired,
   color: PropTypes.oneOf(['primary', 'white']),
-  size: PropTypes.oneOf(['small', 'large'])
+  size: PropTypes.oneOf(['default', 'small', 'large'])
 };
 
 export default withStyles(styles)(Logo);
