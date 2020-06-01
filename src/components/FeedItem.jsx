@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function FeedItem(props) {
+export default function FeedItem(props) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -40,7 +42,11 @@ function FeedItem(props) {
       </div>
       <Paper variant="outlined" className={classes.content}>
         <Typography variant="body1" className={classes.header}>
-          <span className={classes.bold}>{props.project + ' '}</span>
+          <span className={classes.bold}>
+            <Link to={'project/' + props.project.split(' ').join('-')}>
+              {props.project}
+            </Link>{' '}
+          </span>
           {props.updateType}:
         </Typography>
         {props.content}
@@ -49,4 +55,8 @@ function FeedItem(props) {
   );
 }
 
-export default FeedItem;
+FeedItem.propTypes = {
+  project: PropTypes.string.isRequired,
+  updateType: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired
+};
