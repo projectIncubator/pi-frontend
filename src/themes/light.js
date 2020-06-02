@@ -48,6 +48,7 @@ export default {
     }
   },
   dimensions: {
-    drawerWidth: '58px'
+    drawerWidth: '58px',
+    appbarHeight: '48px'
   }
 };

@@ -35,9 +35,7 @@ const styles = (theme) => ({
 function Logo({ classes, color, size }) {
   return (
     <Link to="/">
-      <div
-        className={clsx(classes[color], classes[size])}
-      >
+      <div className={clsx(classes[color], classes[size])}>
         <img alt="Logo" src={Eco} className={classes.icon} />
         <Typography variant="h6" component="span" className={classes.text}>
           ProjectIncubator

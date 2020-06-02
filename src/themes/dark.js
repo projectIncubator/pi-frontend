@@ -22,7 +22,7 @@ export default {
       light: green['300'],
       main: green['400'],
       dark: green['700'],
-      contrastText: 'white'
+      contrastText: '#fff'
     }
   },
   props: {
@@ -49,6 +49,7 @@ export default {
     }
   },
   dimensions: {
-    drawerWidth: '58px'
+    drawerWidth: '58px',
+    appbarHeight: '48px'
   }
 };
