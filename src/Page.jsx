@@ -10,9 +10,9 @@ const styles = (theme) => ({
   root: {
     height: '100%',
     [theme.breakpoints.up('md')]: {
-      padding: `50px 0 0 ${theme.dimensions.drawerWidth}`
+      padding: `${theme.dimensions.appbarHeight} 0 0 ${theme.dimensions.drawerWidth}`
     },
-    padding: '50px 0 0 0'
+    padding: `${theme.dimensions.appbarHeight} 0 0 0`
   },
   container: {
     height: '100%'

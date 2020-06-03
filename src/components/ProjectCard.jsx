@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Paper, Typography, makeStyles } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import PetsIcon from '@material-ui/icons/Pets';
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +62,7 @@ function ProjectCard({
       </div>
       <div className={classes.projectHeader}>
         <Typography variant="h6" className={classes.projectName}>
-          {title}
+          <Link to={'project/' + title.split(' ').join('-')}>{title}</Link>
         </Typography>
         <Typography variant="body2" className={classes.projectOwner}>
           Created by {owner.name}

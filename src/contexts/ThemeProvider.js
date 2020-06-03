@@ -1,10 +1,14 @@
 import React, { createContext, useState } from 'react';
 import { CssBaseline } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  responsiveFontSizes
+} from '@material-ui/core/styles';
 import { lightTheme, darkTheme } from '../themes';
 
-const light = createMuiTheme(lightTheme);
-const dark = createMuiTheme(darkTheme);
+const light = responsiveFontSizes(createMuiTheme(lightTheme));
+const dark = responsiveFontSizes(createMuiTheme(darkTheme));
 
 export const ThemeContext = createContext();
 

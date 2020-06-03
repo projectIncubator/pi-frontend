@@ -8,7 +8,7 @@ const projects = [
     endDate: new Date(2020, 11, 31).getTime(),
     state: 'ongoing',
     logo:
-      'https://i.cbc.ca/1.5492764.1586704776!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_780/medical-swab.jpg',
+      'https://dailynews.mcmaster.ca/wp-content/uploads/sites/3/2020/01/coronavirus-photo-1.jpg',
     themes: ['medicine', 'healthcare', 'politics'],
     owner: {
       id: '456',
