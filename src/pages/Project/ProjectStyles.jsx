@@ -42,8 +42,8 @@ export const useStyles = makeStyles((theme) => ({
   sidebar: {
     width: 250,
     position: 'absolute',
-    height: 'calc(100% - 30px)',
-    top: 30,
+    height: 'calc(100% - 88px)', // the subtraction must match the top attribute
+    top: 88,
     left: -280
   },
   sidebarMenu: {

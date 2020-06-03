@@ -7,8 +7,8 @@ export default function Overview({ project }) {
     <div>
       <Header title={project.title} isAdmin status="ongoing" />
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+        <p key={el}>
+          Lorem ipsum dolor asit amet, consectetur adipiscing elit. Donec
           efficitur eget nisi sit amet gravida. Phasellus eu blandit libero, a
           blandit est. Nullam vestibulum eget magna vel luctus. Morbi ac
           accumsan felis, in congue lacus. Aliquam faucibus, est et mollis
