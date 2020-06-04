@@ -13,6 +13,34 @@ const projects = [
     owner: {
       id: '456',
       name: 'Alexander Bergholm'
+    },
+    members: [
+      'John Doe',
+      'Jane Smith',
+      'Larry Page',
+      'Alex HolmBerg',
+      'Henrick Yap'
+    ],
+    pages: {
+      overview: {
+        sidebarModules: [
+          {
+            type: 'button',
+            header: '',
+            text: 'Request to Join'
+          },
+          { type: 'membership', header: 'Membership' },
+          {
+            type: 'resources',
+            header: 'Resources',
+            content: [
+              { text: 'Discord', link: 'https://discord.com/' },
+              { text: 'Slack', link: 'https://slack.com/intl/en-ca/' },
+              { text: 'Resource 1', link: 'https://google.com/' }
+            ]
+          }
+        ]
+      }
     }
   },
   {
