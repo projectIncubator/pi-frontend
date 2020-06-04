@@ -1,14 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, Typography } from '@material-ui/core';
 
-import SidebarHeader from '../../components/SidebarHeader';
+import { SidebarHeader } from '../../components';
 
-export default function Resources({ text, content, header }) {
-  return <div>{header && <SidebarHeader text={header} />}</div>;
+export default function Resources({ content, header }) {
+  return (
+    <div>
+      {header && <SidebarHeader text={header} />}
+      {content.map((item, index) => {
+        return (
+          <Typography variant="body2">
+            <Link key={index} href={item.link} color="inherit">
+              {item.text}
+            </Link>
+          </Typography>
+        );
+      })}
+    </div>
+  );
 }
 
 Resources.propTypes = {
-  text: PropTypes.string.isRequired,
   content: PropTypes.array.isRequired,
   header: PropTypes.string
 };

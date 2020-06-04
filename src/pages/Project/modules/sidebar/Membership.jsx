@@ -1,17 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Typography,
-  List,
-  ListItem,
-  ListItemText,
-  makeStyles
-} from '@material-ui/core';
+import { Typography, makeStyles } from '@material-ui/core';
 import SidebarHeader from '../../components/SidebarHeader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // fontWeight: 300
     fontSize: '0.875rem'
   }
 }));

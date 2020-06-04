@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, Grid, Hidden, Typography } from '@material-ui/core';
 
-import Header from '../components/Header';
-import SidebarButton from '../modules/sidebar/SidebarButton';
-import Membership from '../modules/sidebar/Membership';
+import { Header, SidebarComponents } from '../components';
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -18,17 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Overview({ project }) {
   const classes = useStyles();
-
-  const renderModules = (el) => {
-    switch (el.type) {
-      case 'button':
-        return <SidebarButton {...el} />;
-      case 'membership':
-        return <Membership members={project.members} {...el} />;
-      default:
-        return;
-    }
-  };
+  const { sidebarModules } = project.pages.overview;
 
   return (
     <Grid container spacing={3}>
@@ -55,10 +43,11 @@ export default function Overview({ project }) {
       <Hidden smDown>
         <Grid item md={3}>
           <Grid container spacing={2} className={classes.sidebar}>
-            {project.pages.overview.sidebarModules.map((el, index) => {
+            {sidebarModules.map((el, index) => {
+              console.log('Module:', el);
               return (
                 <Grid item xs={12} key={index}>
-                  {renderModules(el)}
+                  <SidebarComponents component={el} project={project} />
                 </Grid>
               );
             })}
