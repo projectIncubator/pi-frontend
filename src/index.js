@@ -1,14 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { AuthProvider, ThemeProvider } from './contexts';
+import Dialogs from './dialogs';
+import { AuthProvider, ThemeProvider, DialogProvider } from './contexts';
 import AppRouter from './AppRouter';
 import './index.css';
 
 ReactDOM.render(
   <AuthProvider>
     <ThemeProvider>
-      <AppRouter />
+      <DialogProvider>
+        <AppRouter />
+        <Dialogs />
+      </DialogProvider>
     </ThemeProvider>
   </AuthProvider>,
   document.getElementById('root')

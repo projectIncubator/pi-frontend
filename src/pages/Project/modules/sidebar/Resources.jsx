@@ -10,8 +10,8 @@ export default function Resources({ content, header }) {
       {header && <SidebarHeader text={header} />}
       {content.map((item, index) => {
         return (
-          <Typography variant="body2">
-            <Link key={index} href={item.link} color="inherit">
+          <Typography key={index} variant="body2">
+            <Link href={item.link} color="inherit">
               {item.text}
             </Link>
           </Typography>

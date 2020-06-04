@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   makeStyles,
@@ -8,6 +8,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { DialogContext } from '../../../contexts';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -27,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Header({ title, status, isAdmin, divider }) {
+export default function Header({ title, status, isAdmin, divider, page }) {
   const classes = useStyles();
+  const { open, setOpen } = useContext(DialogContext);
 
   return (
     <>
@@ -48,7 +50,7 @@ export default function Header({ title, status, isAdmin, divider }) {
           )}
         </div>
         {isAdmin && (
-          <IconButton>
+          <IconButton onClick={() => setOpen(page + '-settings')}>
             <SettingsIcon />
           </IconButton>
         )}

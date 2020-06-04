@@ -21,7 +21,12 @@ export default function Overview({ project }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={9}>
-        <Header title={project.title} isAdmin status="ongoing" />
+        <Header
+          page="overview"
+          title={project.title}
+          isAdmin
+          status="ongoing"
+        />
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
           <Typography variant="body1" key={el}>
             Lorem ipsum dolor asit amet, consectetur adipiscing elit. Donec
@@ -44,7 +49,6 @@ export default function Overview({ project }) {
         <Grid item md={3}>
           <Grid container spacing={2} className={classes.sidebar}>
             {sidebarModules.map((el, index) => {
-              console.log('Module:', el);
               return (
                 <Grid item xs={12} key={index}>
                   <SidebarComponents component={el} project={project} />
