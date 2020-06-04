@@ -5,20 +5,14 @@ import {
   Button,
   Container,
   Divider,
-  Fade,
   Hidden,
   IconButton,
   ListItemIcon,
-  Menu,
-  MenuItem,
   MenuList,
   TextField,
   Toolbar,
   Typography,
-  fade,
-  makeStyles,
-  useTheme,
-  withStyles
+  useTheme
 } from '@material-ui/core';
 import {
   AccountCircle as AccountCircleIcon,
@@ -32,119 +26,11 @@ import {
   Settings as SettingsIcon,
   WbSunny as WbSunnyIcon
 } from '@material-ui/icons';
-import Logo from './Logo';
+import { useStyles, StyledMenu, StyledMenuItem } from './AppBarStyles';
+import Logo from '../Logo';
 import MobileMenu from './MobileMenu';
-import { ThemeContext } from '../contexts';
-import { useAuth } from '../hooks';
-
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1
-  },
-  toolBar: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    display: 'flex',
-    justifyContent: 'space-between'
-  },
-  navigation: {
-    flex: 1
-  },
-  menu: {
-    display: 'flex',
-    alignContent: 'center',
-    justifyContent: 'space-between'
-  },
-  menuItems: {
-    display: 'flex',
-    alignItems: 'center',
-    '& > a:not(:first-child)': {
-      marginLeft: theme.spacing(3)
-    },
-    '& > a': {
-      color: theme.palette.text.secondary,
-      '&:hover': {
-        color: theme.palette.text.primary
-      }
-    }
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto'
-    }
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  searchInput: {
-    fontSize: '1rem',
-    padding: theme.spacing(1, 2)
-  },
-  buttonsContainer: {
-    margin: theme.spacing(0, 1, 0, 0)
-  },
-  authButtons: {
-    '& > * + *': {
-      margin: theme.spacing(0, 1)
-    }
-  },
-  accountButton: {
-    borderColor: theme.palette.action.disabled,
-    '& svg': {
-      color: theme.palette.text.secondary
-    }
-  },
-  menuList: {
-    padding: theme.spacing(0),
-    width: '220px',
-    '&:focus': {
-      outline: 'none'
-    }
-  },
-  divider: {
-    margin: theme.spacing(1, 0)
-  }
-}));
-
-const StyledMenu = withStyles((theme) => ({
-  paper: {
-    // borderTop: 'none',
-    marginTop: '14px',
-    borderRadius: '4px',
-    [theme.breakpoints.down('sm')]: {
-      marginTop: '10px'
-    }
-  }
-}))((props) => (
-  <Menu
-    getContentAnchorEl={null}
-    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    TransitionComponent={Fade}
-    {...props}
-  />
-));
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    height: 40
-  }
-}))(MenuItem);
+import { ThemeContext } from '../../contexts';
+import { useAuth } from '../../hooks';
 
 // removes warning for Hidden within MenuList
 const MiddleWare = ({ children, ...props }) => children(props);
@@ -166,71 +52,52 @@ export default function AppBar() {
     setAnchorEl(null);
   };
 
+  const MenuItem = ({ icon, text, ...props }) => {
+    return (
+      <StyledMenuItem {...props}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <Typography variant="inherit">{text}</Typography>
+      </StyledMenuItem>
+    );
+  };
+
   const userMenu = isAuthenticated ? (
     <MenuList className={classes.menuList}>
       <MiddleWare>
         {(props) => (
           <Hidden mdUp>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <ChatIcon />
-              </ListItemIcon>
-              <Typography variant="inherit">Chat</Typography>
-            </StyledMenuItem>
-            <StyledMenuItem>
-              <ListItemIcon>
-                <NotificationsIcon />
-              </ListItemIcon>
-              <Typography variant="inherit">Notifications</Typography>
-            </StyledMenuItem>
+            <MenuItem icon={<ChatIcon />} text="Chat" />
+            <MenuItem icon={<NotificationsIcon />} text="Notifications" />
             <Divider className={classes.divider} />
           </Hidden>
         )}
       </MiddleWare>
-      <StyledMenuItem>
-        <ListItemIcon>
-          <PersonIcon />
-        </ListItemIcon>
-        <Typography variant="inherit">Profile</Typography>
-      </StyledMenuItem>
-      <StyledMenuItem onClick={() => setIsDarkMode(!isDarkMode)}>
-        <ListItemIcon>
-          {isDarkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
-        </ListItemIcon>
-        <Typography variant="inherit">
-          Turn Lights {isDarkMode ? 'On' : 'Off'}
-        </Typography>
-      </StyledMenuItem>
-      <StyledMenuItem>
-        <ListItemIcon>
-          <SettingsIcon />
-        </ListItemIcon>
-        <Typography variant="inherit">Settings</Typography>
-      </StyledMenuItem>
-      <StyledMenuItem onClick={() => logout()}>
-        <ListItemIcon>
-          <ExitToAppIcon />
-        </ListItemIcon>
-        <Typography variant="inherit">Logout</Typography>
-      </StyledMenuItem>
+      <MenuItem icon={<PersonIcon />} text="Profile" />
+      <MenuItem
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        icon={isDarkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
+        text={`Turn Lights ${isDarkMode ? 'On' : 'Off'}`}
+      />
+      <MenuItem icon={<SettingsIcon />} text="Settings" />
+      <MenuItem
+        onClick={() => logout()}
+        icon={<ExitToAppIcon />}
+        text="Logout"
+      />
     </MenuList>
   ) : (
     <MenuList className={classes.menuList}>
-      <StyledMenuItem onClick={() => setIsDarkMode(!isDarkMode)}>
-        <ListItemIcon>
-          {isDarkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
-        </ListItemIcon>
-        <Typography variant="inherit">
-          Turn Lights {isDarkMode ? 'On' : 'Off'}
-        </Typography>
-      </StyledMenuItem>
+      <MenuItem
+        onClick={() => setIsDarkMode(!isDarkMode)}
+        icon={isDarkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
+        text={`Turn Lights ${isDarkMode ? 'On' : 'Off'}`}
+      />
       <Hidden mdUp>
-        <StyledMenuItem onClick={() => loginWithRedirect()}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <Typography variant="inherit">Log In / Sign Up</Typography>
-        </StyledMenuItem>
+        <MenuItem
+          onClick={() => loginWithRedirect()}
+          icon={<ExitToAppIcon />}
+          text="Log In / Sign Up"
+        />
       </Hidden>
     </MenuList>
   );
@@ -295,7 +162,9 @@ export default function AppBar() {
               </span>
             ) : (
               <span className={classes.authButtons}>
-                <Button variant="outlined" onClick={() => loginWithRedirect()}>LOG IN</Button>
+                <Button variant="outlined" onClick={() => loginWithRedirect()}>
+                  LOG IN
+                </Button>
                 <Button onClick={() => loginWithRedirect()}>SIGN UP</Button>
               </span>
             )}

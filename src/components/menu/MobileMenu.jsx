@@ -14,7 +14,7 @@ import { NavLink } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/Explore';
 import HomeIcon from '@material-ui/icons/Home';
-import { useAuth } from '../hooks';
+import { useAuth } from '../../hooks';
 
 const useStyles = makeStyles({
   list: {
@@ -44,7 +44,27 @@ export default function MobileMenu() {
     setIsOpen(open);
   };
 
-  const list = () => (
+  const MenuItem = ({ icon, text, to, ...props }) => {
+    return (
+      <ListItem button {...props}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText>
+          {to ? (
+            <NavLink
+              to={to}
+              activeStyle={{ color: activeLinkColor, fontWeight: 500 }}
+            >
+              {text}
+            </NavLink>
+          ) : (
+            text
+          )}
+        </ListItemText>
+      </ListItem>
+    );
+  };
+
+  const renderProjectList = () => (
     <div
       className={classes.list}
       role="presentation"
@@ -53,37 +73,10 @@ export default function MobileMenu() {
     >
       <List>
         {isAuthenticated && (
-          <ListItem button>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText>
-              <NavLink to="/dashboard" activeStyle={{ color: activeLinkColor }}>
-                Dashboard
-              </NavLink>
-            </ListItemText>
-          </ListItem>
+          <MenuItem icon={<HomeIcon />} to="/dashboard" text="Dashboard" />
         )}
-        <ListItem button>
-          <ListItemIcon>
-            <ExploreIcon />
-          </ListItemIcon>
-          <ListItemText>
-            <NavLink to="/explore" activeStyle={{ color: activeLinkColor }}>
-              Explore
-            </NavLink>
-          </ListItemText>
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            <SearchIcon />
-          </ListItemIcon>
-          <ListItemText>
-            <NavLink to="/search" activeStyle={{ color: activeLinkColor }}>
-              Search
-            </NavLink>
-          </ListItemText>
-        </ListItem>
+        <MenuItem icon={<ExploreIcon />} to="/explore" text="Explore" />
+        <MenuItem icon={<SearchIcon />} to="/search" text="Search" />
       </List>
       <Divider />
       <List>
@@ -99,12 +92,11 @@ export default function MobileMenu() {
       <Divider />
       <List>
         {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+          <MenuItem
+            key={text}
+            icon={index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            text={text}
+          />
         ))}
       </List>
     </div>
@@ -121,7 +113,7 @@ export default function MobileMenu() {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
       >
-        {list()}
+        {renderProjectList()}
       </SwipeableDrawer>
     </>
   );
