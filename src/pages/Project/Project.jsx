@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 
 import { projects } from '../../mocks';
-
 import { useStyles, activeLink } from './ProjectStyles';
 import Overview from './pages/Overview';
 import About from './pages/About';

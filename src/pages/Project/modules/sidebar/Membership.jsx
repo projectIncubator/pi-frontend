@@ -1,20 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles
+} from '@material-ui/core';
+import SidebarHeader from '../../components/SidebarHeader';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    // fontWeight: 300
+    fontSize: '0.875rem'
+  }
+}));
 
 export default function Membership({ members, header }) {
+  const classes = useStyles();
   return (
     <div>
-      {header && <Typography variant="h6">{header}</Typography>}
-      <List dense>
-        {members.map((member) => {
-          return (
-            <ListItem>
-              <ListItemText primary={member} />
-            </ListItem>
-          );
-        })}
-      </List>
+      {header && <SidebarHeader text={header + ` - ${members.length}`} />}
+      {members.map((member) => {
+        return (
+          <Typography key={member} className={classes.root} variant="body2">
+            {member}
+          </Typography>
+        );
+      })}
     </div>
   );
 }

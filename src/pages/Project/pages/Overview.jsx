@@ -1,18 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Hidden } from '@material-ui/core';
+import { makeStyles, Grid, Hidden, Typography } from '@material-ui/core';
 
 import Header from '../components/Header';
 import SidebarButton from '../modules/sidebar/SidebarButton';
 import Membership from '../modules/sidebar/Membership';
 
+const useStyles = makeStyles((theme) => ({
+  sidebar: {
+    position: 'sticky',
+    top: 125,
+    [theme.breakpoints.down('md')]: {
+      top: 50 + 42
+    }
+  }
+}));
+
 export default function Overview({ project }) {
+  const classes = useStyles();
+
+  const renderModules = (el) => {
+    switch (el.type) {
+      case 'button':
+        return <SidebarButton {...el} />;
+      case 'membership':
+        return <Membership members={project.members} {...el} />;
+      default:
+        return;
+    }
+  };
+
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={3}>
       <Grid item xs={12} md={9}>
         <Header title={project.title} isAdmin status="ongoing" />
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((el) => (
-          <p key={el}>
+          <Typography variant="body1" key={el}>
             Lorem ipsum dolor asit amet, consectetur adipiscing elit. Donec
             efficitur eget nisi sit amet gravida. Phasellus eu blandit libero, a
             blandit est. Nullam vestibulum eget magna vel luctus. Morbi ac
@@ -26,21 +49,20 @@ export default function Overview({ project }) {
             quis faucibus vel, tincidunt at tortor. Vivamus euismod suscipit
             leo, eu venenatis sem vehicula sit amet. Suspendisse convallis eget
             quam ac egestas.
-          </p>
+          </Typography>
         ))}
       </Grid>
       <Hidden smDown>
         <Grid item md={3}>
-          {project.pages.overview.sidebarModules.map((module) => {
-            switch (module.type) {
-              case 'button':
-                return <SidebarButton {...module} />;
-              case 'membership':
-                return <Membership members={project.members} {...module} />;
-              default:
-                return;
-            }
-          })}
+          <Grid container spacing={2} className={classes.sidebar}>
+            {project.pages.overview.sidebarModules.map((el, index) => {
+              return (
+                <Grid item xs={12} key={index}>
+                  {renderModules(el)}
+                </Grid>
+              );
+            })}
+          </Grid>
         </Grid>
       </Hidden>
     </Grid>

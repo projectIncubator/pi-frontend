@@ -55,7 +55,8 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-end',
     '& > *': {
       marginBottom: theme.spacing(1),
-      userSelect: 'none'
+      userSelect: 'none',
+      fontSize: '1rem'
     }
   },
   navbarMobile: {
@@ -65,6 +66,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     borderTop: 'none',
     borderBottom: 'none',
+    zIndex: 1,
     background: theme.palette.background.paper
   },
   navbarMenu: {
