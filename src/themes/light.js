@@ -21,7 +21,8 @@ export default {
     primary: {
       light: green['300'],
       main: green['400'],
-      dark: green['700']
+      dark: green['700'],
+      contrastText: '#fff'
     }
   },
   props: {

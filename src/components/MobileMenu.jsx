@@ -14,6 +14,7 @@ import { NavLink } from 'react-router-dom';
 import SearchIcon from '@material-ui/icons/Search';
 import ExploreIcon from '@material-ui/icons/Explore';
 import HomeIcon from '@material-ui/icons/Home';
+import { useAuth } from '../hooks';
 
 const useStyles = makeStyles({
   list: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles({
 export default function MobileMenu() {
   const classes = useStyles();
   const theme = useTheme();
+  const { isAuthenticated } = useAuth();
   const [isOpen, setIsOpen] = React.useState(false);
   const activeLinkColor = theme.palette.text.primary;
 
@@ -50,16 +52,18 @@ export default function MobileMenu() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText>
-            <NavLink to="/dashboard" activeStyle={{ color: activeLinkColor }}>
-              Dashboard
-            </NavLink>
-          </ListItemText>
-        </ListItem>
+        {isAuthenticated && (
+          <ListItem button>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <NavLink to="/dashboard" activeStyle={{ color: activeLinkColor }}>
+                Dashboard
+              </NavLink>
+            </ListItemText>
+          </ListItem>
+        )}
         <ListItem button>
           <ListItemIcon>
             <ExploreIcon />
