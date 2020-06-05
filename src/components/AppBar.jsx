@@ -127,7 +127,7 @@ const StyledMenu = withStyles((theme) => ({
     marginTop: '14px',
     borderRadius: '4px',
     [theme.breakpoints.down('sm')]: {
-      marginTop: '10'
+      marginTop: '10px'
     }
   }
 }))((props) => (
