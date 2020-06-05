@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header({ title, status, isAdmin, divider, page }) {
   const classes = useStyles();
-  const { open, setOpen } = useContext(DialogContext);
+  const { setOpen } = useContext(DialogContext);
 
   return (
     <>
