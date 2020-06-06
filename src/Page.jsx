@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { Container, withStyles } from '@material-ui/core';
-import AppBar from './components/AppBar';
-import SideBar from './components/SideBar';
+import AppBar from './components/menu/AppBar';
+import SideBar from './components/menu/SideBar';
 import { useAuth } from './hooks';
 
 const styles = (theme) => ({
