@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/styles';
-import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  makeStyles,
+  Divider,
+  Typography,
+  Chip,
+  IconButton
+} from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
-import Divider from '@material-ui/core/Divider';
+import { DialogContext } from '../../../contexts';
 
 const useStyles = makeStyles((theme) => ({
   header: {
-    display: 'flex'
+    display: 'flex',
+    marginBottom: theme.spacing(2)
   },
   title: {
     flex: 1,
@@ -24,8 +28,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Header({ title, status, isAdmin, divider }) {
+export default function Header({ title, status, isAdmin, divider, page }) {
   const classes = useStyles();
+  const { setOpen } = useContext(DialogContext);
 
   return (
     <>
@@ -45,7 +50,7 @@ export default function Header({ title, status, isAdmin, divider }) {
           )}
         </div>
         {isAdmin && (
-          <IconButton>
+          <IconButton onClick={() => setOpen(page + '-settings')}>
             <SettingsIcon />
           </IconButton>
         )}

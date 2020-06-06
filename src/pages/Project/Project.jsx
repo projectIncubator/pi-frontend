@@ -9,13 +9,9 @@ import {
 } from '@material-ui/core';
 
 import { projects } from '../../mocks';
-
 import { useStyles, activeLink } from './ProjectStyles';
-import Overview from './pages/Overview';
-import About from './pages/About';
-import Timeline from './pages/Timeline';
-import Discussions from './pages/Discussions';
-import FeatureImage from './components/FeatureImage';
+import { Overview, About, Timeline, Discussions } from './pages';
+import { FeatureImage } from './components';
 
 export default function Project({ match }) {
   const classes = useStyles();
