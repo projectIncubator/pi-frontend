@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import {
   Button as MUIButton,
-  TextField,
   Typography,
   Card,
   Divider,
@@ -18,11 +17,7 @@ import {
   Positions,
   Button
 } from '../modules/sidebar/settings';
-import {
-  useStyles,
-  deleteButtonParentStyles,
-  deleteButtonStyles
-} from './ComponentCardStyles';
+import { useStyles } from './ComponentCardStyles';
 
 export default function ComponentCard({
   item,
@@ -70,25 +65,8 @@ export default function ComponentCard({
         return renderModule(Resources);
       case 'positions':
         return renderModule(Positions);
-
       default:
-        return (
-          <>
-            <TextField
-              id="header-input-field"
-              label="Header"
-              size="small"
-              variant="outlined"
-              defaultValue={header}
-            />
-            <TextField
-              id="content-input-field"
-              label="Content"
-              size="small"
-              variant="outlined"
-            />
-          </>
-        );
+        return <></>;
     }
   };
 

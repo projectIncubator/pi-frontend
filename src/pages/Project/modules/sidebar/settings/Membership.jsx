@@ -6,8 +6,7 @@ export default function Membership({ id, contentProps, updateContent }) {
 
   useEffect(() => {
     updateContent(id, { ...content });
-  }, [content]);
-
+  }, [content, updateContent, id]);
   const handleChange = (event, target) => {
     const newContent = { ...content };
     newContent[target] = event.target.value;

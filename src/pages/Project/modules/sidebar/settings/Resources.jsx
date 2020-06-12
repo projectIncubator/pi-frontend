@@ -39,7 +39,7 @@ export default function Resources({ id, contentProps, updateContent }) {
 
   useEffect(() => {
     updateContent(id, { ...content });
-  }, [content]);
+  }, [content, updateContent, id]);
 
   const handleDeleteResource = (index) => {
     const newContent = { ...content };

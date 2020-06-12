@@ -6,7 +6,7 @@ export default function Positions({ id, contentProps, updateContent }) {
 
   useEffect(() => {
     updateContent(id, { ...content });
-  }, [content]);
+  }, [content, updateContent, id]);
 
   const handleChange = (event, target) => {
     const newContent = { ...content };
