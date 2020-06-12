@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
-
 import {
-  makeStyles,
+  Button as MUIButton,
+  TextField,
   Typography,
   Card,
   Divider,
@@ -11,58 +11,85 @@ import {
 } from '@material-ui/core';
 import { DragIndicator, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    marginBottom: theme.spacing(1)
-  },
-  main: {
-    height: 40,
-    display: 'flex',
-    alignItems: 'center',
-    padding: 0
-  },
-  dragHandle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    borderRight: `1px solid ${theme.palette.divider}`
-  },
-  openToggle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    borderLeft: `1px solid ${theme.palette.divider}`
-  },
-  content: {
-    padding: theme.spacing(1),
-    '&:last-child': {
-      paddingBottom: 14
-    }
-  },
-  type: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(0, 1)
-  },
-  header: {
-    textTransform: 'capitalize',
-    fontWeight: 400
-  },
-  additionalContent: {
-    padding: theme.spacing(1)
-  }
-}));
+import {
+  Text,
+  Resources,
+  Membership,
+  Positions,
+  Button
+} from '../modules/sidebar/settings';
+import {
+  useStyles,
+  deleteButtonParentStyles,
+  deleteButtonStyles
+} from './ComponentCardStyles';
 
-export default function ComponentCard({ type, index, id, open, toggleOpen }) {
+export default function ComponentCard({
+  item,
+  index,
+  toggleOpen,
+  deleteComponent,
+  updateContent
+}) {
   const classes = useStyles();
+  const { type, id, open, content } = item;
+  const { header } = content;
 
   const handleClick = () => {
     toggleOpen(id, !open);
+  };
+
+  const handleDelete = () => {
+    deleteComponent(id);
+  };
+
+  const handleUpdateContent = (id, content) => {
+    updateContent(id, content);
+  };
+
+  const renderModule = (BaseComponent) => {
+    return (
+      <BaseComponent
+        id={id}
+        headerProps={header}
+        contentProps={content}
+        updateContent={(id, content) => handleUpdateContent(id, content)}
+      />
+    );
+  };
+
+  const renderForms = () => {
+    switch (type) {
+      case 'text':
+        return renderModule(Text);
+      case 'button':
+        return renderModule(Button);
+      case 'membership':
+        return renderModule(Membership);
+      case 'resources':
+        return renderModule(Resources);
+      case 'positions':
+        return renderModule(Positions);
+
+      default:
+        return (
+          <>
+            <TextField
+              id="header-input-field"
+              label="Header"
+              size="small"
+              variant="outlined"
+              defaultValue={header}
+            />
+            <TextField
+              id="content-input-field"
+              label="Content"
+              size="small"
+              variant="outlined"
+            />
+          </>
+        );
+    }
   };
 
   return (
@@ -91,7 +118,18 @@ export default function ComponentCard({ type, index, id, open, toggleOpen }) {
           {open && (
             <div>
               <Divider />
-              <div className={classes.additionalContent}>More content</div>
+              <div className={classes.additionalContent}>
+                <div className={classes.formFields}>{renderForms()}</div>
+                <div className={classes.deleteButton}>
+                  <MUIButton
+                    onClick={handleDelete}
+                    color="secondary"
+                    size="small"
+                  >
+                    Delete
+                  </MUIButton>
+                </div>
+              </div>
             </div>
           )}
         </Card>
@@ -101,9 +139,7 @@ export default function ComponentCard({ type, index, id, open, toggleOpen }) {
 }
 
 ComponentCard.propTypes = {
-  type: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired,
-  open: PropTypes.bool.isRequired,
   toggleOpen: PropTypes.func.isRequired
 };

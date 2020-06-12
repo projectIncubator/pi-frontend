@@ -24,22 +24,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function AvailableCard({ type, subtext, index, id }) {
+export default function AvailableCard({ item, index, isDisabled }) {
   const classes = useStyles();
+  const { id, type, subtext } = item;
 
   const renderContents = (type, subtext) => {
     return (
       <CardContent className={classes.content}>
-        <Typography variant="h6" className={classes.header}>
+        <Typography
+          variant="h6"
+          className={classes.header}
+          color={isDisabled ? 'textSecondary' : 'textPrimary'}
+        >
           {type}
         </Typography>
-        <Typography variant="body2">{subtext}</Typography>
+        <Typography
+          variant="body2"
+          color={isDisabled ? 'textSecondary' : 'textPrimary'}
+        >
+          {subtext}
+        </Typography>
       </CardContent>
     );
   };
 
   return (
-    <Draggable draggableId={id} index={index}>
+    <Draggable draggableId={id} index={index} isDragDisabled={isDisabled}>
       {(provided, snapshot) => (
         <React.Fragment>
           <Card
@@ -62,8 +72,6 @@ export default function AvailableCard({ type, subtext, index, id }) {
 }
 
 AvailableCard.propTypes = {
-  type: PropTypes.string.isRequired,
-  subtext: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  id: PropTypes.string.isRequired
+  item: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired
 };
