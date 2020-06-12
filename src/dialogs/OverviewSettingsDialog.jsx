@@ -166,12 +166,43 @@ export default function OverviewSettingsDialog() {
   };
 
   const handleSave = () => {
-    console.log(projects[0].pages.overview.sidebarModules);
     projects[0].pages.overview.sidebarModules = [...currentComponents];
-
     setOpen(false);
   };
 
+  const toggleOpen = (id, newOpen) => {
+    const newCurrComponents = [...currentComponents];
+    const index = newCurrComponents.findIndex((item) => item.id === id);
+
+    newCurrComponents[index].open = newOpen;
+    setCurrComponents(newCurrComponents);
+  };
+
+  const updateContent = useCallback(
+    (id, content) => {
+      setCurrComponents((newCurrComponents) => {
+        const index = newCurrComponents.findIndex((item) => item.id === id);
+        if (index !== -1) {
+          newCurrComponents[index].content = content;
+          return newCurrComponents;
+        }
+      });
+    },
+    [setCurrComponents]
+  );
+
+  const deleteComponent = useCallback(
+    (id) => {
+      setCurrComponents((newCurrComponents) => {
+        const index = newCurrComponents.findIndex((item) => item.id === id);
+        newCurrComponents.splice(index, 1);
+        return [...newCurrComponents];
+      });
+    },
+    [setCurrComponents]
+  );
+
+  // drag and drop logic
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -189,14 +220,6 @@ export default function OverviewSettingsDialog() {
     return destClone;
   };
 
-  const toggleOpen = (id, newOpen) => {
-    const newCurrComponents = [...currentComponents];
-    const index = newCurrComponents.findIndex((item) => item.id === id);
-
-    newCurrComponents[index].open = newOpen;
-    setCurrComponents(newCurrComponents);
-  };
-
   const checkUniqueness = (item) => {
     // return true to disable drag component
     if (item.unique) {
@@ -205,30 +228,6 @@ export default function OverviewSettingsDialog() {
     }
     return false;
   };
-
-  const updateContent = useCallback(
-    (id, content) => {
-      setCurrComponents((newCurrComponents) => {
-        const index = newCurrComponents.findIndex((item) => item.id === id);
-
-        if (index !== -1) {
-          newCurrComponents[index].content = content;
-          return newCurrComponents;
-        }
-      });
-    },
-    [setCurrComponents]
-  );
-
-  const deleteComponent = useCallback(
-    (id) => {
-      setCurrComponents((newCurrComponents) => {
-        const index = newCurrComponents.findIndex((item) => item.id === id);
-        return newCurrComponents.splice(index, 1);
-      });
-    },
-    [setCurrComponents]
-  );
 
   const onDragEnd = (result) => {
     const { destination, source } = result;

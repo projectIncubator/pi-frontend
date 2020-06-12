@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink, Switch, Route, Redirect, useParams } from 'react-router-dom';
 import {
@@ -12,11 +12,13 @@ import { projects } from '../../mocks';
 import { useStyles, activeLink } from './ProjectStyles';
 import { Overview, About, Timeline, Discussions } from './pages';
 import { FeatureImage } from './components';
+import { DialogContext } from '../../contexts';
 
 export default function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
+  const { open } = useContext(DialogContext); // testing purposes, use fetch later
   const [project, setProject] = useState({});
   const [fetching, setFetching] = useState(true);
 
@@ -32,7 +34,7 @@ export default function Project({ match }) {
 
     if (project) setProject({ ...project });
     setFetching(false);
-  }, [projectId]);
+  }, [projectId, open]);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
