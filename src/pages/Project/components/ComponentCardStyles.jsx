@@ -58,18 +58,3 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end'
   }
 }));
-
-export const deleteButtonParentStyles = {
-  display: 'flex',
-  alignItems: 'center'
-};
-
-export const deleteButtonStyles = {
-  transform: 'translate(-50px, 0)',
-  visibility: 'hidden',
-  width: 0,
-  padding: 0,
-  height: 30,
-  marginRight: 0,
-  transition: 'all 0.2s'
-};

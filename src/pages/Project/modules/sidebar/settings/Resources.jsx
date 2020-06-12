@@ -8,11 +8,6 @@ import {
 } from '@material-ui/core';
 import { AddCircle, Delete } from '@material-ui/icons';
 
-import {
-  deleteButtonParentStyles,
-  deleteButtonStyles
-} from '../../../components/ComponentCardStyles';
-
 const useStyles = makeStyles((theme) => ({
   addNewResource: {
     backgroundColor: theme.palette.grey['300'],
@@ -30,6 +25,19 @@ const useStyles = makeStyles((theme) => ({
         transform: 'translate(0, 0) !important'
       }
     }
+  },
+  deleteButtonParent: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  deleteButton: {
+    transform: 'translate(-50px, 0)',
+    visibility: 'hidden',
+    width: 0,
+    padding: 0,
+    height: 30,
+    marginRight: 0,
+    transition: 'all 0.2s'
   }
 }));
 
@@ -85,12 +93,12 @@ export default function Resources({ id, contentProps, updateContent }) {
             key={idx}
             className={classes.gridContainer}
           >
-            <Grid item xs={5} style={deleteButtonParentStyles}>
+            <Grid item xs={5} className={classes.deleteButtonParent}>
               {el.type === 'Custom' && (
                 <IconButton
                   size="small"
                   disableFocusRipple
-                  style={deleteButtonStyles}
+                  className={classes.deleteButton}
                   onClick={() => handleDeleteResource(idx)}
                 >
                   <Delete color="secondary" />

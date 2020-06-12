@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { v4 as uuid } from 'uuid';
 import {
@@ -14,6 +14,7 @@ import {
   DialogTitle
 } from '@material-ui/core';
 
+import { projects } from '../mocks';
 import { DialogContext } from '../contexts';
 import { ComponentCard, AvailableCard } from '../pages/Project/components';
 
@@ -198,22 +199,29 @@ export default function OverviewSettingsDialog() {
     return false;
   };
 
-  const handleUpdateContent = (id, content) => {
-    const newCurrComponents = [...currentComponents];
-    const index = newCurrComponents.findIndex((item) => item.id === id);
+  const updateContent = useCallback(
+    (id, content) => {
+      setCurrComponents((newCurrComponents) => {
+        const index = newCurrComponents.findIndex((item) => item.id === id);
 
-    if (index !== -1) {
-      newCurrComponents[index].content = content;
-      setCurrComponents(newCurrComponents);
-    }
-  };
+        if (index !== -1) {
+          newCurrComponents[index].content = content;
+          return newCurrComponents;
+        }
+      });
+    },
+    [setCurrComponents]
+  );
 
-  const handleDelete = (id) => {
-    const newCurrComponents = [...currentComponents];
-    const index = newCurrComponents.findIndex((item) => item.id === id);
-    newCurrComponents.splice(index, 1);
-    setCurrComponents(newCurrComponents);
-  };
+  const deleteComponent = useCallback(
+    (id) => {
+      setCurrComponents((newCurrComponents) => {
+        const index = newCurrComponents.findIndex((item) => item.id === id);
+        return newCurrComponents.splice(index, 1);
+      });
+    },
+    [setCurrComponents]
+  );
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
@@ -299,9 +307,9 @@ export default function OverviewSettingsDialog() {
                         item={item}
                         index={index}
                         toggleOpen={toggleOpen}
-                        deleteComponent={(id) => handleDelete(id)}
+                        deleteComponent={(id) => deleteComponent(id)}
                         updateContent={(id, content) =>
-                          handleUpdateContent(id, content)
+                          updateContent(id, content)
                         }
                       />
                     ))}
