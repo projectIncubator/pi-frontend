@@ -4,16 +4,17 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import SidebarHeader from '../../components/SidebarHeader';
 
-export default function SidebarButton({ text, header, ...props }) {
+export default function SidebarButton({ content, ...props }) {
+  const { text, header } = content;
+
   return (
     <div>
-      {header && <SidebarHeader text={header} />}
+      {header && <SidebarHeader header={header} />}
       <Button {...props}>{text}</Button>
     </div>
   );
 }
 
 SidebarButton.propTypes = {
-  text: PropTypes.string.isRequired,
-  header: PropTypes.string
+  content: PropTypes.object.isRequired
 };

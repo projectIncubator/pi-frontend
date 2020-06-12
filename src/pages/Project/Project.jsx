@@ -38,38 +38,44 @@ export default function Project({ match }) {
     window.scrollTo(0, 0);
   };
 
-  const renderNavLinks = () => {
+  const condensedNavLink = (route) => {
     return (
-      <>
-        <NavLink
-          to={`${match.url}/overview`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          Overview
-        </NavLink>
-        <NavLink
-          to={`${match.url}/about`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          About
-        </NavLink>
-        <NavLink
-          to={`${match.url}/timeline`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          Timeline
-        </NavLink>
-        <NavLink
-          to={`${match.url}/discussions`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          Discussions
-        </NavLink>
-      </>
+      <NavLink
+        key={route}
+        to={`${match.url}/${route}`}
+        onClick={scrollToTop}
+        activeStyle={activeLink}
+      >
+        {route[0].toUpperCase() + route.slice(1)}
+      </NavLink>
+    );
+  };
+
+  const renderNavLinks = () => {
+    const routes = ['overview', 'about', 'timeline', 'discussions'];
+    return routes.map((el) => condensedNavLink(el));
+  };
+
+  const renderRoutes = () => {
+    return (
+      <Switch>
+        <Route exact path={match.url}>
+          <Redirect to={match.url + '/overview'} />
+        </Route>
+        <Route
+          exact
+          path={match.url + '/overview'}
+          render={() => <Overview project={project} />}
+          divider={true}
+        />
+        <Route exact path={match.url + '/about'} component={About} />
+        <Route exact path={match.url + '/timeline'} component={Timeline} />
+        <Route
+          exact
+          path={match.url + '/discussions'}
+          component={Discussions}
+        />
+      </Switch>
     );
   };
 
@@ -111,30 +117,7 @@ export default function Project({ match }) {
                   <div className={classes.navbarMenu}>{renderNavLinks()}</div>
                 </div>
               </Hidden>
-              <div className={classes.content}>
-                <Switch>
-                  <Route exact path={match.url}>
-                    <Redirect to={match.url + '/overview'} />
-                  </Route>
-                  <Route
-                    exact
-                    path={match.url + '/overview'}
-                    render={() => <Overview project={project} />}
-                    divider={true}
-                  />
-                  <Route exact path={match.url + '/about'} component={About} />
-                  <Route
-                    exact
-                    path={match.url + '/timeline'}
-                    component={Timeline}
-                  />
-                  <Route
-                    exact
-                    path={match.url + '/discussions'}
-                    component={Discussions}
-                  />
-                </Switch>
-              </div>
+              <div className={classes.content}>{renderRoutes()}</div>
             </Container>
             <div className={classes.margins} />
           </div>

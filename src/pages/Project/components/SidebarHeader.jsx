@@ -9,15 +9,15 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SidebarHeader({ text }) {
+export default function SidebarHeader({ header }) {
   const classes = useStyles();
   return (
     <Typography variant="h6" className={classes.root} gutterBottom>
-      {text}
+      {header}
     </Typography>
   );
 }
 
 SidebarHeader.propTypes = {
-  text: PropTypes.string.isRequired
+  header: PropTypes.string.isRequired
 };

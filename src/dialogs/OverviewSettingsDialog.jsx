@@ -165,6 +165,13 @@ export default function OverviewSettingsDialog() {
     setOpen(false);
   };
 
+  const handleSave = () => {
+    console.log(projects[0].pages.overview.sidebarModules);
+    projects[0].pages.overview.sidebarModules = [...currentComponents];
+
+    setOpen(false);
+  };
+
   const reorder = (list, startIndex, endIndex) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -325,7 +332,7 @@ export default function OverviewSettingsDialog() {
         <Button onClick={handleClose} color="primary" autoFocus>
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleSave} color="primary">
           Save
         </Button>
       </DialogActions>

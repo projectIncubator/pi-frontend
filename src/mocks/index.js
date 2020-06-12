@@ -26,26 +26,37 @@ const projects = [
         sidebarModules: [
           {
             type: 'button',
-            header: '',
-            text: 'Request to Join'
+            content: {
+              header: '',
+              text: 'Request to Join'
+            }
           },
-          { type: 'membership', header: 'Membership' },
+          {
+            type: 'membership',
+            content: {
+              header: 'Membership'
+            }
+          },
           {
             type: 'resources',
-            header: 'Resources',
-            content: [
-              { text: 'Discord', link: 'https://discord.com/' },
-              { text: 'Slack', link: 'https://slack.com/intl/en-ca/' },
-              { text: 'Resource 1', link: 'https://google.com/' }
-            ]
+            content: {
+              header: 'Resources',
+              resources: [
+                { text: 'Discord', link: 'https://discord.com/' },
+                { text: 'Slack', link: 'https://slack.com/intl/en-ca/' },
+                { text: 'Resource 1', link: 'https://google.com/' }
+              ]
+            }
           },
           {
             type: 'text',
-            header: 'Test Header',
-            text: `Lorem ipsum dolor asit amet, consectetur adipiscing elit.
+            content: {
+              header: 'Test Header',
+              text: `Lorem ipsum dolor asit amet, consectetur adipiscing elit.
             Lorem ipsum dolor asit amet, consectetur adipiscing elit.
             Lorem ipsum dolor asit amet, consectetur adipiscing elit.
             Lorem ipsum dolor asit amet, consectetur adipiscing elit.`
+            }
           }
         ]
       }
