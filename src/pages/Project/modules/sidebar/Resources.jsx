@@ -9,17 +9,15 @@ export default function Resources({ content }) {
   return (
     <div>
       {header && <SidebarHeader header={header} />}
-      {content.resources.map((item, index) => {
-        if (item.link) {
-          return (
-            <Typography key={index} variant="body2">
-              <Link href={item.link} color="inherit">
-                {item.text || item.type}
-              </Link>
-            </Typography>
-          );
-        }
-      })}
+      {content.resources
+        .filter((el) => el.link)
+        .map((item, index) => (
+          <Typography key={index} variant="body2">
+            <Link href={item.link} color="inherit">
+              {item.text || item.type}
+            </Link>
+          </Typography>
+        ))}
     </div>
   );
 }
