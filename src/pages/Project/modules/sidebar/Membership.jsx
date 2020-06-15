@@ -9,11 +9,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Membership({ members, header }) {
+export default function Membership({ members, content }) {
   const classes = useStyles();
+  const { header } = content;
   return (
     <div>
-      {header && <SidebarHeader text={header + ` - ${members.length}`} />}
+      {header && <SidebarHeader header={header + ` - ${members.length}`} />}
       {members.map((member) => {
         return (
           <Typography key={member} className={classes.root} variant="body2">
@@ -27,5 +28,5 @@ export default function Membership({ members, header }) {
 
 Membership.propTypes = {
   members: PropTypes.array.isRequired,
-  header: PropTypes.string
+  content: PropTypes.object.isRequired
 };

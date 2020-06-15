@@ -26,6 +26,69 @@ const projects = [
         sidebarModules: [
           {
             type: 'button',
+            content: {
+              header: '',
+              text: 'Request to Join'
+            }
+          },
+          {
+            type: 'membership',
+            content: {
+              header: 'Membership'
+            }
+          },
+          {
+            type: 'resources',
+            content: {
+              header: 'Resources',
+              resources: [
+                { text: 'Discord', link: 'https://discord.com/' },
+                { text: 'Slack', link: 'https://slack.com/intl/en-ca/' },
+                { text: 'Resource 1', link: 'https://google.com/' }
+              ]
+            }
+          },
+          {
+            type: 'text',
+            content: {
+              header: 'Test Header',
+              text: `Lorem ipsum dolor asit amet, consectetur adipiscing elit.
+            Lorem ipsum dolor asit amet, consectetur adipiscing elit.
+            Lorem ipsum dolor asit amet, consectetur adipiscing elit.
+            Lorem ipsum dolor asit amet, consectetur adipiscing elit.`
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    id: '222',
+    title: 'Kitsilano Community Engagement',
+    oneliner:
+      'Some description about the project, Not the project abstract. Just one or two lines!',
+    startDate: new Date(2019, 10, 15).getTime(),
+    endDate: new Date(2020, 3, 30).getTime(),
+    state: 'completed',
+    logo:
+      'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
+    themes: ['environmental', 'politics'],
+    owner: {
+      id: '456',
+      name: 'Alexander Bergholm'
+    },
+    members: [
+      'John Doe',
+      'Jane Smith',
+      'Larry Page',
+      'Alex HolmBerg',
+      'Henrick Yap'
+    ],
+    pages: {
+      overview: {
+        sidebarModules: [
+          {
+            type: 'button',
             header: '',
             text: 'Request to Join'
           },
@@ -49,22 +112,6 @@ const projects = [
           }
         ]
       }
-    }
-  },
-  {
-    id: '222',
-    title: 'Kitsilano Community Engagement',
-    oneliner:
-      'Some description about the project, Not the project abstract. Just one or two lines!',
-    startDate: new Date(2019, 10, 15).getTime(),
-    endDate: new Date(2020, 3, 30).getTime(),
-    state: 'completed',
-    logo:
-      'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
-    themes: ['environmental', 'politics'],
-    owner: {
-      id: '456',
-      name: 'Alexander Bergholm'
     }
   }
 ];

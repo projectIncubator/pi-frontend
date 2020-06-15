@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink, Switch, Route, Redirect, useParams } from 'react-router-dom';
 import {
@@ -12,11 +12,13 @@ import { projects } from '../../mocks';
 import { useStyles, activeLink } from './ProjectStyles';
 import { Overview, About, Timeline, Discussions } from './pages';
 import { FeatureImage } from './components';
+import { DialogContext } from '../../contexts';
 
 export default function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
+  const { open } = useContext(DialogContext); // testing purposes, use fetch later
   const [project, setProject] = useState({});
   const [fetching, setFetching] = useState(true);
 
@@ -32,44 +34,50 @@ export default function Project({ match }) {
 
     if (project) setProject({ ...project });
     setFetching(false);
-  }, [projectId]);
+  }, [projectId, open]);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
 
-  const renderNavLinks = () => {
+  const condensedNavLink = (route) => {
     return (
-      <>
-        <NavLink
-          to={`${match.url}/overview`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          Overview
-        </NavLink>
-        <NavLink
-          to={`${match.url}/about`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          About
-        </NavLink>
-        <NavLink
-          to={`${match.url}/timeline`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          Timeline
-        </NavLink>
-        <NavLink
-          to={`${match.url}/discussions`}
-          onClick={scrollToTop}
-          activeStyle={activeLink}
-        >
-          Discussions
-        </NavLink>
-      </>
+      <NavLink
+        key={route}
+        to={`${match.url}/${route}`}
+        onClick={scrollToTop}
+        activeStyle={activeLink}
+      >
+        {route[0].toUpperCase() + route.slice(1)}
+      </NavLink>
+    );
+  };
+
+  const renderNavLinks = () => {
+    const routes = ['overview', 'about', 'timeline', 'discussions'];
+    return routes.map((el) => condensedNavLink(el));
+  };
+
+  const renderRoutes = () => {
+    return (
+      <Switch>
+        <Route exact path={match.url}>
+          <Redirect to={match.url + '/overview'} />
+        </Route>
+        <Route
+          exact
+          path={match.url + '/overview'}
+          render={() => <Overview project={project} />}
+          divider={true}
+        />
+        <Route exact path={match.url + '/about'} component={About} />
+        <Route exact path={match.url + '/timeline'} component={Timeline} />
+        <Route
+          exact
+          path={match.url + '/discussions'}
+          component={Discussions}
+        />
+      </Switch>
     );
   };
 
@@ -111,30 +119,7 @@ export default function Project({ match }) {
                   <div className={classes.navbarMenu}>{renderNavLinks()}</div>
                 </div>
               </Hidden>
-              <div className={classes.content}>
-                <Switch>
-                  <Route exact path={match.url}>
-                    <Redirect to={match.url + '/overview'} />
-                  </Route>
-                  <Route
-                    exact
-                    path={match.url + '/overview'}
-                    render={() => <Overview project={project} />}
-                    divider={true}
-                  />
-                  <Route exact path={match.url + '/about'} component={About} />
-                  <Route
-                    exact
-                    path={match.url + '/timeline'}
-                    component={Timeline}
-                  />
-                  <Route
-                    exact
-                    path={match.url + '/discussions'}
-                    component={Discussions}
-                  />
-                </Switch>
-              </div>
+              <div className={classes.content}>{renderRoutes()}</div>
             </Container>
             <div className={classes.margins} />
           </div>

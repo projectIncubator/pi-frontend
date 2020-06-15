@@ -4,24 +4,24 @@ import { Link, Typography } from '@material-ui/core';
 
 import { SidebarHeader } from '../../components';
 
-export default function Resources({ content, header }) {
+export default function Resources({ content }) {
+  const { header } = content;
   return (
     <div>
-      {header && <SidebarHeader text={header} />}
-      {content.map((item, index) => {
-        return (
+      {header && <SidebarHeader header={header} />}
+      {content.resources
+        .filter((el) => el.link)
+        .map((item, index) => (
           <Typography key={index} variant="body2">
             <Link href={item.link} color="inherit">
-              {item.text}
+              {item.text || item.type}
             </Link>
           </Typography>
-        );
-      })}
+        ))}
     </div>
   );
 }
 
 Resources.propTypes = {
-  content: PropTypes.array.isRequired,
-  header: PropTypes.string
+  content: PropTypes.object.isRequired
 };

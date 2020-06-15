@@ -103,7 +103,7 @@ ProjectCard.propTypes = {
     }).isRequired,
     themes: PropTypes.arrayOf(PropTypes.string).isRequired,
     contributions: PropTypes.arrayOf(PropTypes.string),
-    pages: PropTypes.arrayOf(PropTypes.object).isRequired,
+    pages: PropTypes.object.isRequired,
     members: PropTypes.arrayOf(PropTypes.string).isRequired
   }).isRequired,
   variant: PropTypes.oneOf(['default', 'profile']).isRequired
