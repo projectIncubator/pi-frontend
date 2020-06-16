@@ -5,7 +5,9 @@ import {
   Container,
   Hidden,
   Typography,
-  CircularProgress
+  Divider,
+  CircularProgress,
+  Link
 } from '@material-ui/core';
 
 import { projects } from '../../mocks';
@@ -18,7 +20,7 @@ export default function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open } = useContext(DialogContext); // testing purposes, use fetch later
+  const { open, setOpen } = useContext(DialogContext);
   const [project, setProject] = useState({});
   const [fetching, setFetching] = useState(true);
 
@@ -56,6 +58,15 @@ export default function Project({ match }) {
   const renderNavLinks = () => {
     const routes = ['overview', 'about', 'timeline', 'discussions'];
     return routes.map((el) => condensedNavLink(el));
+  };
+
+  const renderAdminLinks = () => {
+    return (
+      <div className={classes.adminLinks}>
+        <Divider />
+        <Link onClick={() => setOpen('project-settings')}>Settings</Link>
+      </div>
+    );
   };
 
   const renderRoutes = () => {
@@ -110,7 +121,10 @@ export default function Project({ match }) {
               {/*Sticky Desktop Sidebar*/}
               <Hidden mdDown>
                 <div className={classes.sidebar}>
-                  <div className={classes.sidebarMenu}>{renderNavLinks()}</div>
+                  <div className={classes.sidebarMenu}>
+                    {renderNavLinks()}
+                    {renderAdminLinks()}
+                  </div>
                 </div>
               </Hidden>
               {/*Sticky Mobile Navbar*/}

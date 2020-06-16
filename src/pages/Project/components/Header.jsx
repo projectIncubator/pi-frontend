@@ -50,7 +50,7 @@ export default function Header({ title, status, isAdmin, divider, page }) {
           )}
         </div>
         {isAdmin && (
-          <IconButton onClick={() => setOpen(page + '-settings')}>
+          <IconButton>
             <SettingsIcon />
           </IconButton>
         )}

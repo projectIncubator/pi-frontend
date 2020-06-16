@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField } from '@material-ui/core';
 
-export default function Button({ id, contentProps, updateContent }) {
+export default function RequestToJoin({ id, contentProps, updateContent }) {
   const [content, setContent] = useState({ ...contentProps });
 
   useEffect(() => {

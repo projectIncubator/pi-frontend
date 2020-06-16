@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import SidebarHeader from '../../components/SidebarHeader';
 
-export default function SidebarButton({ content, ...props }) {
-  const { text, header } = content;
+export default function RequestToJoin({ content }) {
+  const { header } = content;
 
   return (
     <div>
       {header && <SidebarHeader header={header} />}
-      <Button {...props}>{text}</Button>
+      <Button>Request to Join</Button>
     </div>
   );
 }
 
-SidebarButton.propTypes = {
+RequestToJoin.propTypes = {
   content: PropTypes.object.isRequired
 };

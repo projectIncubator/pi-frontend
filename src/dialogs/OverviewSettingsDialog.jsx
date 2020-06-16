@@ -11,34 +11,70 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  Switch,
+  Paper,
+  Tabs,
+  Tab
 } from '@material-ui/core';
 
 import { projects } from '../mocks';
 import { DialogContext } from '../contexts';
-import { ComponentCard, AvailableCard } from '../pages/Project/components';
+import {
+  ComponentCard,
+  AvailableCard,
+  AvailablePage,
+  CurrentPage
+} from '../pages/Project/components';
 
-const useStyles = makeStyles((theme) => ({
-  dialogContent: {
-    minWidth: 780,
-    minHeight: 560,
-    maxHeight: 560
+const AVAILABLE_PAGES = [
+  {
+    type: 'overview',
+    subtext: 'Shows the overview of the project.',
+    id: uuid(),
+    open: false,
+    unique: true
   },
-  leftColumn: {},
-  rightColumn: {},
-  availableModules: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
-  },
-  card: {
-    width: 175,
-    borderRadius: 4
+  {
+    type: 'discussions',
+    subtext: 'A forum for discussing project-related ideas',
+    id: uuid(),
+    open: false,
+    unique: true
   }
-}));
+];
+
+const CURRENT_PAGES = [
+  {
+    type: 'overview',
+    subtext: 'Shows the overview of the project.',
+    id: uuid(),
+    open: false,
+    unique: true,
+    showing: true,
+    sidebar: true
+  },
+  {
+    type: 'discussions',
+    subtext: 'A forum for discussing project-related ideas',
+    id: uuid(),
+    open: false,
+    unique: true,
+    showing: true,
+    sidebar: true
+  }
+];
 
 const AVAILABLE_COMPONENTS = [
+  {
+    type: 'join',
+    subtext: 'Show a button to recruit new members.',
+    id: uuid(),
+    open: false,
+    unique: true,
+    content: {
+      header: ''
+    }
+  },
   {
     type: 'membership',
     subtext: 'Show your list of members.',
@@ -68,17 +104,6 @@ const AVAILABLE_COMPONENTS = [
     }
   },
   {
-    type: 'button',
-    subtext: 'Create a button with various functions.',
-    id: uuid(),
-    open: false,
-    unique: false,
-    content: {
-      header: '',
-      text: ''
-    }
-  },
-  {
     type: 'text',
     subtext: 'Display custom text.',
     id: uuid(),
@@ -104,12 +129,11 @@ const AVAILABLE_COMPONENTS = [
 
 const CURRENT_COMPONENTS = [
   {
-    type: 'button',
+    type: 'join',
     id: uuid(),
     open: false,
     content: {
-      header: '',
-      text: 'Request to Join'
+      header: ''
     }
   },
   {
@@ -145,6 +169,34 @@ const CURRENT_COMPONENTS = [
   }
 ];
 
+const useStyles = makeStyles((theme) => ({
+  dialogContent: {
+    paddingTop: theme.spacing(2),
+    minWidth: 780,
+    minHeight: 560,
+    maxHeight: 560
+  },
+  headerPaper: {
+    borderTop: 'none',
+    borderLeft: 'none',
+    borderRight: 'none'
+  },
+  availableModules: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
+  },
+  card: {
+    width: 175,
+    borderRadius: 4
+  },
+  switch: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  }
+}));
+
 const getListStyle = (isDraggingOver) => ({
   minHeight: '500px',
   maxHeight: '500px',
@@ -155,14 +207,29 @@ const getListStyle = (isDraggingOver) => ({
 export default function OverviewSettingsDialog() {
   const classes = useStyles();
   const { open, setOpen } = useContext(DialogContext);
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentComponents, setCurrComponents] = useState([
     ...CURRENT_COMPONENTS
   ]);
+  const [currentPages, setCurrPages] = useState([...CURRENT_PAGES]);
+  const [tabValue, setTabValue] = useState(0);
+  const [toggles, setToggles] = useState({
+    requestToJoin: true,
+    ButtonName: false
+  });
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleTabs = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const handleToggles = (event) => {
+    setToggles({ ...toggles, [event.target.name]: event.target.checked });
   };
 
   const handleSave = () => {
@@ -170,12 +237,25 @@ export default function OverviewSettingsDialog() {
     setOpen(false);
   };
 
-  const toggleOpen = (id, newOpen) => {
-    const newCurrComponents = [...currentComponents];
-    const index = newCurrComponents.findIndex((item) => item.id === id);
+  const toggleOpen = (id, newOpen, destination) => {
+    switch (destination) {
+      case 'components':
+        const newCurrComponents = [...currentComponents];
+        const index = newCurrComponents.findIndex((item) => item.id === id);
 
-    newCurrComponents[index].open = newOpen;
-    setCurrComponents(newCurrComponents);
+        newCurrComponents[index].open = newOpen;
+        setCurrComponents(newCurrComponents);
+        break;
+      case 'pages':
+        const newCurrPages = [...currentPages];
+        const pageIndex = newCurrPages.findIndex((item) => item.id === id);
+
+        newCurrPages[pageIndex].open = newOpen;
+        setCurrComponents(newCurrPages);
+        break;
+      default:
+        return;
+    }
   };
 
   const updateContent = useCallback(
@@ -191,15 +271,30 @@ export default function OverviewSettingsDialog() {
     [setCurrComponents]
   );
 
-  const deleteComponent = useCallback(
-    (id) => {
-      setCurrComponents((newCurrComponents) => {
-        const index = newCurrComponents.findIndex((item) => item.id === id);
-        newCurrComponents.splice(index, 1);
-        return [...newCurrComponents];
-      });
+  const deleteItem = useCallback(
+    (id, destination) => {
+      switch (destination) {
+        case 'components':
+          setCurrComponents((newCurrComponents) => {
+            const index = newCurrComponents.findIndex((item) => item.id === id);
+            newCurrComponents.splice(index, 1);
+            return [...newCurrComponents];
+          });
+          console.log('d');
+          break;
+        case 'pages':
+          setCurrPages((newCurrPages) => {
+            const index = newCurrPages.findIndex((item) => item.id === id);
+            newCurrPages.splice(index, 1);
+            return [...newCurrPages];
+          });
+          console.log('f');
+          break;
+        default:
+          return;
+      }
     },
-    [setCurrComponents]
+    [setCurrComponents, setCurrPages]
   );
 
   // drag and drop logic
@@ -250,70 +345,91 @@ export default function OverviewSettingsDialog() {
       );
       return;
     }
+
+    if (start === 'available-pages' && finish === 'current-pages') {
+      setCurrPages(copy(AVAILABLE_PAGES, currentPages, source, destination));
+      return;
+    }
   };
 
-  return (
-    <Dialog
-      fullScreen={fullScreen}
-      open={open === 'overview-settings'}
-      onClose={handleClose}
-      aria-labelledby="overview-settings-dialog"
-      aria-describedby="overview-settings-dialog-description"
-      maxWidth="lg"
-    >
-      <DialogTitle id="overview-settings-dialog-title">
-        {'Overview Page Settings'}
-      </DialogTitle>
-      <DialogContent className={classes.dialogContent}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Grid container spacing={3} className={classes.columns}>
-            <Grid item xs={4} className={classes.leftColumn}>
+  const renderToggles = () => {
+    const togglesArray = [
+      ['Show "Request to Join" button', 'requestToJoin'],
+      ['Lorem Ipsum', 'ButtonName']
+    ];
+
+    return togglesArray.map((el) => (
+      <React.Fragment key={el[1]}>
+        <Grid item xs={10}>
+          <Typography>{el[0]}</Typography>
+        </Grid>
+        <Grid item xs={2} className={classes.switch}>
+          <Switch
+            checked={toggles[el[1]]}
+            onChange={handleToggles}
+            color="primary"
+            name={el[1]}
+          />
+        </Grid>
+      </React.Fragment>
+    ));
+  };
+
+  const renderContent = (tabIndex) => {
+    if (tabIndex === 0) {
+      return (
+        <Grid container spacing={2} alignItems="center">
+          {renderToggles()}
+        </Grid>
+      );
+    } else if (tabIndex === 1) {
+      return (
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Available Pages
+            </Typography>
+            <Droppable droppableId="available-pages" isDropDisabled={true}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  className={classes.availableModules}
+                >
+                  {AVAILABLE_PAGES.map((item, index) => {
+                    const isDisabled = checkUniqueness(item);
+                    return (
+                      <AvailablePage
+                        key={index + item.type}
+                        index={index}
+                        item={item}
+                        isDisabled={isDisabled}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </Grid>
+          <Grid item xs={8}>
+            <div>
               <Typography variant="h5" component="h2" gutterBottom>
-                Available Modules
+                Public View
               </Typography>
-              <Droppable
-                droppableId="available-components"
-                isDropDisabled={true}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    className={classes.availableModules}
-                  >
-                    {AVAILABLE_COMPONENTS.map((item, index) => {
-                      const isDisabled = checkUniqueness(item);
-                      return (
-                        <AvailableCard
-                          key={index + item.type}
-                          index={index}
-                          item={item}
-                          isDisabled={isDisabled}
-                        />
-                      );
-                    })}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </Grid>
-            <Grid item xs={8} className={classes.rightColumn}>
-              <Typography variant="h5" component="h2" gutterBottom>
-                Current Modules
-              </Typography>
-              <Droppable droppableId="current-components">
+              <Droppable droppableId="current-pages">
                 {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {currentComponents.map((item, index) => (
-                      <ComponentCard
+                    {currentPages.map((item, index) => (
+                      <CurrentPage
                         key={item.type + index}
                         item={item}
                         index={index}
                         toggleOpen={toggleOpen}
-                        deleteComponent={(id) => deleteComponent(id)}
+                        deleteItem={(id) => deleteItem(id, 'pages')}
                         updateContent={(id, content) =>
                           updateContent(id, content)
                         }
@@ -323,17 +439,116 @@ export default function OverviewSettingsDialog() {
                   </div>
                 )}
               </Droppable>
-            </Grid>
+            </div>
+            <div>
+              <Typography variant="h5" component="h2" gutterBottom>
+                Admin View
+              </Typography>
+            </div>
           </Grid>
+        </Grid>
+      );
+    } else if (tabIndex === 2) {
+      return <></>;
+    } else if (tabIndex === 3) {
+      return <></>;
+    } else if (tabIndex === 4) {
+      return (
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Available Modules
+            </Typography>
+            <Droppable droppableId="available-components" isDropDisabled={true}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  className={classes.availableModules}
+                >
+                  {AVAILABLE_COMPONENTS.map((item, index) => {
+                    const isDisabled = checkUniqueness(item);
+                    return (
+                      <AvailableCard
+                        key={index + item.type}
+                        index={index}
+                        item={item}
+                        isDisabled={isDisabled}
+                      />
+                    );
+                  })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </Grid>
+          <Grid item xs={8}>
+            <Typography variant="h5" component="h2" gutterBottom>
+              Current Modules
+            </Typography>
+            <Droppable droppableId="current-components">
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                >
+                  {currentComponents.map((item, index) => (
+                    <ComponentCard
+                      key={item.type + index}
+                      item={item}
+                      index={index}
+                      toggleOpen={toggleOpen}
+                      deleteItem={(id) => deleteItem(id, 'components')}
+                      updateContent={(id, content) =>
+                        updateContent(id, content)
+                      }
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </Grid>
+        </Grid>
+      );
+    }
+  };
+
+  return (
+    <Dialog
+      fullScreen={fullScreen}
+      open={open === 'project-settings'}
+      onClose={handleClose}
+      aria-labelledby="project-settings-dialog"
+      aria-describedby="project-settings-dialog-description"
+      maxWidth="lg"
+    >
+      <Paper className={classes.headerPaper}>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabs}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="scrollable"
+          scrollButtons="auto"
+        >
+          <Tab label="General" />
+          <Tab label="Pages" />
+          <Tab label="Members" />
+          <Tab label="Positions" />
+          <Tab label="Sidebar" />
+        </Tabs>
+      </Paper>
+      <DialogContent className={classes.dialogContent}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {renderContent(tabValue)}
         </DragDropContext>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary" autoFocus>
+        <Button onClick={handleClose} color="secondary" autoFocus>
           Cancel
         </Button>
-        <Button onClick={handleSave} color="primary">
-          Save
-        </Button>
+        <Button onClick={handleSave}>Save</Button>
       </DialogActions>
     </Dialog>
   );

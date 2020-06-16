@@ -80,6 +80,22 @@ export const useStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(3)
     }
   },
+  adminLinks: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    '& > hr': {
+      marginTop: '4px',
+      width: 90
+    },
+    '& > *': {
+      marginBottom: theme.spacing(1),
+      cursor: 'pointer',
+      '&:hover': {
+        textDecoration: 'none'
+      }
+    }
+  },
   content: {
     padding: theme.spacing(3, 0),
     [theme.breakpoints.down('md')]: {

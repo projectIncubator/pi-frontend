@@ -6,27 +6,23 @@ import {
   Typography,
   Card,
   Divider,
-  IconButton
+  IconButton,
+  Grid,
+  FormGroup,
+  FormControlLabel,
+  Switch
 } from '@material-ui/core';
 import { DragIndicator, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
-import {
-  Text,
-  Resources,
-  Membership,
-  Positions,
-  RequestToJoin
-} from '../modules/sidebar/settings';
-import { useStyles } from './ComponentCardStyles';
+import { useStyles } from './CurrentPageStyles';
 
 const ComponentCard = React.memo(
   ({ item, index, toggleOpen, deleteItem, updateContent }) => {
     const classes = useStyles();
-    const { type, id, open, content } = item;
-    const { header } = content;
+    const { type, id, open, showing, sidebar } = item;
 
     const handleClick = () => {
-      toggleOpen(id, !open, 'components');
+      toggleOpen(id, !open, 'pages');
     };
 
     const handleDelete = () => {
@@ -37,33 +33,7 @@ const ComponentCard = React.memo(
       updateContent(id, content);
     };
 
-    const renderModule = (BaseComponent) => {
-      return (
-        <BaseComponent
-          id={id}
-          headerProps={header}
-          contentProps={content}
-          updateContent={(id, content) => handleUpdateContent(id, content)}
-        />
-      );
-    };
-
-    const renderForms = () => {
-      switch (type) {
-        case 'text':
-          return renderModule(Text);
-        case 'join':
-          return renderModule(RequestToJoin);
-        case 'membership':
-          return renderModule(Membership);
-        case 'resources':
-          return renderModule(Resources);
-        case 'positions':
-          return renderModule(Positions);
-        default:
-          return <></>;
-      }
-    };
+    const handleToggle = () => {};
 
     return (
       <Draggable draggableId={id} index={index}>
@@ -92,7 +62,30 @@ const ComponentCard = React.memo(
               <div>
                 <Divider />
                 <div className={classes.additionalContent}>
-                  <div className={classes.formFields}>{renderForms()}</div>
+                  <div className={classes.formFields}>
+                    <FormGroup row>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={showing}
+                            onChange={handleToggle}
+                            name={id + 'showing'}
+                          />
+                        }
+                        label="Showing"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={sidebar}
+                            onChange={handleToggle}
+                            name={id + 'sidebar'}
+                          />
+                        }
+                        label="Sidebar"
+                      />
+                    </FormGroup>
+                  </div>
                   <div className={classes.deleteButton}>
                     <MUIButton
                       onClick={handleDelete}

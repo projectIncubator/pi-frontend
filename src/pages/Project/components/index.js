@@ -4,6 +4,8 @@ import SidebarComponents from './SidebarComponents';
 import SidebarHeader from './SidebarHeader';
 import ComponentCard from './ComponentCard';
 import AvailableCard from './AvailableCard';
+import AvailablePage from './AvailablePage';
+import CurrentPage from './CurrentPage';
 
 export {
   FeatureImage,
@@ -11,5 +13,7 @@ export {
   SidebarHeader,
   SidebarComponents,
   ComponentCard,
-  AvailableCard
+  AvailableCard,
+  AvailablePage,
+  CurrentPage
 };
