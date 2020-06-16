@@ -21,7 +21,7 @@ function AppRouter() {
         <Page path="/dashboard" component={Dashboard} exact requireAuth />
         <Page path="/explore" component={Explore} exact />
         <Page path="/search" component={Search} exact />
-        <Page path="/user/:username" component={Profile} exact />
+        <Page path="/user/:profileId" component={Profile} exact />
         <Page path="/project/:projectId" component={Project} fullWidth />
       </Switch>
     </Router>

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { projectType } from '../../../types';
 import { makeStyles, Grid, Hidden, Typography } from '@material-ui/core';
 
 import { Header, SidebarComponents } from '../components';
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Overview({ project }) {
   const classes = useStyles();
-  const { sidebarModules } = project.pages.overview;
+  const { sidebar_modules } = project;
 
   return (
     <Grid container spacing={3}>
@@ -48,7 +48,7 @@ export default function Overview({ project }) {
       <Hidden smDown>
         <Grid item md={3}>
           <Grid container spacing={2} className={classes.sidebar}>
-            {sidebarModules.map((el, index) => {
+            {sidebar_modules.map((el, index) => {
               return (
                 <Grid item xs={12} key={index}>
                   <SidebarComponents component={el} project={project} />
@@ -63,5 +63,5 @@ export default function Overview({ project }) {
 }
 
 Overview.propTypes = {
-  project: PropTypes.object.isRequired
+  project: projectType.isRequired
 };

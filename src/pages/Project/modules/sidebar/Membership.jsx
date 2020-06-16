@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, makeStyles } from '@material-ui/core';
 import SidebarHeader from '../../components/SidebarHeader';
+import { members as membersMock } from '../../../../mocks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -9,16 +10,26 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Membership({ members, content }) {
+export default function Membership({ projectId, content }) {
   const classes = useStyles();
   const { header } = content;
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    const getMembers = (projectId) => {
+      return membersMock[projectId];
+    };
+
+    setMembers(getMembers(projectId));
+  }, [projectId]);
+
   return (
     <div>
       {header && <SidebarHeader header={header + ` - ${members.length}`} />}
       {members.map((member) => {
         return (
-          <Typography key={member} className={classes.root} variant="body2">
-            {member}
+          <Typography key={member.id} className={classes.root} variant="body2">
+            {member.first_name} {member.last_name}
           </Typography>
         );
       })}
@@ -27,6 +38,6 @@ export default function Membership({ members, content }) {
 }
 
 Membership.propTypes = {
-  members: PropTypes.array.isRequired,
+  projectId: PropTypes.string.isRequired,
   content: PropTypes.object.isRequired
 };
