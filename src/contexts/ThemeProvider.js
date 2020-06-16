@@ -15,7 +15,10 @@ const dark = responsiveFontSizes(createMuiTheme(darkTheme));
 export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useLocalStorageState(false);
+  const [isDarkMode, setIsDarkMode] = useLocalStorageState(
+    'pi-dark-mode',
+    false
+  );
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, setIsDarkMode }}>
