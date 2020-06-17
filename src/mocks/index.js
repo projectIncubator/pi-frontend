@@ -46,7 +46,7 @@ export const projects = [
   {
     id: '111',
     title: 'Coronavirus Testing BC',
-    state: 'ongoing',
+    status: 'ongoing',
     logo: '',
     themes: [themes['health']],
     member_count: 2,
@@ -94,7 +94,7 @@ export const projects = [
   {
     id: '222',
     title: 'Kitsilano Community Engagement',
-    state: 'completed',
+    status: 'completed',
     logo: '',
     themes: [themes['education'], themes['sustainability']],
     member_count: 2,
@@ -144,7 +144,7 @@ export const projects = [
 export const projectStubs = projects.map((project) => ({
   id: project.id,
   title: project.title,
-  state: project.state,
+  status: project.status,
   logo: project.logo,
   themes: project.themes,
   member_count: project.member_count,

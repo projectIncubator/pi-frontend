@@ -54,7 +54,7 @@ function ProjectCard({
   project: {
     id,
     title,
-    state,
+    status,
     logo,
     themes,
     member_count,

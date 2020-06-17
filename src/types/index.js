@@ -9,7 +9,7 @@ export const themeType = exact({
 export const projectStubType = exact({
   id: string.isRequired,
   title: string.isRequired,
-  state: string.isRequired,
+  status: string.isRequired,
   logo: string.isRequired,
   themes: arrayOf(themeType).isRequired,
   member_count: number.isRequired,
@@ -39,7 +39,7 @@ const sidebarModulesType = exact({
 export const projectType = exact({
   id: string.isRequired,
   title: string.isRequired,
-  state: string.isRequired,
+  status: string.isRequired,
   logo: string.isRequired,
   themes: arrayOf(themeType).isRequired,
   member_count: number.isRequired,
