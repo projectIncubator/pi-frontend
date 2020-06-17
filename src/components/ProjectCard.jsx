@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { projectStubType } from '../types';
 import { Button, Paper, Typography, makeStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import PetsIcon from '@material-ui/icons/Pets';
@@ -27,9 +28,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 400,
     fontSize: '1.25rem'
   },
-  projectOwner: {
+  projectDetails: {
     color: theme.palette.text.secondary,
-    fontSize: '0.75rem'
+    display: 'flex',
+    alignItems: 'center',
+    '& > * + *': {
+      margin: theme.spacing(0, 0, 0, 1)
+    }
+  },
+  separator: {
+    width: 3,
+    height: 3,
+    display: 'inline-block',
+    backgroundColor: theme.palette.text.secondary,
+    borderRadius: '50%'
   },
   themes: {
     '& > *': {
@@ -42,14 +54,14 @@ function ProjectCard({
   project: {
     id,
     title,
-    oneliner,
-    startDate,
-    endDate,
-    state,
+    status,
     logo,
-    owner,
     themes,
-    contributions
+    member_count,
+    interested_count,
+    start_date,
+    end_date,
+    oneliner
   },
   variant
 }) {
@@ -64,19 +76,25 @@ function ProjectCard({
         <Typography variant="h6" className={classes.projectName}>
           <Link to={'project/' + title.split(' ').join('-')}>{title}</Link>
         </Typography>
-        <Typography variant="body2" className={classes.projectOwner}>
-          Created by {owner.name}
-        </Typography>
+        <div className={classes.projectDetails}>
+          <Typography variant="caption" component="span">
+            {member_count} contributing
+          </Typography>
+          <div className={classes.separator} />
+          <Typography variant="caption" component="span">
+            {interested_count} interested
+          </Typography>
+        </div>
       </div>
       <div className={classes.themes}>
         {themes.map((theme, index) => (
           <Button
-            key={title + '-' + theme}
+            key={theme.name}
             variant="outlined"
             color={index % 2 === 0 ? 'primary' : 'secondary'}
             size="small"
           >
-            {theme}
+            {theme.name}
           </Button>
         ))}
       </div>
@@ -89,23 +107,7 @@ ProjectCard.defaultProps = {
 };
 
 ProjectCard.propTypes = {
-  project: PropTypes.exact({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    oneliner: PropTypes.string.isRequired,
-    startDate: PropTypes.number.isRequired,
-    endDate: PropTypes.number.isRequired,
-    state: PropTypes.string.isRequired,
-    logo: PropTypes.string.isRequired,
-    owner: PropTypes.exact({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired
-    }).isRequired,
-    themes: PropTypes.arrayOf(PropTypes.string).isRequired,
-    contributions: PropTypes.arrayOf(PropTypes.string),
-    pages: PropTypes.object.isRequired,
-    members: PropTypes.arrayOf(PropTypes.string).isRequired
-  }).isRequired,
+  project: projectStubType.isRequired,
   variant: PropTypes.oneOf(['default', 'profile']).isRequired
 };
 

@@ -7,7 +7,7 @@ export default function SidebarComponents({ component, project }) {
     case 'button':
       return <SidebarButton {...component} />;
     case 'membership':
-      return <Membership {...component} members={project.members} />;
+      return <Membership {...component} projectId={project.id} />;
     case 'resources':
       return <Resources {...component} />;
     case 'text':

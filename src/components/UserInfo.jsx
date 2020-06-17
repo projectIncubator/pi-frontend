@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { userType } from '../types';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
@@ -70,19 +71,21 @@ function UserInfo({
     id,
     firstName,
     lastName,
-    imgSrc,
+    image,
+    profileId,
     bio,
     link,
-    username,
     followingCount,
     followersCount,
-    interested
+    interested,
+    contributing,
+    createdProjects
   }
 }) {
   const avatarSection = (
     <section>
       <Paper className={classes.avatar}>
-        <Avatar alt={username} src={imgSrc} variant="square" />
+        <Avatar alt={profileId} src={image} variant="square" />
       </Paper>
       <Typography variant="h5">
         {firstName} {lastName}
@@ -159,24 +162,7 @@ function UserInfo({
 
 UserInfo.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.exact({
-    id: PropTypes.string.isRequired,
-    firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired,
-    imgSrc: PropTypes.string.isRequired,
-    bio: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    followingCount: PropTypes.number.isRequired,
-    followersCount: PropTypes.number.isRequired,
-    interested: PropTypes.arrayOf(
-      PropTypes.exact({
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired,
-        logo: PropTypes.string.isRequired
-      })
-    ).isRequired
-  }).isRequired
+  user: userType.isRequired
 };
 
 export default withStyles(styles)(UserInfo);

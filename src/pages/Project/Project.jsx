@@ -103,7 +103,7 @@ export default function Project({ match }) {
     } else {
       return (
         <>
-          <FeatureImage featureImage={project.logo} />
+          <FeatureImage featureImage={project.cover_photo} />
           <div className={classes.main}>
             <div className={classes.margins} />
             <Container maxWidth="lg" className={classes.container}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 
 import FeedItem from '../components/FeedItem';
 import ProjectCard from '../components/ProjectCard';
-import { projects } from '../mocks';
+import { projectStubs } from '../mocks';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
   const classes = useStyles();
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    setProjects(projectStubs);
+  }, []);
 
   return (
     <Paper className={classes.content}>

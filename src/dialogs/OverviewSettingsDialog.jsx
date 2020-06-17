@@ -166,7 +166,7 @@ export default function OverviewSettingsDialog() {
   };
 
   const handleSave = () => {
-    projects[0].pages.overview.sidebarModules = [...currentComponents];
+    projects[0].sidebarModules = [...currentComponents];
     setOpen(false);
   };
 
