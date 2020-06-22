@@ -56,5 +56,13 @@ export const useStyles = makeStyles((theme) => ({
   deleteButton: {
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  editButton: {
+    color: theme.palette.grey[400],
+    cursor: 'pointer',
+    marginRight: '4px',
+    '&:hover': {
+      color: theme.palette.grey[600]
+    }
   }
 }));

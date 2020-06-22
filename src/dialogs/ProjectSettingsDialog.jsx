@@ -82,8 +82,10 @@ export default function ProjectSettingsDialog() {
     const cleanPagesModules = () => {
       return currentPages.map((el) => ({
         type: el.type,
+        id: el.id,
         showing: el.showing,
-        sidebar: el.sidebar
+        sidebar: el.sidebar,
+        content: el.content
       }));
     };
 
@@ -101,6 +103,15 @@ export default function ProjectSettingsDialog() {
     projects[foundIndex].sidebar_modules = newSidebarModules;
 
     setOpen(false);
+  };
+
+  const changePageTitle = (id, newTitle) => {
+    const newPages = [...currentPages];
+    const index = newPages.findIndex((el) => el.id === id);
+    if (index !== -1) {
+      newPages[index].content.title = newTitle;
+      setCurrPages(newPages);
+    }
   };
 
   const togglePagesSettings = (id, destination, settingBool) => {
@@ -189,7 +200,11 @@ export default function ProjectSettingsDialog() {
     const destClone = Array.from(destination);
     const item = sourceClone[droppableSource.index];
 
-    destClone.splice(droppableDestination.index, 0, { ...item, id: uuid() });
+    destClone.splice(droppableDestination.index, 0, {
+      ...item,
+      id: uuid(),
+      content: { ...item.content }
+    });
     return destClone;
   };
 
@@ -286,7 +301,7 @@ export default function ProjectSettingsDialog() {
                   ref={provided.innerRef}
                   className={classes.availableModules}
                 >
-                  {AVAILABLE_PAGES.map((item, index) => {
+                  {[...AVAILABLE_PAGES].map((item, index) => {
                     const isDisabled = checkUniqueness(item, 'pages');
                     return (
                       <AvailablePage
@@ -319,9 +334,9 @@ export default function ProjectSettingsDialog() {
                         key={item.type + index}
                         item={item}
                         index={index}
-                        content={item.content}
                         toggleOpen={toggleOpen}
                         toggleSettings={togglePagesSettings}
+                        changeTitle={changePageTitle}
                         deleteItem={(id) => deleteItem(id, 'pages')}
                       />
                     ))}

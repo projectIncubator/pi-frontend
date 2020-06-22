@@ -43,10 +43,10 @@ export default function Project({ match }) {
     window.scrollTo(0, 0);
   };
 
-  const condensedNavLink = (route) => {
+  const condensedNavLink = (route, id) => {
     return (
       <NavLink
-        key={route}
+        key={id}
         to={`${match.url}/${route}`}
         onClick={scrollToTop}
         activeStyle={activeLink}
@@ -58,8 +58,9 @@ export default function Project({ match }) {
 
   const renderNavLinks = () => {
     return project.pages.map((el) => {
-      if (el.showing) {
-        return condensedNavLink(el.type);
+      const { showing, content, id } = el;
+      if (showing) {
+        return condensedNavLink(content.title, id);
       }
     });
   };

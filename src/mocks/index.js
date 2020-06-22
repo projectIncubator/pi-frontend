@@ -65,13 +65,21 @@ export const projects = [
     pages: [
       {
         type: 'overview',
+        id: uuid(),
         showing: true,
-        sidebar: true
+        sidebar: true,
+        content: {
+          title: 'Overview'
+        }
       },
       {
         type: 'discussions',
+        id: uuid(),
         showing: true,
-        sidebar: false
+        sidebar: false,
+        content: {
+          title: 'Discussions'
+        }
       }
     ],
     sidebar_modules: [
@@ -124,13 +132,21 @@ export const projects = [
     pages: [
       {
         type: 'overview',
+        id: uuid(),
         showing: true,
-        sidebar: true
+        sidebar: true,
+        content: {
+          title: 'Overview'
+        }
       },
       {
         type: 'discussions',
+        id: uuid(),
         showing: true,
-        sidebar: false
+        sidebar: false,
+        content: {
+          title: 'Discussions'
+        }
       }
     ],
     sidebar_modules: [
@@ -302,7 +318,10 @@ export const AVAILABLE_PAGES = [
     open: false,
     unique: true,
     showing: true,
-    sidebar: true
+    sidebar: true,
+    content: {
+      title: 'Overview'
+    }
   },
   {
     type: 'discussions',
@@ -311,7 +330,10 @@ export const AVAILABLE_PAGES = [
     open: false,
     unique: true,
     showing: true,
-    sidebar: false
+    sidebar: false,
+    content: {
+      title: 'Discussions'
+    }
   },
   {
     type: 'general',
@@ -322,7 +344,7 @@ export const AVAILABLE_PAGES = [
     showing: true,
     sidebar: true,
     content: {
-      header: 'General Page'
+      title: 'General'
     }
   }
 ];

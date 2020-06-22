@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Draggable } from 'react-beautiful-dnd';
 import {
@@ -9,16 +9,25 @@ import {
   IconButton,
   FormGroup,
   FormControlLabel,
+  TextField,
   Switch
 } from '@material-ui/core';
-import { DragIndicator, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import {
+  Edit,
+  DragIndicator,
+  ArrowDropDown,
+  ArrowDropUp
+} from '@material-ui/icons';
 
 import { useStyles } from './CurrentPageStyles';
 
 const CurrentPage = React.memo(
-  ({ item, index, toggleOpen, toggleSettings, deleteItem, content }) => {
+  ({ item, index, toggleOpen, toggleSettings, changeTitle, deleteItem }) => {
     const classes = useStyles();
-    const { type, id, open, showing, sidebar } = item;
+    const { type, id, open, showing, sidebar, content } = item;
+    const [isEditing, setIsEditing] = useState(false);
+
+    const [pageTitle, setPageTitle] = useState(content.title);
 
     const handleToggleOpen = () => {
       toggleOpen(id, !open, 'pages');
@@ -30,6 +39,55 @@ const CurrentPage = React.memo(
 
     const handleToggleSettings = (event, destination) => {
       toggleSettings(id, destination, event.target.checked);
+    };
+
+    const handleEditTitle = () => {
+      setIsEditing(true);
+    };
+
+    const handleChange = (event) => {
+      setPageTitle(event.target.value);
+    };
+
+    const handleBlurTitle = () => {
+      changeTitle(id, pageTitle);
+      setIsEditing(false);
+    };
+
+    const handleKeyPress = (event) => {
+      if (event.keyCode === 13) {
+        handleBlurTitle();
+      }
+    };
+
+    const renderTitle = () => {
+      if (isEditing) {
+        return (
+          <TextField
+            onBlur={handleBlurTitle}
+            onChange={handleChange}
+            onKeyDown={handleKeyPress}
+            value={pageTitle}
+            fullWidth
+            autoFocus
+          />
+        );
+      } else {
+        return (
+          <>
+            {type === 'general' && (
+              <Edit
+                className={classes.editButton}
+                fontSize="small"
+                onClick={handleEditTitle}
+              />
+            )}
+            <Typography variant="h6" className={classes.header}>
+              {content.title}
+            </Typography>
+          </>
+        );
+      }
     };
 
     return (
@@ -44,11 +102,7 @@ const CurrentPage = React.memo(
               <div className={classes.dragHandle} {...provided.dragHandleProps}>
                 <DragIndicator />
               </div>
-              <div className={classes.type}>
-                <Typography variant="h6" className={classes.header}>
-                  {(content && content.header) || type}
-                </Typography>
-              </div>
+              <div className={classes.type}>{renderTitle()}</div>
               <div className={classes.openToggle}>
                 <IconButton onClick={handleToggleOpen}>
                   {open ? <ArrowDropUp /> : <ArrowDropDown />}
