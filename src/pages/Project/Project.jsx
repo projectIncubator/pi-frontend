@@ -57,8 +57,11 @@ export default function Project({ match }) {
   };
 
   const renderNavLinks = () => {
-    const pages = project.pages.map((el) => el.type);
-    return pages.map((el) => condensedNavLink(el));
+    return project.pages.map((el) => {
+      if (el.showing) {
+        return condensedNavLink(el.type);
+      }
+    });
   };
 
   const renderAdminLinks = () => {

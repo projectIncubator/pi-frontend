@@ -319,6 +319,7 @@ export default function ProjectSettingsDialog() {
                         key={item.type + index}
                         item={item}
                         index={index}
+                        content={item.content}
                         toggleOpen={toggleOpen}
                         toggleSettings={togglePagesSettings}
                         deleteItem={(id) => deleteItem(id, 'pages')}

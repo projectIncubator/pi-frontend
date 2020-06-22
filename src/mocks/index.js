@@ -300,14 +300,30 @@ export const AVAILABLE_PAGES = [
     subtext: 'Shows the overview of the project.',
     id: uuid(),
     open: false,
-    unique: true
+    unique: true,
+    showing: true,
+    sidebar: true
   },
   {
     type: 'discussions',
     subtext: 'A forum for discussing project-related ideas',
     id: uuid(),
     open: false,
-    unique: true
+    unique: true,
+    showing: true,
+    sidebar: false
+  },
+  {
+    type: 'general',
+    subtext: 'A generic page template for various uses',
+    id: uuid(),
+    open: false,
+    unique: false,
+    showing: true,
+    sidebar: true,
+    content: {
+      header: 'General Page'
+    }
   }
 ];
 

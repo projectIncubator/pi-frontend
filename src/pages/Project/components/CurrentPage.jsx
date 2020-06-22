@@ -15,8 +15,8 @@ import { DragIndicator, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
 import { useStyles } from './CurrentPageStyles';
 
-const ComponentCard = React.memo(
-  ({ item, index, toggleOpen, toggleSettings, deleteItem }) => {
+const CurrentPage = React.memo(
+  ({ item, index, toggleOpen, toggleSettings, deleteItem, content }) => {
     const classes = useStyles();
     const { type, id, open, showing, sidebar } = item;
 
@@ -46,7 +46,7 @@ const ComponentCard = React.memo(
               </div>
               <div className={classes.type}>
                 <Typography variant="h6" className={classes.header}>
-                  {type}
+                  {(content && content.header) || type}
                 </Typography>
               </div>
               <div className={classes.openToggle}>
@@ -64,6 +64,7 @@ const ComponentCard = React.memo(
                       <FormControlLabel
                         control={
                           <Switch
+                            color="primary"
                             checked={showing}
                             onChange={(event) =>
                               handleToggleSettings(event, 'showing')
@@ -76,6 +77,7 @@ const ComponentCard = React.memo(
                       <FormControlLabel
                         control={
                           <Switch
+                            color="primary"
                             checked={sidebar}
                             onChange={(event) =>
                               handleToggleSettings(event, 'sidebar')
@@ -106,10 +108,10 @@ const ComponentCard = React.memo(
   }
 );
 
-ComponentCard.propTypes = {
+CurrentPage.propTypes = {
   item: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   toggleOpen: PropTypes.func.isRequired
 };
 
-export default ComponentCard;
+export default CurrentPage;
