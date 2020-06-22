@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { v4 as uuid } from 'uuid';
 import {
@@ -17,7 +17,12 @@ import {
   Tab
 } from '@material-ui/core';
 
-import { projects } from '../mocks';
+import {
+  projects,
+  getProjectIndexById,
+  AVAILABLE_SIDEBAR_COMPONENTS,
+  AVAILABLE_PAGES
+} from '../mocks';
 import { DialogContext } from '../contexts';
 import {
   ComponentCard,
@@ -25,149 +30,6 @@ import {
   AvailablePage,
   CurrentPage
 } from '../pages/Project/components';
-
-const AVAILABLE_PAGES = [
-  {
-    type: 'overview',
-    subtext: 'Shows the overview of the project.',
-    id: uuid(),
-    open: false,
-    unique: true
-  },
-  {
-    type: 'discussions',
-    subtext: 'A forum for discussing project-related ideas',
-    id: uuid(),
-    open: false,
-    unique: true
-  }
-];
-
-const CURRENT_PAGES = [
-  {
-    type: 'overview',
-    subtext: 'Shows the overview of the project.',
-    id: uuid(),
-    open: false,
-    unique: true,
-    showing: true,
-    sidebar: true
-  },
-  {
-    type: 'discussions',
-    subtext: 'A forum for discussing project-related ideas',
-    id: uuid(),
-    open: false,
-    unique: true,
-    showing: true,
-    sidebar: true
-  }
-];
-
-const AVAILABLE_COMPONENTS = [
-  {
-    type: 'join',
-    subtext: 'Show a button to recruit new members.',
-    id: uuid(),
-    open: false,
-    unique: true,
-    content: {
-      header: ''
-    }
-  },
-  {
-    type: 'membership',
-    subtext: 'Show your list of members.',
-    id: uuid(),
-    open: false,
-    unique: true,
-    content: {
-      header: ''
-    }
-  },
-  {
-    type: 'resources',
-    subtext: 'Set useful external links.',
-    id: uuid(),
-    open: false,
-    unique: true,
-    content: {
-      header: '',
-      resources: [
-        { type: 'Facebook', link: '' },
-        { type: 'Twitter', link: '' },
-        { type: 'Facebook', link: '' },
-        { type: 'Discord', link: '' },
-        { type: 'Slack', link: '' },
-        { type: 'Custom', text: 'Resource 1', link: '' }
-      ]
-    }
-  },
-  {
-    type: 'text',
-    subtext: 'Display custom text.',
-    id: uuid(),
-    open: false,
-    unique: false,
-    content: {
-      header: '',
-      text: ''
-    }
-  },
-  {
-    type: 'positions',
-    subtext: 'Show a progress bar of positions you are looking for.',
-    id: uuid(),
-    open: false,
-    unique: true,
-    content: {
-      header: '',
-      text: ''
-    }
-  }
-];
-
-const CURRENT_COMPONENTS = [
-  {
-    type: 'join',
-    id: uuid(),
-    open: false,
-    content: {
-      header: ''
-    }
-  },
-  {
-    type: 'membership',
-    id: uuid(),
-    open: false,
-    content: { header: 'Membership' }
-  },
-  {
-    type: 'resources',
-    id: uuid(),
-    open: false,
-    content: {
-      header: 'Resources',
-      resources: [
-        { type: 'Discord', link: 'https://discord.com/' },
-        { type: 'Slack', link: 'https://slack.com/intl/en-ca/' },
-        { type: 'Custom', text: 'Resource 1', link: 'https://google.com/' }
-      ]
-    }
-  },
-  {
-    type: 'text',
-    id: uuid(),
-    open: false,
-    content: {
-      header: 'Test Header',
-      text: `Lorem ipsum dolor asit amet, consectetur adipiscing elit.
-            Lorem ipsum dolor asit amet, consectetur adipiscing elit.
-            Lorem ipsum dolor asit amet, consectetur adipiscing elit.
-            Lorem ipsum dolor asit amet, consectetur adipiscing elit.`
-    }
-  }
-];
 
 const useStyles = makeStyles((theme) => ({
   dialogContent: {
@@ -206,19 +68,36 @@ const getListStyle = (isDraggingOver) => ({
 
 export default function OverviewSettingsDialog() {
   const classes = useStyles();
-  const { open, setOpen } = useContext(DialogContext);
-
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [currentComponents, setCurrComponents] = useState([
-    ...CURRENT_COMPONENTS
-  ]);
-  const [currentPages, setCurrPages] = useState([...CURRENT_PAGES]);
+
+  const { open, setOpen, projectId } = useContext(DialogContext);
+  const [currentComponents, setCurrComponents] = useState([]);
+  const [currentPages, setCurrPages] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const [toggles, setToggles] = useState({
     requestToJoin: true,
     ButtonName: false
   });
+
+  useEffect(() => {
+    if (projectId) {
+      const getCurrComponents = () => {
+        const foundIndex = getProjectIndexById(projectId);
+        const foundProject = { ...projects[foundIndex] };
+        const newSidebarModules = foundProject.sidebar_modules.map((el) => {
+          return { ...el, id: uuid() };
+        });
+        const newPages = foundProject.pages.map((el) => {
+          return { ...el, id: uuid() };
+        });
+
+        setCurrComponents(newSidebarModules);
+        setCurrPages(newPages);
+      };
+      getCurrComponents();
+    }
+  }, [projectId]);
 
   const handleClose = () => {
     setOpen(false);
@@ -233,25 +112,61 @@ export default function OverviewSettingsDialog() {
   };
 
   const handleSave = () => {
-    projects[0].sidebarModules = [...currentComponents];
+    const foundIndex = getProjectIndexById(projectId);
+
+    const cleanPagesModules = () => {
+      return currentPages.map((el) => ({
+        type: el.type,
+        showing: el.showing,
+        sidebar: el.sidebar
+      }));
+    };
+
+    const cleanSidebarModules = () => {
+      return currentComponents.map((el) => ({
+        type: el.type,
+        content: el.content
+      }));
+    };
+
+    const newPagesModules = cleanPagesModules();
+    const newSidebarModules = cleanSidebarModules();
+
+    projects[foundIndex].pages = newPagesModules;
+    projects[foundIndex].sidebar_modules = newSidebarModules;
+
     setOpen(false);
+  };
+
+  const togglePagesSettings = (id, destination, settingBool) => {
+    const newPages = [...currentPages];
+    const index = newPages.findIndex((el) => el.id === id);
+
+    if (index !== -1) {
+      newPages[index][destination] = settingBool;
+      setCurrPages(newPages);
+    }
   };
 
   const toggleOpen = (id, newOpen, destination) => {
     switch (destination) {
-      case 'components':
+      case 'sidebar':
         const newCurrComponents = [...currentComponents];
         const index = newCurrComponents.findIndex((item) => item.id === id);
 
-        newCurrComponents[index].open = newOpen;
-        setCurrComponents(newCurrComponents);
+        if (index !== -1) {
+          newCurrComponents[index].open = newOpen;
+          setCurrComponents(newCurrComponents);
+        }
         break;
       case 'pages':
         const newCurrPages = [...currentPages];
         const pageIndex = newCurrPages.findIndex((item) => item.id === id);
 
-        newCurrPages[pageIndex].open = newOpen;
-        setCurrComponents(newCurrPages);
+        if (pageIndex !== -1) {
+          newCurrPages[pageIndex].open = newOpen;
+          setCurrPages(newCurrPages);
+        }
         break;
       default:
         return;
@@ -274,13 +189,12 @@ export default function OverviewSettingsDialog() {
   const deleteItem = useCallback(
     (id, destination) => {
       switch (destination) {
-        case 'components':
+        case 'sidebar':
           setCurrComponents((newCurrComponents) => {
             const index = newCurrComponents.findIndex((item) => item.id === id);
             newCurrComponents.splice(index, 1);
             return [...newCurrComponents];
           });
-          console.log('d');
           break;
         case 'pages':
           setCurrPages((newCurrPages) => {
@@ -288,7 +202,6 @@ export default function OverviewSettingsDialog() {
             newCurrPages.splice(index, 1);
             return [...newCurrPages];
           });
-          console.log('f');
           break;
         default:
           return;
@@ -315,9 +228,12 @@ export default function OverviewSettingsDialog() {
     return destClone;
   };
 
-  const checkUniqueness = (item) => {
+  const checkUniqueness = (item, destination) => {
     // return true to disable drag component
-    if (item.unique) {
+    if (item.unique && destination === 'pages') {
+      const result = currentPages.find((el) => el.type === item.type);
+      return Boolean(result);
+    } else if (item.unique && destination === 'sidebar') {
       const result = currentComponents.find((el) => el.type === item.type);
       return Boolean(result);
     }
@@ -333,15 +249,25 @@ export default function OverviewSettingsDialog() {
     const finish = destination.droppableId;
 
     if (start === finish) {
-      setCurrComponents(
-        reorder(currentComponents, source.index, destination.index)
-      );
-      return;
+      if (start === 'current-components') {
+        setCurrComponents(
+          reorder(currentComponents, source.index, destination.index)
+        );
+        return;
+      } else if (start === 'current-pages') {
+        setCurrPages(reorder(currentPages, source.index, destination.index));
+        return;
+      }
     }
 
     if (start === 'available-components' && finish === 'current-components') {
       setCurrComponents(
-        copy(AVAILABLE_COMPONENTS, currentComponents, source, destination)
+        copy(
+          AVAILABLE_SIDEBAR_COMPONENTS,
+          currentComponents,
+          source,
+          destination
+        )
       );
       return;
     }
@@ -396,7 +322,7 @@ export default function OverviewSettingsDialog() {
                   className={classes.availableModules}
                 >
                   {AVAILABLE_PAGES.map((item, index) => {
-                    const isDisabled = checkUniqueness(item);
+                    const isDisabled = checkUniqueness(item, 'pages');
                     return (
                       <AvailablePage
                         key={index + item.type}
@@ -429,21 +355,14 @@ export default function OverviewSettingsDialog() {
                         item={item}
                         index={index}
                         toggleOpen={toggleOpen}
+                        toggleSettings={togglePagesSettings}
                         deleteItem={(id) => deleteItem(id, 'pages')}
-                        updateContent={(id, content) =>
-                          updateContent(id, content)
-                        }
                       />
                     ))}
                     {provided.placeholder}
                   </div>
                 )}
               </Droppable>
-            </div>
-            <div>
-              <Typography variant="h5" component="h2" gutterBottom>
-                Admin View
-              </Typography>
             </div>
           </Grid>
         </Grid>
@@ -465,8 +384,8 @@ export default function OverviewSettingsDialog() {
                   ref={provided.innerRef}
                   className={classes.availableModules}
                 >
-                  {AVAILABLE_COMPONENTS.map((item, index) => {
-                    const isDisabled = checkUniqueness(item);
+                  {AVAILABLE_SIDEBAR_COMPONENTS.map((item, index) => {
+                    const isDisabled = checkUniqueness(item, 'sidebar');
                     return (
                       <AvailableCard
                         key={index + item.type}
@@ -498,7 +417,7 @@ export default function OverviewSettingsDialog() {
                       item={item}
                       index={index}
                       toggleOpen={toggleOpen}
-                      deleteItem={(id) => deleteItem(id, 'components')}
+                      deleteItem={(id) => deleteItem(id, 'sidebar')}
                       updateContent={(id, content) =>
                         updateContent(id, content)
                       }

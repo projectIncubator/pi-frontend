@@ -20,7 +20,7 @@ export default function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open, setOpen } = useContext(DialogContext);
+  const { open, setOpen, setProjectId } = useContext(DialogContext);
   const [project, setProject] = useState({});
   const [fetching, setFetching] = useState(true);
 
@@ -35,8 +35,9 @@ export default function Project({ match }) {
     const project = getProject(projectId);
 
     if (project) setProject({ ...project });
+    setProjectId(projectId.split(' ').join('-'));
     setFetching(false);
-  }, [projectId, open]);
+  }, [projectId, open, setProjectId]);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -56,8 +57,8 @@ export default function Project({ match }) {
   };
 
   const renderNavLinks = () => {
-    const routes = ['overview', 'about', 'timeline', 'discussions'];
-    return routes.map((el) => condensedNavLink(el));
+    const pages = project.pages.map((el) => el.type);
+    return pages.map((el) => condensedNavLink(el));
   };
 
   const renderAdminLinks = () => {

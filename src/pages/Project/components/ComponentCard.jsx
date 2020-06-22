@@ -26,7 +26,7 @@ const ComponentCard = React.memo(
     const { header } = content;
 
     const handleClick = () => {
-      toggleOpen(id, !open, 'components');
+      toggleOpen(id, !open, 'sidebar');
     };
 
     const handleDelete = () => {

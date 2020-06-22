@@ -1,4 +1,4 @@
-import { arrayOf, exact, number, shape, string } from 'prop-types';
+import { arrayOf, exact, number, shape, string, bool } from 'prop-types';
 
 export const themeType = exact({
   name: string.isRequired,
@@ -27,7 +27,11 @@ export const userStubType = exact({
   profile_id: string.isRequired
 });
 
-const pagesType = exact({});
+const pagesType = exact({
+  type: string.isRequired,
+  showing: bool.isRequired,
+  sidebar: bool.isRequired
+});
 
 const sidebarModulesType = exact({
   type: string.isRequired,

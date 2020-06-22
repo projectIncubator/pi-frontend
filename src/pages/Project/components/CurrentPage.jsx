@@ -7,7 +7,6 @@ import {
   Card,
   Divider,
   IconButton,
-  Grid,
   FormGroup,
   FormControlLabel,
   Switch
@@ -17,11 +16,11 @@ import { DragIndicator, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 import { useStyles } from './CurrentPageStyles';
 
 const ComponentCard = React.memo(
-  ({ item, index, toggleOpen, deleteItem, updateContent }) => {
+  ({ item, index, toggleOpen, toggleSettings, deleteItem }) => {
     const classes = useStyles();
     const { type, id, open, showing, sidebar } = item;
 
-    const handleClick = () => {
+    const handleToggleOpen = () => {
       toggleOpen(id, !open, 'pages');
     };
 
@@ -29,11 +28,9 @@ const ComponentCard = React.memo(
       deleteItem(id);
     };
 
-    const handleUpdateContent = (id, content) => {
-      updateContent(id, content);
+    const handleToggleSettings = (event, destination) => {
+      toggleSettings(id, destination, event.target.checked);
     };
-
-    const handleToggle = () => {};
 
     return (
       <Draggable draggableId={id} index={index}>
@@ -53,7 +50,7 @@ const ComponentCard = React.memo(
                 </Typography>
               </div>
               <div className={classes.openToggle}>
-                <IconButton onClick={handleClick}>
+                <IconButton onClick={handleToggleOpen}>
                   {open ? <ArrowDropUp /> : <ArrowDropDown />}
                 </IconButton>
               </div>
@@ -68,7 +65,9 @@ const ComponentCard = React.memo(
                         control={
                           <Switch
                             checked={showing}
-                            onChange={handleToggle}
+                            onChange={(event) =>
+                              handleToggleSettings(event, 'showing')
+                            }
                             name={id + 'showing'}
                           />
                         }
@@ -78,7 +77,9 @@ const ComponentCard = React.memo(
                         control={
                           <Switch
                             checked={sidebar}
-                            onChange={handleToggle}
+                            onChange={(event) =>
+                              handleToggleSettings(event, 'sidebar')
+                            }
                             name={id + 'sidebar'}
                           />
                         }

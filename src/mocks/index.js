@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 const themes = {
   health: {
     name: 'health',
@@ -60,7 +62,18 @@ export const projects = [
     admins: [userStubs[1]],
     cover_photo:
       'https://dailynews.mcmaster.ca/wp-content/uploads/sites/3/2020/01/coronavirus-photo-1.jpg',
-    pages: [],
+    pages: [
+      {
+        type: 'overview',
+        showing: true,
+        sidebar: true
+      },
+      {
+        type: 'discussions',
+        showing: true,
+        sidebar: false
+      }
+    ],
     sidebar_modules: [
       {
         type: 'membership',
@@ -108,7 +121,18 @@ export const projects = [
     admins: [userStubs[1]],
     cover_photo:
       'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
-    pages: [],
+    pages: [
+      {
+        type: 'overview',
+        showing: true,
+        sidebar: true
+      },
+      {
+        type: 'discussions',
+        showing: true,
+        sidebar: false
+      }
+    ],
     sidebar_modules: [
       {
         type: 'membership',
@@ -205,4 +229,91 @@ export const users = [
 export const members = {
   '111': [userStubs[1], userStubs[2]],
   '222': [userStubs[1], userStubs[0]]
+};
+
+export const AVAILABLE_SIDEBAR_COMPONENTS = [
+  {
+    type: 'join',
+    subtext: 'Show a button to recruit new members.',
+    id: uuid(),
+    open: false,
+    unique: true,
+    content: {
+      header: ''
+    }
+  },
+  {
+    type: 'membership',
+    subtext: 'Show your list of members.',
+    id: uuid(),
+    open: false,
+    unique: true,
+    content: {
+      header: ''
+    }
+  },
+  {
+    type: 'resources',
+    subtext: 'Set useful external links.',
+    id: uuid(),
+    open: false,
+    unique: true,
+    content: {
+      header: '',
+      resources: [
+        { type: 'Facebook', link: '' },
+        { type: 'Twitter', link: '' },
+        { type: 'Facebook', link: '' },
+        { type: 'Discord', link: '' },
+        { type: 'Slack', link: '' },
+        { type: 'Custom', text: 'Resource 1', link: '' }
+      ]
+    }
+  },
+  {
+    type: 'text',
+    subtext: 'Display custom text.',
+    id: uuid(),
+    open: false,
+    unique: false,
+    content: {
+      header: '',
+      text: ''
+    }
+  },
+  {
+    type: 'positions',
+    subtext: 'Show a progress bar of positions you are looking for.',
+    id: uuid(),
+    open: false,
+    unique: true,
+    content: {
+      header: '',
+      text: ''
+    }
+  }
+];
+
+export const AVAILABLE_PAGES = [
+  {
+    type: 'overview',
+    subtext: 'Shows the overview of the project.',
+    id: uuid(),
+    open: false,
+    unique: true
+  },
+  {
+    type: 'discussions',
+    subtext: 'A forum for discussing project-related ideas',
+    id: uuid(),
+    open: false,
+    unique: true
+  }
+];
+
+export const getProjectIndexById = (id) => {
+  const foundIndex = projects.findIndex(
+    (el) => el.title.toLowerCase().split(' ').join('-') === id
+  );
+  return foundIndex;
 };
