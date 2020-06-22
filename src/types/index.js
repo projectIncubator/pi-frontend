@@ -1,4 +1,4 @@
-import { arrayOf, exact, number, shape, string, bool, oneOf } from 'prop-types';
+import { arrayOf, exact, number, shape, string, bool } from 'prop-types';
 
 export const themeType = exact({
   name: string.isRequired,

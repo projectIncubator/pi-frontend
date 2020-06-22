@@ -43,26 +43,19 @@ export default function Project({ match }) {
     window.scrollTo(0, 0);
   };
 
-  const condensedNavLink = (route, id) => {
-    return (
-      <NavLink
-        key={id}
-        to={`${match.url}/${route}`}
-        onClick={scrollToTop}
-        activeStyle={activeLink}
-      >
-        {route[0].toUpperCase() + route.slice(1)}
-      </NavLink>
-    );
-  };
-
   const renderNavLinks = () => {
-    return project.pages.map((el) => {
-      const { showing, content, id } = el;
-      if (showing) {
-        return condensedNavLink(content.title, id);
-      }
-    });
+    return project.pages
+      .filter((el) => el.showing)
+      .map((el) => (
+        <NavLink
+          key={el.id}
+          to={`${match.url}/${el.content.title}`}
+          onClick={scrollToTop}
+          activeStyle={activeLink}
+        >
+          {el.content.title[0].toUpperCase() + el.content.title.slice(1)}
+        </NavLink>
+      ));
   };
 
   const renderAdminLinks = () => {
