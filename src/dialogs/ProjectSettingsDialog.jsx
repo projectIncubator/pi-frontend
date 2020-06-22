@@ -66,7 +66,7 @@ const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? 'lightblue' : ''
 });
 
-export default function OverviewSettingsDialog() {
+export default function ProjectSettingsDialog() {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));

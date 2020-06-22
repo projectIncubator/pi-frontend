@@ -1,10 +1,10 @@
 import React from 'react';
-import OverviewSettingsDialog from './OverviewSettingsDialog';
+import ProjectSettingsDialog from './ProjectSettingsDialog';
 
 function Dialogs() {
   return (
     <>
-      <OverviewSettingsDialog />
+      <ProjectSettingsDialog />
     </>
   );
 }
