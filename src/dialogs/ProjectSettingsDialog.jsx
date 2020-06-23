@@ -1,6 +1,7 @@
 import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { v4 as uuid } from 'uuid';
+import { DropzoneArea } from 'material-ui-dropzone';
 import {
   Typography,
   Grid,
@@ -285,6 +286,13 @@ export default function ProjectSettingsDialog() {
     if (tabIndex === 0) {
       return (
         <Grid container spacing={2} alignItems="center">
+          <DropzoneArea
+            acceptedFiles={['image/png', 'image/jpg', 'image/jpeg']}
+            dropzoneText={'Drag and drop an image here or click'}
+            filesLimit={1}
+            maxFileSize={5000000}
+            onChange={(files) => console.log('Files:', files)}
+          />
           {renderToggles()}
         </Grid>
       );
