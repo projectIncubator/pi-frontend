@@ -291,7 +291,7 @@ export default function ProjectSettingsDialog() {
             dropzoneText={'Drag and drop an image here or click'}
             filesLimit={1}
             maxFileSize={5000000}
-            onChange={(files) => console.log('Files:', files)}
+            // onChange={(files) => console.log('Files:', files)}
           />
           {renderToggles()}
         </Grid>
