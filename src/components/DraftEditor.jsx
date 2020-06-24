@@ -6,7 +6,7 @@ import {
   convertToRaw,
   convertFromRaw
 } from 'draft-js';
-import { makeStyles, Paper } from '@material-ui/core';
+import { makeStyles, Paper, Typography } from '@material-ui/core';
 
 const BLOCK_TYPES = [
   { label: 'H1', style: 'header-one' },
@@ -30,7 +30,12 @@ const INLINE_STYLES = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
+    minWidth: '600px',
+    minHeight: '500px'
+  },
+  button: {
+    marginRight: theme.spacing(1)
   }
 }));
 
@@ -68,6 +73,41 @@ export default function DraftEditor({ updateContent, existingContent }) {
     setEditorState(event);
   };
 
+  const StyleButton = ({ onToggle, label, style }) => {
+    const handleToggle = (event) => {
+      event.preventDefault();
+      onToggle(style);
+    };
+
+    return (
+      <span className={classes.button} onMouseDown={handleToggle}>
+        {label}
+      </span>
+    );
+  };
+
+  const BlockStyleControls = ({ editorState, onToggle }) => {
+    const selection = editorState.getSelection();
+    const blockType = editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+      .getType();
+
+    return (
+      <div>
+        {BLOCK_TYPES.map((type) => (
+          <StyleButton
+            key={type.label}
+            active={type.style === blockType}
+            onToggle={onToggle}
+            label={type.label}
+            style={type.style}
+          />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <Paper className={classes.root} elevation={0} variant="outlined">
       <BlockStyleControls
@@ -76,44 +116,15 @@ export default function DraftEditor({ updateContent, existingContent }) {
       />
 
       {/*<InlineStyleControls editorState={editorState} />*/}
-      <Editor
-        editorState={editorState}
-        handleKeyCommand={handleKeyCommand}
-        onChange={handleChange}
-      />
+      <div>
+        <Editor
+          editorState={editorState}
+          handleKeyCommand={handleKeyCommand}
+          onChange={handleChange}
+        />
+      </div>
       {/*<button onClick={save}>Save</button>*/}
       {/*<div>{Object.keys(saved).length > 0 && renderSaved()}</div>*/}
     </Paper>
-  );
-}
-
-const StyleButton = ({ onToggle, label, style }) => {
-  const handleToggle = (event) => {
-    event.preventDefault();
-    onToggle(style);
-  };
-
-  return <span onMouseDown={handleToggle}>{label}</span>;
-};
-
-function BlockStyleControls({ editorState, onToggle }) {
-  const selection = editorState.getSelection();
-  const blockType = editorState
-    .getCurrentContent()
-    .getBlockForKey(selection.getStartKey())
-    .getType();
-
-  return (
-    <div>
-      {BLOCK_TYPES.map((type) => (
-        <StyleButton
-          key={type.label}
-          active={type.style === blockType}
-          onToggle={onToggle}
-          label={type.label}
-          style={type.style}
-        />
-      ))}
-    </div>
   );
 }
