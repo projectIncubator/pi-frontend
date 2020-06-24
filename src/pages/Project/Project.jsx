@@ -12,7 +12,7 @@ import {
 
 import { projects } from '../../mocks';
 import { useStyles, activeLink } from './ProjectStyles';
-import { Overview, About, Timeline, Discussions } from './pages';
+import { Overview, General, Timeline, Discussions } from './pages';
 import { FeatureImage } from './components';
 import { DialogContext } from '../../contexts';
 
@@ -68,23 +68,31 @@ export default function Project({ match }) {
   };
 
   const renderRoutes = () => {
+    const currentUrl =
+      match.url[match.url.length - 1] === '/'
+        ? match.url.slice(0, match.url.length - 1)
+        : match.url;
+
     return (
       <Switch>
-        <Route exact path={match.url}>
-          <Redirect to={match.url + '/overview'} />
+        <Route exact path={currentUrl}>
+          <Redirect to={currentUrl + '/overview'} />
         </Route>
         <Route
           exact
-          path={match.url + '/overview'}
+          path={currentUrl + '/overview'}
           render={() => <Overview project={project} />}
           divider={true}
         />
-        <Route exact path={match.url + '/about'} component={About} />
-        <Route exact path={match.url + '/timeline'} component={Timeline} />
+        <Route exact path={currentUrl + '/timeline'} component={Timeline} />
         <Route
           exact
-          path={match.url + '/discussions'}
+          path={currentUrl + '/discussions'}
           component={Discussions}
+        />
+        <Route
+          path={currentUrl + '/*'}
+          component={(props) => <General project={project} {...props} />}
         />
       </Switch>
     );

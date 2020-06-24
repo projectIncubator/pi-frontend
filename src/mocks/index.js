@@ -73,6 +73,15 @@ export const projects = [
         }
       },
       {
+        type: 'general',
+        id: uuid(),
+        showing: true,
+        sidebar: true,
+        content: {
+          title: 'About'
+        }
+      },
+      {
         type: 'discussions',
         id: uuid(),
         showing: true,

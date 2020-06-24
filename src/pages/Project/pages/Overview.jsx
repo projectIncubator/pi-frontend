@@ -1,22 +1,10 @@
 import React from 'react';
 import { projectType } from '../../../types';
-import { makeStyles, Grid, Hidden, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
-import { Header, SidebarComponents } from '../components';
-
-const useStyles = makeStyles((theme) => ({
-  sidebar: {
-    position: 'sticky',
-    top: 125,
-    [theme.breakpoints.down('md')]: {
-      top: 50 + 42
-    }
-  }
-}));
+import { Header, Sidebar } from '../components';
 
 export default function Overview({ project }) {
-  const classes = useStyles();
-  const { sidebar_modules } = project;
   const page = project.pages.find((el) => el.type === 'overview');
 
   return (
@@ -46,21 +34,7 @@ export default function Overview({ project }) {
           </Typography>
         ))}
       </Grid>
-      {page.sidebar && (
-        <Hidden smDown>
-          <Grid item md={3}>
-            <Grid container spacing={2} className={classes.sidebar}>
-              {sidebar_modules.map((el, index) => {
-                return (
-                  <Grid item xs={12} key={index}>
-                    <SidebarComponents component={el} project={project} />
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </Grid>
-        </Hidden>
-      )}
+      {page.sidebar && <Sidebar project={project} />}
     </Grid>
   );
 }

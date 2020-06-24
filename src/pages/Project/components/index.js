@@ -6,6 +6,7 @@ import ComponentCard from './ComponentCard';
 import AvailableCard from './AvailableCard';
 import AvailablePage from './AvailablePage';
 import CurrentPage from './CurrentPage';
+import Sidebar from './Sidebar';
 
 export {
   FeatureImage,
@@ -15,5 +16,6 @@ export {
   ComponentCard,
   AvailableCard,
   AvailablePage,
-  CurrentPage
+  CurrentPage,
+  Sidebar
 };
