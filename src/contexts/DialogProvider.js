@@ -6,6 +6,7 @@ export function DialogProvider({ children }) {
   const [open, setOpen] = useState(false);
   const [projectId, setProjectId] = useState('');
   const [pageIndex, setPageIndex] = useState(-1);
+  const [pageTitle, setPageTitle] = useState('');
 
   return (
     <DialogContext.Provider
@@ -15,7 +16,9 @@ export function DialogProvider({ children }) {
         projectId,
         setProjectId,
         pageIndex,
-        setPageIndex
+        setPageIndex,
+        pageTitle,
+        setPageTitle
       }}
     >
       {children}

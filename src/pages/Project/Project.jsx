@@ -35,6 +35,7 @@ export default function Project({ match }) {
     const project = getProject(projectId);
 
     if (project) setProject({ ...project });
+
     setProjectId(projectId.split(' ').join('-'));
     setFetching(false);
   }, [projectId, open, setProjectId]);

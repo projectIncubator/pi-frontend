@@ -11,7 +11,7 @@ export default function General({ match, project }) {
   const [isLoading, setIsLoading] = useState(true);
   const [pageNotFound, setPageNotFound] = useState(false);
   const [page, setPage] = useState([]);
-  const { setPageIndex } = useContext(DialogContext);
+  const { setPageIndex, setPageTitle } = useContext(DialogContext);
 
   useEffect(() => {
     const checkPageExists = () => {
@@ -28,11 +28,12 @@ export default function General({ match, project }) {
         setPage(project.pages[foundIndex]);
         setIsLoading(false);
         setPageIndex(foundIndex);
+        setPageTitle(project.pages[foundIndex].content.title);
       }
     };
 
     checkPageExists();
-  }, [pageName, project.pages, setPageIndex]);
+  }, [pageName, project.pages, setPageIndex, setPageTitle]);
 
   const renderPage = () => {
     if (pageNotFound) {
