@@ -43,7 +43,15 @@ export default function General({ match, project }) {
     } else {
       return (
         <Grid container spacing={3}>
-          <Grid item xs={12} md={page.sidebar ? 9 : 12}>
+          <Grid
+            item
+            xs={12}
+            md={page.sidebar ? 9 : 12}
+            style={{
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
             <Header page="general" title={pageName} isAdmin />
             {Boolean(page.content.contentState) ? (
               <DraftRenderer

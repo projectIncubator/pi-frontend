@@ -1,9 +1,21 @@
 import React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  content: {
+    maxWidth: '100%'
+  },
+  block: {
+    marginBottom: theme.spacing(2)
+  },
+  paragraph: {
+    // overflowWrap: 'break-word'
+  },
   span: {
-    whiteSpace: 'pre'
+    display: 'inline-block',
+    maxWidth: '100%',
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word'
   },
   bold: {
     fontWeight: 'bold'
@@ -16,6 +28,14 @@ const useStyles = makeStyles(() => ({
   },
   mono: {
     fontFamily: 'monospace'
+  },
+  blockquote: {
+    width: 'auto',
+    marginLeft: theme.spacing(4),
+    padding: theme.spacing(2),
+    borderLeft: `4px solid ${theme.palette.primary.main}`,
+    background: theme.palette.grey[100],
+    borderRadius: 4
   }
 }));
 
@@ -69,8 +89,6 @@ export default function DraftRenderer({ blocks }) {
           breakpoints[i + 1]
         );
       }
-
-      console.log(textFrags);
     } else {
       textFrags[0] = { text, style: [] };
     }
@@ -97,10 +115,14 @@ export default function DraftRenderer({ blocks }) {
   };
 
   const renderBlock = (block, index, length) => {
-    const { type, text } = block;
+    const { type } = block;
     switch (type) {
       case 'unstyled':
-        return <Typography variant="body1">{renderText(block)}</Typography>;
+        return (
+          <Typography className={classes.paragraph} variant="body1">
+            {renderText(block)}
+          </Typography>
+        );
       case 'header-one':
         return (
           <Typography variant="h4" component="h1">
@@ -119,8 +141,14 @@ export default function DraftRenderer({ blocks }) {
             {renderText(block)}
           </Typography>
         );
+      case 'blockquote':
+        return (
+          <div className={classes.blockquote}>
+            <Typography variant="body1">{renderText(block)}</Typography>
+          </div>
+        );
       case 'unordered-list-item':
-        listItems.push(text);
+        listItems.push(block);
         if (
           index === length - 1 ||
           blocks[index + 1].type !== 'unordered-list-item'
@@ -128,7 +156,7 @@ export default function DraftRenderer({ blocks }) {
           const renderListItems = (
             <ul>
               {listItems.map((el, idx) => (
-                <li key={idx}>{el}</li>
+                <li key={idx}>{renderText(el)}</li>
               ))}
             </ul>
           );
@@ -137,7 +165,7 @@ export default function DraftRenderer({ blocks }) {
         }
         return;
       case 'ordered-list-item':
-        listItems.push(text);
+        listItems.push(block);
         if (
           index === length - 1 ||
           blocks[index + 1].type !== 'ordered-list-item'
@@ -145,7 +173,7 @@ export default function DraftRenderer({ blocks }) {
           const renderListItems = (
             <ol>
               {listItems.map((el, idx) => (
-                <li key={idx}>{el}</li>
+                <li key={idx}>{renderText(el)}</li>
               ))}
             </ol>
           );
@@ -159,13 +187,13 @@ export default function DraftRenderer({ blocks }) {
   };
 
   return (
-    <div>
+    <div className={classes.content}>
       {blocks.map((el, index) => {
         const { length } = blocks;
         return (
-          <React.Fragment key={el.key}>
+          <div key={el.key} className={classes.block}>
             {renderBlock(el, index, length)}
-          </React.Fragment>
+          </div>
         );
       })}
     </div>

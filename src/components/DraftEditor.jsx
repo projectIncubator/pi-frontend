@@ -36,7 +36,8 @@ const INLINE_STYLES = [
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
-    minWidth: '600px'
+    minWidth: '600px',
+    maxWidth: '600px'
   },
   controls: {
     // padding: '4px'
@@ -115,7 +116,7 @@ export default function DraftEditor({ updateContent, existingContent }) {
   };
 
   const renderIcon = (Jsx, active) => {
-    return <Jsx className={active && classes.selected} />;
+    return <Jsx className={active ? classes.selected : ''} />;
   };
 
   const StyleButton = ({ onToggle, label, style, active }) => {
@@ -149,9 +150,9 @@ export default function DraftEditor({ updateContent, existingContent }) {
 
     return (
       <div className={classes.toolbar}>
-        {BLOCK_TYPES.map((type) => (
+        {BLOCK_TYPES.map((type, index) => (
           <StyleButton
-            key={type.label}
+            key={`block-${index}`}
             active={type.style === blockType}
             onToggle={onToggle}
             label={type.label}
@@ -166,9 +167,9 @@ export default function DraftEditor({ updateContent, existingContent }) {
     const currentStyle = editorState.getCurrentInlineStyle();
     return (
       <div className={classes.toolbar}>
-        {INLINE_STYLES.map((type) => (
+        {INLINE_STYLES.map((type, index) => (
           <StyleButton
-            key={type.label}
+            key={`inline-${index}`}
             active={currentStyle.has(type.style)}
             label={type.label}
             onToggle={onToggle}
@@ -206,8 +207,6 @@ export default function DraftEditor({ updateContent, existingContent }) {
           ref={editorRef}
         />
       </div>
-      {/*<button onClick={save}>Save</button>*/}
-      {/*<div>{Object.keys(saved).length > 0 && renderSaved()}</div>*/}
     </div>
   );
 }

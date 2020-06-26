@@ -36,8 +36,19 @@ export const useStyles = makeStyles((theme) => ({
     }
   },
   container: {
-    width: '100%',
-    position: 'relative'
+    position: 'relative',
+    [theme.breakpoints.down('lg')]: {
+      maxWidth: `min(1280px, calc(100vw - ${2 * 150}px - 58px))`
+    },
+    [theme.breakpoints.down('md')]: {
+      maxWidth: `calc(100vw - ${2 * 75}px - 58px)`
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: `calc(100vw - ${2 * 10}px - 58px)`
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: `100vw`
+    }
   },
   sidebar: {
     width: 250,
