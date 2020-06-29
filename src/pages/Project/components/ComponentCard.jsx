@@ -15,22 +15,22 @@ import {
   Resources,
   Membership,
   Positions,
-  Button
+  RequestToJoin
 } from '../modules/sidebar/settings';
 import { useStyles } from './ComponentCardStyles';
 
 const ComponentCard = React.memo(
-  ({ item, index, toggleOpen, deleteComponent, updateContent }) => {
+  ({ item, index, toggleOpen, deleteItem, updateContent }) => {
     const classes = useStyles();
     const { type, id, open, content } = item;
     const { header } = content;
 
     const handleClick = () => {
-      toggleOpen(id, !open);
+      toggleOpen(id, !open, 'sidebar');
     };
 
     const handleDelete = () => {
-      deleteComponent(id);
+      deleteItem(id);
     };
 
     const handleUpdateContent = (id, content) => {
@@ -52,8 +52,8 @@ const ComponentCard = React.memo(
       switch (type) {
         case 'text':
           return renderModule(Text);
-        case 'button':
-          return renderModule(Button);
+        case 'join':
+          return renderModule(RequestToJoin);
         case 'membership':
           return renderModule(Membership);
         case 'resources':

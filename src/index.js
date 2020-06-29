@@ -5,6 +5,7 @@ import Dialogs from './dialogs';
 import { AuthProvider, ThemeProvider, DialogProvider } from './contexts';
 import AppRouter from './AppRouter';
 import './index.css';
+import 'draft-js/dist/Draft.css';
 
 ReactDOM.render(
   <AuthProvider>

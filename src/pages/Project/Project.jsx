@@ -5,12 +5,14 @@ import {
   Container,
   Hidden,
   Typography,
-  CircularProgress
+  Divider,
+  CircularProgress,
+  Link
 } from '@material-ui/core';
 
 import { projects } from '../../mocks';
 import { useStyles, activeLink } from './ProjectStyles';
-import { Overview, About, Timeline, Discussions } from './pages';
+import { Overview, General, Timeline, Discussions } from './pages';
 import { FeatureImage } from './components';
 import { DialogContext } from '../../contexts';
 
@@ -18,7 +20,7 @@ export default function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open } = useContext(DialogContext); // testing purposes, use fetch later
+  const { open, setOpen, setProjectId } = useContext(DialogContext);
   const [project, setProject] = useState({});
   const [fetching, setFetching] = useState(true);
 
@@ -33,49 +35,65 @@ export default function Project({ match }) {
     const project = getProject(projectId);
 
     if (project) setProject({ ...project });
+
+    setProjectId(projectId.split(' ').join('-'));
     setFetching(false);
-  }, [projectId, open]);
+  }, [projectId, open, setProjectId]);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
 
-  const condensedNavLink = (route) => {
+  const renderNavLinks = () => {
+    return project.pages
+      .filter((el) => el.showing)
+      .map((el) => (
+        <NavLink
+          key={el.id}
+          to={`${match.url}/${el.content.title}`}
+          onClick={scrollToTop}
+          activeStyle={activeLink}
+        >
+          {el.content.title[0].toUpperCase() + el.content.title.slice(1)}
+        </NavLink>
+      ));
+  };
+
+  const renderAdminLinks = () => {
     return (
-      <NavLink
-        key={route}
-        to={`${match.url}/${route}`}
-        onClick={scrollToTop}
-        activeStyle={activeLink}
-      >
-        {route[0].toUpperCase() + route.slice(1)}
-      </NavLink>
+      <div className={classes.adminLinks}>
+        <Divider />
+        <Link onClick={() => setOpen('project-settings')}>Settings</Link>
+      </div>
     );
   };
 
-  const renderNavLinks = () => {
-    const routes = ['overview', 'about', 'timeline', 'discussions'];
-    return routes.map((el) => condensedNavLink(el));
-  };
-
   const renderRoutes = () => {
+    const currentUrl =
+      match.url[match.url.length - 1] === '/'
+        ? match.url.slice(0, match.url.length - 1)
+        : match.url;
+
     return (
       <Switch>
-        <Route exact path={match.url}>
-          <Redirect to={match.url + '/overview'} />
+        <Route exact path={currentUrl}>
+          <Redirect to={currentUrl + '/overview'} />
         </Route>
         <Route
           exact
-          path={match.url + '/overview'}
+          path={currentUrl + '/overview'}
           render={() => <Overview project={project} />}
           divider={true}
         />
-        <Route exact path={match.url + '/about'} component={About} />
-        <Route exact path={match.url + '/timeline'} component={Timeline} />
+        <Route exact path={currentUrl + '/timeline'} component={Timeline} />
         <Route
           exact
-          path={match.url + '/discussions'}
+          path={currentUrl + '/discussions'}
           component={Discussions}
+        />
+        <Route
+          path={currentUrl + '/*'}
+          component={(props) => <General project={project} {...props} />}
         />
       </Switch>
     );
@@ -110,7 +128,10 @@ export default function Project({ match }) {
               {/*Sticky Desktop Sidebar*/}
               <Hidden mdDown>
                 <div className={classes.sidebar}>
-                  <div className={classes.sidebarMenu}>{renderNavLinks()}</div>
+                  <div className={classes.sidebarMenu}>
+                    {renderNavLinks()}
+                    {renderAdminLinks()}
+                  </div>
                 </div>
               </Hidden>
               {/*Sticky Mobile Navbar*/}

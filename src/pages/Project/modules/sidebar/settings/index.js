@@ -2,6 +2,6 @@ import Text from './Text';
 import Resources from './Resources';
 import Membership from './Membership';
 import Positions from './Positions';
-import Button from './Button';
+import RequestToJoin from './RequestToJoin';
 
-export { Text, Resources, Membership, Positions, Button };
+export { Text, Resources, Membership, Positions, RequestToJoin };

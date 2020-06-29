@@ -1,12 +1,12 @@
 import React from 'react';
-import OverviewSettingsDialog from './OverviewSettingsDialog';
+import ProjectSettingsDialog from './ProjectSettingsDialog';
+import ProjectGeneralPageDialog from './ProjectGeneralPageDialog';
 
-function Dialogs() {
+export default function Dialogs() {
   return (
     <>
-      <OverviewSettingsDialog />
+      <ProjectSettingsDialog />
+      <ProjectGeneralPageDialog />
     </>
   );
 }
-
-export default Dialogs;

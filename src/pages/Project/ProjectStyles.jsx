@@ -36,8 +36,19 @@ export const useStyles = makeStyles((theme) => ({
     }
   },
   container: {
-    width: '100%',
-    position: 'relative'
+    position: 'relative',
+    [theme.breakpoints.down('lg')]: {
+      maxWidth: `min(1280px, calc(100vw - ${2 * 150}px - 58px))`
+    },
+    [theme.breakpoints.down('md')]: {
+      maxWidth: `calc(100vw - ${2 * 75}px - 58px)`
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: `calc(100vw - ${2 * 10}px - 58px)`
+    },
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: `100vw`
+    }
   },
   sidebar: {
     width: 250,
@@ -78,6 +89,22 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     '& > *:not(:first-child)': {
       marginLeft: theme.spacing(3)
+    }
+  },
+  adminLinks: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    '& > hr': {
+      marginTop: '4px',
+      width: 90
+    },
+    '& > *': {
+      marginBottom: theme.spacing(1),
+      cursor: 'pointer',
+      '&:hover': {
+        textDecoration: 'none'
+      }
     }
   },
   content: {

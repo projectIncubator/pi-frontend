@@ -1,4 +1,4 @@
-import { arrayOf, exact, number, shape, string } from 'prop-types';
+import { arrayOf, exact, number, shape, string, bool } from 'prop-types';
 
 export const themeType = exact({
   name: string.isRequired,
@@ -27,7 +27,18 @@ export const userStubType = exact({
   profile_id: string.isRequired
 });
 
-const pagesType = exact({});
+const pagesContentType = exact({
+  title: string,
+  contentState: string
+});
+
+const pagesType = exact({
+  type: string.isRequired,
+  id: string.isRequired,
+  showing: bool.isRequired,
+  sidebar: bool.isRequired,
+  content: pagesContentType.isRequired
+});
 
 const sidebarModulesType = exact({
   type: string.isRequired,
@@ -68,4 +79,14 @@ export const userType = exact({
   interested: arrayOf(projectStubType).isRequired,
   contributing: arrayOf(projectStubType).isRequired,
   created_projects: arrayOf(projectStubType).isRequired
+});
+
+export const matchType = exact({
+  isExact: bool.isRequired,
+  params: shape({
+    projectId: string,
+    0: string
+  }),
+  path: string.isRequired,
+  url: string.isRequired
 });
