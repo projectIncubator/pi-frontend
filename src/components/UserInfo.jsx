@@ -10,6 +10,7 @@ import {
   Link as MUILink,
   Paper,
   Typography,
+  useMediaQuery,
   withStyles
 } from '@material-ui/core';
 import { Link as LinkIcon } from '@material-ui/icons';
@@ -21,14 +22,19 @@ const styles = (theme) => ({
     }
   },
   avatar: {
-    margin: theme.spacing(0, 0, 2),
-    padding: theme.spacing(1),
     '& > div, img, svg': {
       width: '100%',
       height: 'auto'
     }
   },
+  basicInfoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: theme.spacing(0, 0, 0, 1)
+  },
   link: {
+    color: theme.palette.text.secondary,
     display: 'flex',
     alignItems: 'center',
     '& > a': {
@@ -37,13 +43,18 @@ const styles = (theme) => ({
   },
   social: {
     '& > div': {
-      marginBottom: theme.spacing(1)
+      marginBottom: theme.spacing(0.5)
     }
   },
   bio: {
-    margin: theme.spacing(3, 0)
+    [theme.breakpoints.up('md')]: {
+      margin: theme.spacing(3, 0)
+    }
   },
   interested: {
+    '& > p': {
+      fontWeight: theme.typography.fontWeightMedium
+    },
     '& > a': {
       display: 'flex',
       alignItems: 'center',
@@ -69,65 +80,74 @@ function UserInfo({
   classes,
   user: {
     id,
-    firstName,
-    lastName,
+    first_name,
+    last_name,
     image,
-    profileId,
+    profile_id,
     bio,
     link,
-    followingCount,
-    followersCount,
+    following_count,
+    followers_count,
     interested,
     contributing,
-    createdProjects
+    created_projects
   }
 }) {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
   const avatarSection = (
     <section>
       <Paper className={classes.avatar}>
-        <Avatar alt={profileId} src={image} variant="square" />
+        <Avatar alt={profile_id} src={image} variant="square" />
       </Paper>
-      <Typography variant="h5">
-        {firstName} {lastName}
-      </Typography>
     </section>
   );
 
-  const linkSection = Boolean(link) && (
-    <section className={classes.link}>
-      <LinkIcon />
-      <MUILink
-        className={classes.ellipsis}
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {link}
-      </MUILink>
+  const identitySection = (
+    <section>
+      <Typography variant="h5">
+        {first_name} {last_name}
+      </Typography>
+      {Boolean(link) && (
+        <div className={classes.link}>
+          <LinkIcon />
+          <MUILink
+            className={classes.ellipsis}
+            color="textSecondary"
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {link}
+          </MUILink>
+        </div>
+      )}
     </section>
   );
 
   const socialSection = (
     <section className={classes.social}>
-      <Grid container spacing={2}>
+      <Grid container>
         <Grid item xs={6}>
           <MUILink href="">
             <Box fontWeight="fontWeightBold" component="span">
-              {followersCount}&nbsp;
+              {followers_count}&nbsp;
             </Box>
-            {followersCount === 1 ? 'Follower' : 'Followers'}
+            {followers_count === 1 ? 'Follower' : 'Followers'}
           </MUILink>
         </Grid>
         <Grid item xs={6}>
           <MUILink href="">
             <Box fontWeight="fontWeightBold" component="span">
-              {followingCount}&nbsp;
+              {following_count}&nbsp;
             </Box>
             Following
           </MUILink>
         </Grid>
       </Grid>
-      <Button fullWidth>Follow</Button>
+      <Button fullWidth size={isMobile ? 'small' : 'medium'}>
+        Follow
+      </Button>
     </section>
   );
 
@@ -151,11 +171,29 @@ function UserInfo({
 
   return (
     <div className={classes.root}>
-      {avatarSection}
-      {linkSection}
-      {socialSection}
-      {bioSection}
-      {interestedSection}
+      {isMobile ? (
+        <>
+          <Grid container>
+            <Grid item xs={4}>
+              {avatarSection}
+            </Grid>
+            <Grid className={classes.basicInfoContainer} item xs={8}>
+              {identitySection}
+              {socialSection}
+            </Grid>
+          </Grid>
+          {bioSection}
+          {interestedSection}
+        </>
+      ) : (
+        <>
+          {avatarSection}
+          {identitySection}
+          {socialSection}
+          {bioSection}
+          {interestedSection}
+        </>
+      )}
     </div>
   );
 }
