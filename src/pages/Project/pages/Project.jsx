@@ -10,51 +10,62 @@ import {
   Link
 } from '@material-ui/core';
 
-import { projects } from '../../mocks';
+import { projects } from '../../../mocks';
+import {
+  ProjectProvider,
+  ProjectContext,
+  DialogContext
+} from '../../../contexts';
 import { useStyles, activeLink } from './ProjectStyles';
-import { Overview, General, Timeline, Discussions } from './pages';
-import { FeatureImage } from './components';
-import { DialogContext } from '../../contexts';
+import { Overview, General, Timeline, Discussions, Error404 } from './index';
+import { FeatureImage } from '../components';
+import ProjectDialogs from '../dialogs';
 
-export default function Project({ match }) {
+export default function ProjectWithContext({ match }) {
+  return (
+    <ProjectProvider>
+      <Project match={match} />
+      <ProjectDialogs />
+    </ProjectProvider>
+  );
+}
+
+function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open, setOpen, setProjectId } = useContext(DialogContext);
-  const [project, setProject] = useState({});
+  const { open, setOpen } = useContext(DialogContext);
+  const { project, setProject, setProjectId } = useContext(ProjectContext);
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     const getProject = (projectId) => {
       return projects.find(
         (project) =>
-          project.title.toLowerCase().split(' ').join('-') === projectId
+          project.meta.title.toLowerCase().split(' ').join('-') === projectId
       );
     };
-
     const project = getProject(projectId);
-
     if (project) setProject({ ...project });
-
-    setProjectId(projectId.split(' ').join('-'));
+    setProjectId(project.meta.id);
     setFetching(false);
-  }, [projectId, open, setProjectId]);
+  }, [projectId, open, setProjectId, setProject]);
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
   };
 
   const renderNavLinks = () => {
-    return project.pages
+    return project.meta.pages_order
       .filter((el) => el.showing)
       .map((el) => (
         <NavLink
           key={el.id}
-          to={`${match.url}/${el.content.title}`}
+          to={`${match.url}/${el.title.toLowerCase().split(' ').join('-')}`}
           onClick={scrollToTop}
           activeStyle={activeLink}
         >
-          {el.content.title[0].toUpperCase() + el.content.title.slice(1)}
+          {el.title[0].toUpperCase() + el.title.slice(1)}
         </NavLink>
       ));
   };
@@ -74,26 +85,47 @@ export default function Project({ match }) {
         ? match.url.slice(0, match.url.length - 1)
         : match.url;
 
+    const renderComponent = (type, pageId, props) => {
+      const componentWrapper = (Component) => {
+        return <Component project={project} pageId={pageId} {...props} />;
+      };
+
+      switch (type) {
+        case 'overview':
+          return componentWrapper(Overview);
+        case 'discussions':
+          return componentWrapper(Discussions);
+        case 'timeline':
+          return componentWrapper(Timeline);
+        case 'general':
+          return componentWrapper(General);
+        default:
+          return;
+      }
+    };
+
+    const routeWrapper = (type, title, pageId) => {
+      return (
+        <Route
+          key={pageId}
+          exact
+          path={currentUrl + '/' + title.toLowerCase().split(' ').join('-')}
+          render={(props) => renderComponent(type, pageId, props)}
+        />
+      );
+    };
+
     return (
       <Switch>
         <Route exact path={currentUrl}>
           <Redirect to={currentUrl + '/overview'} />
         </Route>
-        <Route
-          exact
-          path={currentUrl + '/overview'}
-          render={() => <Overview project={project} />}
-          divider={true}
-        />
-        <Route exact path={currentUrl + '/timeline'} component={Timeline} />
-        <Route
-          exact
-          path={currentUrl + '/discussions'}
-          component={Discussions}
-        />
+        {project.meta.pages_order.map((el) =>
+          routeWrapper(el.type, el.title, el.id)
+        )}
         <Route
           path={currentUrl + '/*'}
-          component={(props) => <General project={project} {...props} />}
+          component={(props) => <Error404 project={project} {...props} />}
         />
       </Switch>
     );
@@ -121,7 +153,7 @@ export default function Project({ match }) {
     } else {
       return (
         <>
-          <FeatureImage featureImage={project.cover_photo} />
+          <FeatureImage featureImage={project.meta.cover_photo} />
           <div className={classes.main}>
             <div className={classes.margins} />
             <Container maxWidth="lg" className={classes.container}>

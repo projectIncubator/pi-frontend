@@ -8,7 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Explore from './pages/Explore';
 import Search from './pages/Search';
 import Profile from './pages/Profile';
-import Project from './pages/Project/Project';
+import ProjectWithContext from './pages/Project/pages/Project';
 
 function AppRouter() {
   return (
@@ -22,7 +22,11 @@ function AppRouter() {
         <Page path="/explore" component={Explore} exact />
         <Page path="/search" component={Search} exact />
         <Page path="/user/:profileId" component={Profile} exact />
-        <Page path="/project/:projectId" component={Project} fullWidth />
+        <Page
+          path="/project/:projectId"
+          component={ProjectWithContext}
+          fullWidth
+        />
       </Switch>
     </Router>
   );

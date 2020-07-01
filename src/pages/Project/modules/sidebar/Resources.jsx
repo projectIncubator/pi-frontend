@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, Typography } from '@material-ui/core';
 
-import { SidebarHeader } from '../../components';
+import { SidebarItemHeader } from '../../components';
 
 export default function Resources({ content }) {
   const { header } = content;
   return (
     <div>
-      {header && <SidebarHeader header={header} />}
+      {header && <SidebarItemHeader header={header} />}
       {content.resources
         .filter((el) => el.link)
         .map((item, index) => (

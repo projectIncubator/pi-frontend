@@ -7,28 +7,25 @@ import {
   Paper,
   Button
 } from '@material-ui/core';
-import { DialogContext } from '../contexts';
-import DraftEditor from '../components/DraftEditor';
-import { projects, getProjectIndexById } from '../mocks';
+import { DialogContext, ProjectContext } from '../../../contexts';
+import DraftEditor from '../../../components/DraftEditor';
+import { projects, getProjectIndexById } from '../../../mocks';
 
-export default function ProjectGeneralPageDialog() {
-  const { open, setOpen, projectId, pageIndex } = useContext(DialogContext);
+export default function GeneralPageDialog() {
+  const { open, setOpen } = useContext(DialogContext);
   const [contentState, setContentState] = useState(false);
   const [initialContent, setInitialContent] = useState(false);
-  const [page, setPage] = useState({});
+  const { page, projectId } = useContext(ProjectContext);
 
   useEffect(() => {
-    if (projectId && pageIndex !== -1) {
-      const index = getProjectIndexById(projectId);
-      setPage(projects[index].pages[pageIndex]);
-      const previousContent =
-        projects[index].pages[pageIndex].content.contentState;
+    if (projectId && Boolean(page.meta.id)) {
+      const previousContent = page.content.contentState;
 
-      Boolean(previousContent)
+      Object.keys(previousContent).length > 0
         ? setInitialContent(JSON.parse(previousContent))
         : setInitialContent(false);
     }
-  }, [open, pageIndex, projectId]);
+  }, [open, projectId, page.content.contentState, page.meta.id]);
 
   const handleClose = () => {
     setOpen(false);
@@ -41,7 +38,9 @@ export default function ProjectGeneralPageDialog() {
   const handleSave = () => {
     if (contentState) {
       const index = getProjectIndexById(projectId);
-      projects[index].pages[pageIndex].content.contentState = JSON.stringify({
+      projects[index].pages_modules.pages[
+        page.meta.id
+      ].content.contentState = JSON.stringify({
         ...contentState
       });
       setContentState(false);
@@ -59,7 +58,7 @@ export default function ProjectGeneralPageDialog() {
       maxWidth="lg"
     >
       <DialogTitle id="project-general-dialog">
-        {Object.keys(page).length !== 0 && page.content.title}
+        {Object.keys(page).length !== 0 && page.meta.title}
       </DialogTitle>
       <DialogContent style={{ paddingTop: 0 }}>
         <Paper>

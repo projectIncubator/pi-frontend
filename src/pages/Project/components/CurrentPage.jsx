@@ -24,10 +24,9 @@ import { useStyles } from './CurrentPageStyles';
 const CurrentPage = React.memo(
   ({ item, index, toggleOpen, toggleSettings, changeTitle, deleteItem }) => {
     const classes = useStyles();
-    const { type, id, open, showing, sidebar, content } = item;
+    const { type, id, title, open, showing, sidebar } = item;
     const [isEditing, setIsEditing] = useState(false);
-
-    const [pageTitle, setPageTitle] = useState(content.title);
+    const [pageTitle, setPageTitle] = useState(title);
 
     const handleToggleOpen = () => {
       toggleOpen(id, !open, 'pages');
@@ -83,7 +82,7 @@ const CurrentPage = React.memo(
               />
             )}
             <Typography variant="h6" className={classes.header}>
-              {content.title}
+              {title}
             </Typography>
           </>
         );

@@ -2,43 +2,31 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 
 import { Header, Sidebar } from '../components';
-import { matchType, projectType } from '../../../types';
-import { DialogContext } from '../../../contexts';
+import { ProjectContext } from '../../../contexts';
 import DraftRenderer from '../../../components/DraftRenderer';
+import { getPageContentById, getPageMetaById } from '../../../mocks';
+import { string } from 'prop-types';
 
-export default function General({ match, project }) {
-  const pageName = match.params['0'];
+export default function General({ pageId }) {
+  const { project, page, setPage } = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageNotFound, setPageNotFound] = useState(false);
-  const [page, setPage] = useState([]);
-  const { setPageIndex, setPageTitle } = useContext(DialogContext);
 
   useEffect(() => {
-    const checkPageExists = () => {
-      const foundIndex = project.pages.findIndex((el) => {
-        return (
-          el.type === 'general' &&
-          el.content.title.toLowerCase() === pageName.toLowerCase()
-        );
-      });
-
-      if (foundIndex === -1) {
-        setPageNotFound(true);
-      } else {
-        setPage(project.pages[foundIndex]);
-        setIsLoading(false);
-        setPageIndex(foundIndex);
-        setPageTitle(project.pages[foundIndex].content.title);
+    const InitializePage = () => {
+      if (page.meta.id !== pageId) {
+        setPage({
+          meta: getPageMetaById(project.meta.id, pageId),
+          content: getPageContentById(project.meta.id, pageId)
+        });
       }
+      setIsLoading(false);
     };
 
-    checkPageExists();
-  }, [pageName, project.pages, setPageIndex, setPageTitle]);
+    InitializePage();
+  }, [pageId, page.meta.id, project.meta.id, setPage]);
 
   const renderPage = () => {
-    if (pageNotFound) {
-      return <div>Page not found.</div>;
-    } else if (isLoading) {
+    if (isLoading || page.meta.id !== pageId) {
       return <div>Loading...</div>;
     } else {
       return (
@@ -46,14 +34,15 @@ export default function General({ match, project }) {
           <Grid
             item
             xs={12}
-            md={page.sidebar ? 9 : 12}
+            md={page.meta.sidebar ? 9 : 12}
             style={{
               display: 'flex',
               flexDirection: 'column'
             }}
           >
-            <Header page="general" title={pageName} isAdmin />
-            {Boolean(page.content.contentState) ? (
+            <Header page="general" title={page.meta.title} isAdmin />
+            {Object.keys(page.content).includes('contentState') &&
+            Object.keys(page.content.contentState).length > 0 ? (
               <DraftRenderer
                 blocks={JSON.parse(page.content.contentState).blocks}
               />
@@ -78,7 +67,7 @@ export default function General({ match, project }) {
               ))
             )}
           </Grid>
-          {page.sidebar && <Sidebar project={project} />}
+          {page.meta.sidebar && <Sidebar />}
         </Grid>
       );
     }
@@ -88,6 +77,5 @@ export default function General({ match, project }) {
 }
 
 General.propTypes = {
-  project: projectType.isRequired,
-  match: matchType.isRequired
+  pageId: string.isRequired
 };
