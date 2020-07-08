@@ -54,57 +54,34 @@ export const Auth0Provider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const sendUser = async () => {
+    const loginToBackend = async () => {
       try {
         const namespace = 'https://projectincubator.com/';
-
         const sendUser = {
           id_token: user.sub,
           first_name: user[namespace + 'first_name'],
           last_name: user[namespace + 'last_name'],
           email: user.email
         };
-
-        console.log('SENDING USER:', sendUser);
         const accessToken = await auth0Client.getTokenSilently();
 
-        console.log('TOKEN:', accessToken);
-
-        // const resp = await fetch(
-        //   `https://projectincubator-backend.herokuapp.com/api/private/`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${accessToken}`
-        //     }
-        //   }
-        // );
-
-        const resp = await fetch(
-          `https://projectincubator-backend.herokuapp.com/users`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            },
-            body: JSON.stringify(sendUser)
-          }
-        );
-
-        const data = await resp.json();
-
-        console.log('DATA', data);
-
-        return data;
+        await fetch(`https://projectincubator-backend.herokuapp.com/users`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'user-id': user.sub
+          },
+          body: JSON.stringify(sendUser)
+        });
       } catch (e) {
         console.log('ERROR:', e);
       }
     };
 
     if (user) {
-      const response = sendUser();
-      console.log('FETCHED:', response);
+      loginToBackend();
     }
-  }, [user]);
+  }, [user, auth0Client]);
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
