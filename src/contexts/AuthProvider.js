@@ -25,6 +25,7 @@ export const Auth0Provider = ({ children }) => {
         domain: process.env.REACT_APP_AUTH_DOMAIN,
         client_id: process.env.REACT_APP_AUTH_CLIENT_ID,
         redirect_uri: window.location.origin,
+        audience: 'https://dev-mxz0v43z.auth0.com/api/v2/',
         onRedirectCallback
       });
       setAuth0(auth0FromHook);
@@ -51,6 +52,36 @@ export const Auth0Provider = ({ children }) => {
     initAuth0();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    const loginToBackend = async () => {
+      try {
+        const namespace = 'https://projectincubator.com/';
+        const sendUser = {
+          id_token: user.sub,
+          first_name: user[namespace + 'first_name'],
+          last_name: user[namespace + 'last_name'],
+          email: user.email
+        };
+        const accessToken = await auth0Client.getTokenSilently();
+
+        await fetch(`https://projectincubator-backend.herokuapp.com/users`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'user-id': user.sub
+          },
+          body: JSON.stringify(sendUser)
+        });
+      } catch (e) {
+        console.log('ERROR:', e);
+      }
+    };
+
+    if (user) {
+      loginToBackend();
+    }
+  }, [user, auth0Client]);
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
