@@ -53,6 +53,10 @@ function Profile({ classes }) {
 
   if (fetching) return <></>;
 
+  const userProjects = Array.from(
+    new Set([...user.created_projects, ...user.contributing])
+  );
+
   return !user ? (
     <Paper className={clsx(classes.root, classes.notfound)}>
       <div>
@@ -82,15 +86,13 @@ function Profile({ classes }) {
               <Typography>This user does not have any projects yet.</Typography>
             ) : (
               <>
-                {[...user.created_projects, ...user.contributing].map(
-                  (project, index) => (
-                    <ProjectCard
-                      key={index}
-                      project={project}
-                      variant="profile"
-                    />
-                  )
-                )}
+                {userProjects.map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    variant="profile"
+                  />
+                ))}
               </>
             )}
           </div>
