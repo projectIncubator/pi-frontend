@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'flex-start'
   },
   projectHeader: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -132,7 +133,7 @@ function ProjectCard({
       {variant === 'profile' ? (
         <>
           {projectLogo}
-          <div>
+          <div style={{ flex: 1 }}>
             <div className={classes.container}>
               {projectHeader}
               {projectThemes}
