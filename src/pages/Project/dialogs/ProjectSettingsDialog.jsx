@@ -22,14 +22,14 @@ import {
   getProjectIndexById,
   AVAILABLE_SIDEBAR_COMPONENTS,
   AVAILABLE_PAGES
-} from '../mocks';
-import { DialogContext } from '../contexts';
+} from '../../../mocks';
+import { DialogContext, ProjectContext } from '../../../contexts';
 import {
   ComponentCard,
   AvailableCard,
   AvailablePage,
   CurrentPage
-} from '../pages/Project/components';
+} from '../components';
 import { useStyles, getListStyle } from './ProjectSettingsDialogStyles';
 
 export default function ProjectSettingsDialog() {
@@ -37,7 +37,8 @@ export default function ProjectSettingsDialog() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const { open, setOpen, projectId } = useContext(DialogContext);
+  const { open, setOpen } = useContext(DialogContext);
+  const { project, projectId } = useContext(ProjectContext);
   const [currentComponents, setCurrComponents] = useState([]);
   const [currentPages, setCurrPages] = useState([]);
   const [tabValue, setTabValue] = useState(0);
@@ -47,23 +48,19 @@ export default function ProjectSettingsDialog() {
   });
 
   useEffect(() => {
-    if (projectId) {
+    if (project.meta && project.sidebar_modules) {
       const getCurrComponents = () => {
-        const foundIndex = getProjectIndexById(projectId);
-        const foundProject = { ...projects[foundIndex] };
-        const newSidebarModules = foundProject.sidebar_modules.map((el) => {
+        const newSidebarModules = project.sidebar_modules.map((el) => {
           return { ...el, id: uuid() };
         });
-        const newPages = foundProject.pages.map((el) => {
-          return { ...el, id: uuid() };
-        });
+        const newPages = [...project.meta.pages_order];
 
         setCurrComponents(newSidebarModules);
         setCurrPages(newPages);
       };
       getCurrComponents();
     }
-  }, [projectId]);
+  }, [open, project]);
 
   const handleClose = () => {
     setOpen(false);
@@ -80,13 +77,13 @@ export default function ProjectSettingsDialog() {
   const handleSave = () => {
     const foundIndex = getProjectIndexById(projectId);
 
-    const cleanPagesModules = () => {
+    const cleanPagesOrder = () => {
       return currentPages.map((el) => ({
         type: el.type,
         id: el.id,
         showing: el.showing,
         sidebar: el.sidebar,
-        content: el.content
+        title: el.title
       }));
     };
 
@@ -97,11 +94,21 @@ export default function ProjectSettingsDialog() {
       }));
     };
 
-    const newPagesModules = cleanPagesModules();
+    const newPagesOrder = cleanPagesOrder();
     const newSidebarModules = cleanSidebarModules();
+    const newPagesModules = { ...project.pages_modules.pages };
+    currentPages.forEach((el) => {
+      if (!Object.keys(newPagesModules).includes(el.id)) {
+        newPagesModules[el.id] = {
+          type: el.type,
+          content: el.content
+        };
+      }
+    });
 
-    projects[foundIndex].pages = newPagesModules;
+    projects[foundIndex].meta.pages_order = newPagesOrder;
     projects[foundIndex].sidebar_modules = newSidebarModules;
+    projects[foundIndex].pages_modules.pages = newPagesModules;
 
     setOpen(false);
   };
@@ -110,7 +117,7 @@ export default function ProjectSettingsDialog() {
     const newPages = [...currentPages];
     const index = newPages.findIndex((el) => el.id === id);
     if (index !== -1) {
-      newPages[index].content.title = newTitle;
+      newPages[index].title = newTitle;
       setCurrPages(newPages);
     }
   };

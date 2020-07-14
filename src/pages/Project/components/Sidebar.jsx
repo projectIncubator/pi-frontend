@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Grid, Hidden, makeStyles } from '@material-ui/core';
-import { SidebarComponents } from './index';
-import { projectType } from '../../../types';
+
+import { ProjectContext } from '../../../contexts';
+import { Membership, RequestToJoin, Resources, Text } from '../modules/sidebar';
 
 const useStyles = makeStyles((theme) => ({
   sidebar: {
@@ -13,9 +14,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Sidebar({ project }) {
+export default function Sidebar() {
   const classes = useStyles();
+  const { project } = useContext(ProjectContext);
   const { sidebar_modules } = project;
+
+  const renderComponent = (props) => {
+    switch (props.type) {
+      case 'join':
+        return <RequestToJoin {...props} />;
+      case 'membership':
+        return <Membership {...props} projectId={project.meta.id} />;
+      case 'resources':
+        return <Resources {...props} />;
+      case 'text':
+        return <Text {...props} />;
+      default:
+        return <></>;
+    }
+  };
 
   return (
     <Hidden smDown>
@@ -24,7 +41,7 @@ export default function Sidebar({ project }) {
           {sidebar_modules.map((el, index) => {
             return (
               <Grid item xs={12} key={index}>
-                <SidebarComponents component={el} project={project} />
+                {renderComponent(el)}
               </Grid>
             );
           })}
@@ -33,7 +50,3 @@ export default function Sidebar({ project }) {
     </Hidden>
   );
 }
-
-Sidebar.propTypes = {
-  project: projectType.isRequired
-};

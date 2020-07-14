@@ -46,51 +46,63 @@ const userStubs = [
 
 export const projects = [
   {
-    id: '111',
-    title: 'Coronavirus Testing BC',
-    status: 'ongoing',
-    logo: '',
-    themes: [themes['health']],
-    member_count: 2,
-    interested_count: 2,
-    creator: userStubs[1],
-    start_date: new Date(2020, 4, 1).toISOString(),
-    end_date: new Date(2020, 11, 31).toISOString(),
-    oneliner:
-      'Some description about the project, Not the project abstract. Just one or two lines!',
-    discussion_id: [],
-    admins: [userStubs[1]],
-    cover_photo:
-      'https://dailynews.mcmaster.ca/wp-content/uploads/sites/3/2020/01/coronavirus-photo-1.jpg',
-    pages: [
-      {
-        type: 'overview',
-        id: uuid(),
-        showing: true,
-        sidebar: true,
-        content: {
+    meta: {
+      id: '111',
+      title: 'Coronavirus Testing BC',
+      status: 'ongoing',
+      logo: '',
+      themes: [themes['health']],
+      member_count: 2,
+      interested_count: 2,
+      creator: userStubs[1],
+      start_date: new Date(2020, 4, 1).toISOString(),
+      end_date: new Date(2020, 11, 31).toISOString(),
+      oneliner:
+        'Some description about the project, Not the project abstract. Just one or two lines!',
+      discussion_id: [],
+      admins: [userStubs[1]],
+      cover_photo:
+        'https://dailynews.mcmaster.ca/wp-content/uploads/sites/3/2020/01/coronavirus-photo-1.jpg',
+      pages_order: [
+        {
+          type: 'overview',
+          id: '4e150e27',
+          showing: true,
+          sidebar: true,
           title: 'Overview'
-        }
-      },
-      {
-        type: 'general',
-        id: uuid(),
-        showing: true,
-        sidebar: true,
-        content: {
+        },
+        {
+          type: 'general',
+          id: '6f3077a5',
+          showing: true,
+          sidebar: true,
           title: 'About'
-        }
-      },
-      {
-        type: 'discussions',
-        id: uuid(),
-        showing: true,
-        sidebar: false,
-        content: {
+        },
+        {
+          type: 'discussions',
+          id: '01cb7854',
+          showing: true,
+          sidebar: false,
           title: 'Discussions'
         }
+      ]
+    },
+    pages_modules: {
+      pages: {
+        '4e150e27': {
+          type: 'overview',
+          content: {}
+        },
+        '01cb7854': {
+          type: 'discussions',
+          content: {}
+        },
+        '6f3077a5': {
+          type: 'general',
+          content: { contentState: {} }
+        }
       }
-    ],
+    },
     sidebar_modules: [
       {
         type: 'membership',
@@ -119,45 +131,63 @@ export const projects = [
             Lorem ipsum dolor asit amet, consectetur adipiscing elit.`
         }
       }
-    ]
+    ],
+    members: {
+      '789': {
+        role: 'admin',
+        contributions: {}
+      }
+    },
+    events: {},
+    tasks: {}
   },
   {
-    id: '222',
-    title: 'Kitsilano Community Engagement',
-    status: 'completed',
-    logo: '',
-    themes: [themes['education'], themes['sustainability']],
-    member_count: 2,
-    interested_count: 2,
-    creator: userStubs[1],
-    start_date: new Date(2019, 10, 15).toISOString(),
-    end_date: new Date(2020, 3, 30).toISOString(),
-    oneliner:
-      'Some description about the project, Not the project abstract. Just one or two lines!',
-    discussion_id: [],
-    admins: [userStubs[1]],
-    cover_photo:
-      'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
-    pages: [
-      {
-        type: 'overview',
-        id: uuid(),
-        showing: true,
-        sidebar: true,
-        content: {
+    meta: {
+      id: '222',
+      title: 'Kitsilano Community Engagement',
+      status: 'completed',
+      logo: '',
+      themes: [themes['education'], themes['sustainability']],
+      member_count: 2,
+      interested_count: 2,
+      creator: userStubs[1],
+      start_date: new Date(2019, 10, 15).toISOString(),
+      end_date: new Date(2020, 3, 30).toISOString(),
+      oneliner:
+        'Some description about the project, Not the project abstract. Just one or two lines!',
+      discussion_id: [],
+      admins: [userStubs[1]],
+      cover_photo:
+        'https://kitscc.com/wp-content/uploads/2016/07/Kitscc_CC_Colaborative_Gardens_1269.jpg',
+      pages_order: [
+        {
+          type: 'overview',
+          id: 'effcc25e',
+          showing: true,
+          sidebar: true,
           title: 'Overview'
-        }
-      },
-      {
-        type: 'discussions',
-        id: uuid(),
-        showing: true,
-        sidebar: false,
-        content: {
+        },
+        {
+          type: 'discussions',
+          id: 'b7fc5b30',
+          showing: true,
+          sidebar: false,
           title: 'Discussions'
         }
+      ]
+    },
+    pages_modules: {
+      pages: {
+        effcc25e: {
+          type: 'overview',
+          content: {}
+        },
+        b7fc5b30: {
+          type: 'discussions',
+          content: {}
+        }
       }
-    ],
+    },
     sidebar_modules: [
       {
         type: 'membership',
@@ -186,21 +216,29 @@ export const projects = [
             Lorem ipsum dolor asit amet, consectetur adipiscing elit.`
         }
       }
-    ]
+    ],
+    members: {
+      '789': {
+        role: 'admin',
+        contributions: {}
+      }
+    },
+    events: {},
+    tasks: {}
   }
 ];
 
 export const projectStubs = projects.map((project) => ({
-  id: project.id,
-  title: project.title,
-  status: project.status,
-  logo: project.logo,
-  themes: project.themes,
-  member_count: project.member_count,
-  interested_count: project.interested_count,
-  start_date: project.start_date,
-  end_date: project.end_date,
-  oneliner: project.oneliner
+  id: project.meta.id,
+  title: project.meta.title,
+  status: project.meta.status,
+  logo: project.meta.logo,
+  themes: project.meta.themes,
+  member_count: project.meta.member_count,
+  interested_count: project.meta.interested_count,
+  start_date: project.meta.start_date,
+  end_date: project.meta.end_date,
+  oneliner: project.meta.oneliner
 }));
 
 export const users = [
@@ -328,9 +366,7 @@ export const AVAILABLE_PAGES = [
     unique: true,
     showing: true,
     sidebar: true,
-    content: {
-      title: 'Overview'
-    }
+    title: 'Overview'
   },
   {
     type: 'discussions',
@@ -340,9 +376,7 @@ export const AVAILABLE_PAGES = [
     unique: true,
     showing: true,
     sidebar: false,
-    content: {
-      title: 'Discussions'
-    }
+    title: 'Discussions'
   },
   {
     type: 'general',
@@ -352,15 +386,25 @@ export const AVAILABLE_PAGES = [
     unique: false,
     showing: true,
     sidebar: true,
+    title: 'General',
     content: {
-      title: 'General'
+      contentState: {}
     }
   }
 ];
 
 export const getProjectIndexById = (id) => {
-  const foundIndex = projects.findIndex(
-    (el) => el.title.toLowerCase().split(' ').join('-') === id
-  );
-  return foundIndex;
+  return projects.findIndex((el) => el.meta.id === id);
+};
+
+export const getPageMetaById = (projectId, pageId) => {
+  const foundIndex = getProjectIndexById(projectId);
+  if (foundIndex === -1) return null;
+  return projects[foundIndex].meta.pages_order.find((el) => el.id === pageId);
+};
+
+export const getPageContentById = (projectId, pageId) => {
+  const foundIndex = getProjectIndexById(projectId);
+  if (foundIndex === -1) return null;
+  return projects[foundIndex].pages_modules.pages[pageId].content;
 };

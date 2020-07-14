@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, makeStyles } from '@material-ui/core';
-import SidebarHeader from '../../components/SidebarHeader';
+import SidebarItemHeader from '../../components/SidebarItemHeader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,7 +15,7 @@ export default function Text({ content }) {
 
   return (
     <div>
-      {header && <SidebarHeader header={header} />}
+      {header && <SidebarItemHeader header={header} />}
       <Typography className={classes.root} variant="body2">
         {text}
       </Typography>

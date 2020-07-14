@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SidebarHeader({ header }) {
+export default function SidebarItemHeader({ header }) {
   const classes = useStyles();
   return (
     <Typography variant="h6" className={classes.root} gutterBottom>
@@ -18,6 +18,6 @@ export default function SidebarHeader({ header }) {
   );
 }
 
-SidebarHeader.propTypes = {
+SidebarItemHeader.propTypes = {
   header: PropTypes.string.isRequired
 };

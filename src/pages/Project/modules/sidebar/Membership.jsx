@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Typography, makeStyles } from '@material-ui/core';
-import SidebarHeader from '../../components/SidebarHeader';
+import SidebarItemHeader from '../../components/SidebarItemHeader';
 import { members as membersMock } from '../../../../mocks';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,7 @@ export default function Membership({ projectId, content }) {
 
   return (
     <div>
-      {header && <SidebarHeader header={header + ` - ${members.length}`} />}
+      {header && <SidebarItemHeader header={header + ` - ${members.length}`} />}
       {members.map((member) => {
         return (
           <Typography key={member.id} className={classes.root} variant="body2">

@@ -1,18 +1,23 @@
-import React from 'react';
-import { projectType } from '../../../types';
+import React, { useContext } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 
 import { Header, Sidebar } from '../components';
+import { getPageMetaById, getPageContentById } from '../../../mocks';
+import { ProjectContext } from '../../../contexts';
 
-export default function Overview({ project }) {
-  const page = project.pages.find((el) => el.type === 'overview');
-
+export default function Overview({ pageId }) {
+  const { project } = useContext(ProjectContext);
+  const { id } = project.meta;
+  const page = {
+    meta: getPageMetaById(id, pageId),
+    content: getPageContentById(id, pageId)
+  };
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={page.sidebar ? 9 : 12}>
+      <Grid item xs={12} md={page.meta.sidebar ? 9 : 12}>
         <Header
           page="overview"
-          title={project.title}
+          title={project.meta.title}
           isAdmin
           status="ongoing"
         />
@@ -34,11 +39,7 @@ export default function Overview({ project }) {
           </Typography>
         ))}
       </Grid>
-      {page.sidebar && <Sidebar project={project} />}
+      {page.meta.sidebar && <Sidebar />}
     </Grid>
   );
 }
-
-Overview.propTypes = {
-  project: projectType.isRequired
-};

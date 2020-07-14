@@ -83,8 +83,6 @@ export default function DraftEditor({ updateContent, existingContent }) {
   );
   const editorRef = useRef(null);
 
-  // console.log(convertToRaw(editorState.getCurrentContent()).blocks);
-
   useEffect(() => {
     if (existingContent) {
       setEditorState(

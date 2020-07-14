@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
-import SidebarHeader from '../../components/SidebarHeader';
+import SidebarItemHeader from '../../components/SidebarItemHeader';
 
 export default function RequestToJoin({ content }) {
   const { header } = content;
 
   return (
     <div>
-      {header && <SidebarHeader header={header} />}
+      {header && <SidebarItemHeader header={header} />}
       <Button>Request to Join</Button>
     </div>
   );

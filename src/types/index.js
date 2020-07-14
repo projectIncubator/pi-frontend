@@ -1,4 +1,4 @@
-import { arrayOf, exact, number, shape, string, bool } from 'prop-types';
+import { arrayOf, bool, exact, number, shape, string } from 'prop-types';
 
 export const themeType = exact({
   name: string.isRequired,
@@ -25,45 +25,6 @@ export const userStubType = exact({
   last_name: string.isRequired,
   image: string.isRequired,
   profile_id: string.isRequired
-});
-
-const pagesContentType = exact({
-  title: string,
-  contentState: string
-});
-
-const pagesType = exact({
-  type: string.isRequired,
-  id: string.isRequired,
-  showing: bool.isRequired,
-  sidebar: bool.isRequired,
-  content: pagesContentType.isRequired
-});
-
-const sidebarModulesType = exact({
-  type: string.isRequired,
-  content: shape({
-    header: string.isRequired
-  }).isRequired
-});
-
-export const projectType = exact({
-  id: string.isRequired,
-  title: string.isRequired,
-  status: string.isRequired,
-  logo: string.isRequired,
-  themes: arrayOf(themeType).isRequired,
-  member_count: number.isRequired,
-  interested_count: number.isRequired,
-  creator: userStubType.isRequired,
-  start_date: string.isRequired,
-  end_date: string.isRequired,
-  oneliner: string.isRequired,
-  discussion_id: arrayOf(string).isRequired,
-  admins: arrayOf(userStubType).isRequired,
-  cover_photo: string.isRequired,
-  pages: arrayOf(pagesType).isRequired,
-  sidebar_modules: arrayOf(sidebarModulesType).isRequired
 });
 
 export const userType = exact({

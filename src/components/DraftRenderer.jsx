@@ -59,7 +59,7 @@ export default function DraftRenderer({ blocks }) {
       };
 
       // create the breakpoints
-      styles.map((el) => {
+      styles.forEach((el) => {
         const keys = Object.keys(textFrags);
         if (!keys.includes(el.offset.toString())) {
           textFrags[el.offset] = { style: [] };
