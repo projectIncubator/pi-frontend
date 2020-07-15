@@ -21,10 +21,6 @@ export const useStyles = makeStyles((theme) => ({
   card: {
     width: 175,
     borderRadius: 4
-  },
-  switch: {
-    display: 'flex',
-    justifyContent: 'flex-end'
   }
 }));
 
