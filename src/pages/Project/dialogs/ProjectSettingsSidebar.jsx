@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
 
-import { copy, reorder } from '../../../utils/dnd';
+import { copy, reorder, checkUniqueness } from '../../../utils/dnd';
 import { AVAILABLE_SIDEBAR_COMPONENTS } from '../../../mocks';
 import { AvailableCard, ComponentCard } from '../components';
 import { getListStyle } from './ProjectSettingsDialogStyles';
@@ -53,15 +53,6 @@ function ProjectSettingsSidebar() {
     [setCurrComponents]
   );
 
-  const checkUniqueness = (item) => {
-    // return true to disable drag component
-    if (item.unique) {
-      const result = currentComponents.find((el) => el.type === item.type);
-      return Boolean(result);
-    }
-    return false;
-  };
-
   const onDragEnd = (result) => {
     const { destination, source } = result;
 
@@ -103,7 +94,7 @@ function ProjectSettingsSidebar() {
             {(provided, snapshot) => (
               <div ref={provided.innerRef} className={classes.availableModules}>
                 {AVAILABLE_SIDEBAR_COMPONENTS.map((item, index) => {
-                  const isDisabled = checkUniqueness(item);
+                  const isDisabled = checkUniqueness(item, currentComponents);
                   return (
                     <AvailableCard
                       key={index + item.type}

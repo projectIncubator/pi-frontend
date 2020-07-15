@@ -25,3 +25,12 @@ export const copy = (
   });
   return destClone;
 };
+
+export const checkUniqueness = (item, components) => {
+  // return true to disable drag component
+  if (item.unique) {
+    const result = components.find((el) => el.type === item.type);
+    return Boolean(result);
+  }
+  return false;
+};

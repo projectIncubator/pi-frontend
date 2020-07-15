@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import { copy, reorder } from '../../../utils/dnd';
+import { copy, reorder, checkUniqueness } from '../../../utils/dnd';
 import { AVAILABLE_PAGES } from '../../../mocks';
 import { AvailablePage, CurrentPage } from '../components';
 import { getListStyle } from './ProjectSettingsDialogStyles';
@@ -59,15 +59,6 @@ function ProjectSettingsPages() {
     [setCurrPages]
   );
 
-  const checkUniqueness = (item) => {
-    // return true to disable drag component
-    if (item.unique) {
-      const result = currentPages.find((el) => el.type === item.type);
-      return Boolean(result);
-    }
-    return false;
-  };
-
   const onDragEnd = (result) => {
     const { destination, source } = result;
 
@@ -100,7 +91,7 @@ function ProjectSettingsPages() {
             {(provided, snapshot) => (
               <div ref={provided.innerRef} className={classes.availableModules}>
                 {[...AVAILABLE_PAGES].map((item, index) => {
-                  const isDisabled = checkUniqueness(item, 'pages');
+                  const isDisabled = checkUniqueness(item, currentPages);
                   return (
                     <AvailablePage
                       key={index + item.type}
