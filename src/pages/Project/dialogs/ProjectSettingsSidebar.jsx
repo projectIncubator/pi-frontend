@@ -9,9 +9,11 @@ import { getListStyle } from './ProjectSettingsDialogStyles';
 import { ProjectContext } from '../../../contexts';
 
 const useStyles = makeStyles((theme) => ({
-  switch: {
+  availableModules: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start'
   }
 }));
 
