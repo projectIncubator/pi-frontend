@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import history from '../utils/history';
 
@@ -53,6 +53,43 @@ export const Auth0Provider = ({ children }) => {
     // eslint-disable-next-line
   }, []);
 
+  const authenticatedFetch = useCallback(
+    async (endpoint, { body, ...customConfig } = {}) => {
+      const accessToken = await auth0Client.getTokenSilently();
+
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        'user-id': user.sub
+      };
+      const config = {
+        method: body ? 'POST' : 'GET',
+        ...customConfig,
+        headers: {
+          ...headers,
+          ...customConfig.headers
+        }
+      };
+      if (body) {
+        config.body = JSON.stringify(body);
+      }
+
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_API_BASE_URL}/${endpoint}`,
+        config
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        return data;
+      } else {
+        return Promise.reject(data);
+      }
+    },
+    [user, auth0Client]
+  );
+
   useEffect(() => {
     const loginToBackend = async () => {
       try {
@@ -63,15 +100,9 @@ export const Auth0Provider = ({ children }) => {
           last_name: user[namespace + 'last_name'],
           email: user.email
         };
-        const accessToken = await auth0Client.getTokenSilently();
 
-        await fetch(`https://projectincubator-backend.herokuapp.com/users`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'user-id': user.sub
-          },
-          body: JSON.stringify(sendUser)
+        authenticatedFetch('users', {
+          body: sendUser
         });
       } catch (e) {
         console.log('ERROR:', e);
@@ -81,7 +112,7 @@ export const Auth0Provider = ({ children }) => {
     if (user) {
       loginToBackend();
     }
-  }, [user, auth0Client]);
+  }, [user, authenticatedFetch]);
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
@@ -105,6 +136,7 @@ export const Auth0Provider = ({ children }) => {
     setIsAuthenticated(true);
     setUser(user);
   };
+
   return (
     <Auth0Context.Provider
       value={{
@@ -118,7 +150,8 @@ export const Auth0Provider = ({ children }) => {
         loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
         getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
         getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
-        logout: (...p) => auth0Client.logout(...p)
+        logout: (...p) => auth0Client.logout(...p),
+        authenticatedFetch
       }}
     >
       {children}
