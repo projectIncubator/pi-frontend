@@ -106,12 +106,14 @@ export const projects = [
     sidebar_modules: [
       {
         type: 'membership',
+        id: uuid(),
         content: {
           header: 'Membership'
         }
       },
       {
         type: 'resources',
+        id: uuid(),
         content: {
           header: 'Resources',
           resources: [
@@ -123,6 +125,7 @@ export const projects = [
       },
       {
         type: 'text',
+        id: uuid(),
         content: {
           header: 'Test Header',
           text: `Lorem ipsum dolor asit amet, consectetur adipiscing elit.
@@ -191,12 +194,14 @@ export const projects = [
     sidebar_modules: [
       {
         type: 'membership',
+        id: uuid(),
         content: {
           header: 'Membership'
         }
       },
       {
         type: 'resources',
+        id: uuid(),
         content: {
           header: 'Resources',
           resources: [
@@ -208,6 +213,7 @@ export const projects = [
       },
       {
         type: 'text',
+        id: uuid(),
         content: {
           header: 'Test Header',
           text: `Lorem ipsum dolor asit amet, consectetur adipiscing elit.

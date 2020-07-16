@@ -7,8 +7,17 @@ export function ProjectProvider({ children }) {
   const [page, setPage] = useState({ meta: { id: '' }, content: {} });
   const [projectId, setProjectId] = useState('');
 
+  // Settings variables
+  const [currentPages, setCurrPages] = useState([]);
+  const [currentComponents, setCurrComponents] = useState([]);
+
   useEffect(() => {
-    if (Object.keys(project) > 0) {
+    if (Object.keys(project).length > 0) {
+      setCurrPages(project.meta.pages_order.map((el) => Object.assign({}, el)));
+      setCurrComponents(
+        project.sidebar_modules.map((el) => Object.assign({}, el))
+      );
+
       if (project.meta.id !== projectId) {
         setProjectId(project.meta.id);
       }
@@ -23,7 +32,11 @@ export function ProjectProvider({ children }) {
         projectId,
         setProjectId,
         page,
-        setPage
+        setPage,
+        currentPages,
+        setCurrPages,
+        currentComponents,
+        setCurrComponents
       }}
     >
       {children}

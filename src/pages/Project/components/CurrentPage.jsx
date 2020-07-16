@@ -29,7 +29,7 @@ const CurrentPage = React.memo(
     const [pageTitle, setPageTitle] = useState(title);
 
     const handleToggleOpen = () => {
-      toggleOpen(id, !open, 'pages');
+      toggleOpen(id, !open);
     };
 
     const handleDelete = () => {
