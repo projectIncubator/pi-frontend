@@ -12,7 +12,6 @@ import {
 } from '@material-ui/core';
 import UserInfo from '../components/UserInfo';
 import ProjectCard from '../components/ProjectCard';
-import { users } from '../mocks';
 
 const styles = (theme) => ({
   root: {
@@ -43,18 +42,26 @@ function Profile({ classes }) {
 
   useEffect(() => {
     const getUser = (profileId) => {
-      return users.find((user) => user.profile_id === profileId);
+      fetch(
+        `${process.env.REACT_APP_BACKEND_API_BASE_URL}/users/${profileId}/profile`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setUser(data);
+          setFetching(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     };
 
-    const user = getUser(profileId);
-    if (user) setUser(user);
-    setFetching(false);
+    getUser(profileId);
   }, [profileId]);
 
   if (fetching) return <></>;
 
   const userProjects = Array.from(
-    new Set([...user.created_projects, ...user.contributing])
+    new Set([...user.created, ...user.contributing])
   );
 
   return !user ? (
@@ -80,9 +87,7 @@ function Profile({ classes }) {
           </Typography>
           <Divider />
           <div className={classes.projects}>
-            {!Boolean(
-              user.contributing.length + user.created_projects.length
-            ) ? (
+            {!Boolean(user.contributing.length + user.created.length) ? (
               <Typography>This user does not have any projects yet.</Typography>
             ) : (
               <>

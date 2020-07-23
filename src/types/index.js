@@ -33,13 +33,17 @@ export const userType = exact({
   last_name: string.isRequired,
   image: string.isRequired,
   profile_id: string.isRequired,
+  email: string.isRequired,
+  deactivated: bool.isRequired,
+  banned: bool.isRequired,
   bio: string.isRequired,
-  link: string.isRequired,
+  link: string,
   following_count: number.isRequired,
   followers_count: number.isRequired,
   interested: arrayOf(projectStubType).isRequired,
   contributing: arrayOf(projectStubType).isRequired,
-  created_projects: arrayOf(projectStubType).isRequired
+  created: arrayOf(projectStubType).isRequired,
+  interested_themes: arrayOf(themeType).isRequired
 });
 
 export const matchType = exact({

@@ -84,6 +84,7 @@ function UserInfo({
     last_name,
     image,
     profile_id,
+    email,
     bio,
     link,
     following_count,
