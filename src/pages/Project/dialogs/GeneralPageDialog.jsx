@@ -18,7 +18,7 @@ export default function GeneralPageDialog() {
   const { page, projectId } = useContext(ProjectContext);
 
   useEffect(() => {
-    if (projectId && Boolean(page.meta.id)) {
+    if (open === 'project-general' && projectId && Boolean(page.meta.id)) {
       const previousContent = page.content.contentState;
 
       Object.keys(previousContent).length > 0
