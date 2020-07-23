@@ -23,9 +23,11 @@ export default function Description({ content }) {
 
   return (
     <div>
-      <Typography variant="h4" className={classes.header}>
-        {header}
-      </Typography>
+      {header && (
+        <Typography variant="h4" className={classes.header}>
+          {header}
+        </Typography>
+      )}
       <div className={classes.description}>
         <Typography variant="body1">{text}</Typography>
       </div>
