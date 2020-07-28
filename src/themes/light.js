@@ -44,6 +44,9 @@ export default {
     }
   },
   typography: {
+    h3: {
+      fontSize: '2.625rem'
+    },
     button: {
       textTransform: 'none'
     }

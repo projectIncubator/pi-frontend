@@ -91,7 +91,32 @@ export const projects = [
       pages: {
         '4e150e27': {
           type: 'overview',
-          content: {}
+          content: {
+            modules: [
+              {
+                type: 'description',
+                subtext: 'A short summary of what this project is about.',
+                id: uuid(),
+                unique: true,
+                content: {
+                  header: '',
+                  text:
+                    'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
+                }
+              },
+              {
+                type: 'general',
+                subtext: 'A multi-purpose component with rich text editing.',
+                id: uuid(),
+                unique: false,
+                content: {
+                  header: 'Welcome to the Coronavirus Testing BC Project!',
+                  contentState:
+                    '{"blocks":[{"key":"c7clc","text":"Coronavirus testing is dedicated to spreading the good word and the truth about the testing procedures of the COVID-19. You can find more resources on our website.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"73kfd","text":"It\'s important that we stay positive throughout this pandemic. If you need resources for your mental health, please check out www.mentalhealth.com.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"9qbpr","text":"We are looking for helpers!","type":"header-two","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"1acnb","text":"If you are interested in joining us, please don\'t hesitate to click the join us button on the top right of this page.","type":"unstyled","depth":0,"inlineStyleRanges":[{"offset":72,"length":7,"style":"BOLD"}],"entityRanges":[],"data":{}},{"key":"656c9","text":"Tips for staying healthy","type":"header-two","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"c0l4n","text":"Wash your hands often and thoroughly.","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"7nhtl","text":"Stay 6 feet away from others.","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}},{"key":"495bv","text":"Stay home.","type":"ordered-list-item","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}'
+                }
+              }
+            ]
+          }
         },
         '01cb7854': {
           type: 'discussions',
@@ -183,7 +208,9 @@ export const projects = [
       pages: {
         effcc25e: {
           type: 'overview',
-          content: {}
+          content: {
+            modules: []
+          }
         },
         b7fc5b30: {
           type: 'discussions',
@@ -395,6 +422,29 @@ export const AVAILABLE_PAGES = [
     title: 'General',
     content: {
       contentState: {}
+    }
+  }
+];
+
+export const AVAILABLE_COMPONENTS = [
+  {
+    type: 'general',
+    subtext: 'A multi-purpose component with rich text editing.',
+    id: uuid(),
+    unique: false,
+    content: {
+      header: 'General',
+      contentState: ''
+    }
+  },
+  {
+    type: 'description',
+    subtext: 'A short summary of what this project is about.',
+    id: uuid(),
+    unique: true,
+    content: {
+      header: '',
+      text: ''
     }
   }
 ];

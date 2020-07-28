@@ -36,7 +36,7 @@ export default function Header({ title, status, isAdmin, divider, page }) {
     <>
       <div className={classes.header}>
         <div className={classes.title}>
-          <Typography variant="h4" className={classes.text}>
+          <Typography variant="h3" className={classes.text}>
             {title}
           </Typography>
           {status && (

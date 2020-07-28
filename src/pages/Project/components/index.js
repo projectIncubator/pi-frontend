@@ -6,8 +6,10 @@ import AvailableCard from './AvailableCard';
 import AvailablePage from './AvailablePage';
 import CurrentPage from './CurrentPage';
 import Sidebar from './Sidebar';
+import CurrentComponent from './CurrentComponent';
 
 export {
+  CurrentComponent,
   FeatureImage,
   Header,
   SidebarItemHeader,

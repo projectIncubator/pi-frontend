@@ -1,10 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react';
+import { getPageContentById, getPageMetaById } from '../mocks';
 
 export const ProjectContext = createContext();
 
 export function ProjectProvider({ children }) {
   const [project, setProject] = useState({});
   const [page, setPage] = useState({ meta: { id: '' }, content: {} });
+  const [pageId, setPageId] = useState('');
   const [projectId, setProjectId] = useState('');
 
   // Settings variables
@@ -24,6 +26,17 @@ export function ProjectProvider({ children }) {
     }
   }, [project, projectId]);
 
+  useEffect(() => {
+    if (pageId && page.meta.id !== pageId) {
+      const newPage = {
+        meta: getPageMetaById(projectId, pageId),
+        content: getPageContentById(projectId, pageId)
+      };
+
+      setPage(newPage);
+    }
+  }, [pageId, page.meta.id, projectId]);
+
   return (
     <ProjectContext.Provider
       value={{
@@ -33,6 +46,8 @@ export function ProjectProvider({ children }) {
         setProjectId,
         page,
         setPage,
+        pageId,
+        setPageId,
         currentPages,
         setCurrPages,
         currentComponents,

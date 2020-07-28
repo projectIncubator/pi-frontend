@@ -36,8 +36,7 @@ const INLINE_STYLES = [
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(1),
-    minWidth: '600px',
-    maxWidth: '600px'
+    maxWidth: 'inherit'
   },
   controls: {
     // padding: '4px'
@@ -71,8 +70,10 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     minHeight: '200px',
     maxHeight: '600px',
+    maxWidth: 'inherit',
     cursor: 'text',
-    overflow: 'scroll'
+    overflow: 'scroll',
+    overflowWrap: 'break-word'
   }
 }));
 

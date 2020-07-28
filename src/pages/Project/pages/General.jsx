@@ -1,33 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Grid, Typography } from '@material-ui/core';
 
 import { Header, Sidebar } from '../components';
 import { ProjectContext } from '../../../contexts';
 import DraftRenderer from '../../../components/DraftRenderer';
-import { getPageContentById, getPageMetaById } from '../../../mocks';
 import { string } from 'prop-types';
+import { Loading } from '../../../components';
 
 export default function General({ pageId }) {
-  const { project, page, setPage } = useContext(ProjectContext);
-  const [isLoading, setIsLoading] = useState(true);
+  const { page, setPageId } = useContext(ProjectContext);
 
   useEffect(() => {
-    const InitializePage = () => {
-      if (page.meta.id !== pageId) {
-        setPage({
-          meta: getPageMetaById(project.meta.id, pageId),
-          content: getPageContentById(project.meta.id, pageId)
-        });
-      }
-      setIsLoading(false);
-    };
-
-    InitializePage();
-  }, [pageId, page.meta.id, project.meta.id, setPage]);
+    setPageId(pageId);
+  }, [pageId, setPageId]);
 
   const renderPage = () => {
-    if (isLoading || page.meta.id !== pageId) {
-      return <div>Loading...</div>;
+    if (page.meta.id !== pageId) {
+      return (
+        <div style={{ height: 300 }}>
+          <Loading />
+        </div>
+      );
     } else {
       return (
         <Grid container spacing={3}>
