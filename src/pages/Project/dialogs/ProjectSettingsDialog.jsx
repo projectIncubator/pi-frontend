@@ -128,6 +128,7 @@ export default function ProjectSettingsDialog() {
   );
 }*/
 
+
 import React, { useContext, useState, useEffect } from 'react';
 import {
   useMediaQuery,
@@ -137,7 +138,7 @@ import {
   DialogActions,
   DialogContent,
 } from '@material-ui/core';
-//TODO: make a user context with all of the user filed
+import { DropzoneArea } from 'material-ui-dropzone';
 import { DialogContext, AuthContext } from '../../../contexts';
 import TextField from '@material-ui/core/TextField';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -149,19 +150,22 @@ export default function ProjectSettingsDialog() {
   const { open, setOpen } = useContext(DialogContext);
   const { user } = useContext(AuthContext);
   const [userCopy, setUserCopy] = useState();
-  
+
   const handleFillin = () => {
     setUserCopy(user);
   }
+
   useEffect(() => {
     if (user != undefined) {
       handleFillin();
     }
   }, [user]);
+
   const handleClose = () => {
     handleFillin();
     setOpen(false);
   };
+
   const handleChange = (e) => {
     setUserCopy({ ...userCopy, [e.target.name]: e.target.value })
   }
@@ -198,7 +202,7 @@ export default function ProjectSettingsDialog() {
           onChange={(e) => handleChange(e)}
         />
         <TextField
-         // defaultValue = {user.last_name}
+          // defaultValue = {user.last_name}
           autoFocus
           margin="dense"
           name="last_name"
@@ -208,7 +212,7 @@ export default function ProjectSettingsDialog() {
           onChange={(e) => handleChange(e)}
         />
         <TextField
-         // defaultValue = {user.email}
+          // defaultValue = {user.email}
           autoFocus
           margin="dense"
           name="email"
@@ -218,7 +222,7 @@ export default function ProjectSettingsDialog() {
           onChange={(e) => handleChange(e)}
         />
         <TextField
-         // defaultValue = {user.profile_id}
+          // defaultValue = {user.profile_id}
           autoFocus
           margin="dense"
           name="profile_id"
@@ -228,7 +232,7 @@ export default function ProjectSettingsDialog() {
           onChange={(e) => handleChange(e)}
         />
         <TextField
-         // defaultValue = {user.bio}
+          // defaultValue = {user.bio}
           autoFocus
           margin="dense"
           name="bio"
@@ -238,7 +242,7 @@ export default function ProjectSettingsDialog() {
           onChange={(e) => handleChange(e)}
         />
         <TextField
-         // defaultValue = {user.link}
+          // defaultValue = {user.link}
           autoFocus
           margin="dense"
           name="link"
@@ -246,6 +250,14 @@ export default function ProjectSettingsDialog() {
           type="link"
           fullWidth
           onChange={(e) => handleChange(e)}
+        />
+        <DropzoneArea
+          acceptedFiles={['image/png', 'image/jpg', 'image/jpeg']}
+          dropzoneText={'Update your profile photo by dragging and dropping an image here or clicking'}
+          filesLimit={1}
+          maxFileSize={5000000}
+        // onChange={(files) => console.log('Files:', files)}
+        //onChange={(files) => handleUpload(files)}
         />
       </DialogContent>
       <DialogActions>

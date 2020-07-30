@@ -46,17 +46,15 @@ function ProjectSettingsGeneral() {
     ));
   };
 
-  const handleUpload = (files) => {
-    console.log('Files:', files);
-    fetch('http://localhost:8000/project/6e2f8633-8743-4214-9115-d4e65a76b113/upload/harry',{
+  const handleUpload = async (files) => {
+    const body = new FormData();
+    body.append('file', files)
+    console.log('Files:', body);
+    await fetch('http://localhost:8000/project/6e2f8633-8743-4214-9115-d4e65a76b113/upload/harry',{
       method: 'PUT',
-      headers: {'Content-Type':'multipart/form-data','charset':'utf-8', 'boundary':"another cool boundary"},
-      body: files
+      body: body
     })
     .then((response) => response.json())
-    .then((data) => {
-      setImage(data.images)
-    })
     .catch(error => {
       setError(error);
       console.log(error)})
