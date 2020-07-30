@@ -17,7 +17,14 @@ import {
   DialogContext
 } from '../../../contexts';
 import { useStyles, activeLink } from './ProjectStyles';
-import { Overview, General, Timeline, Discussions, Error404 } from './index';
+import {
+  Overview,
+  General,
+  Timeline,
+  Discussions,
+  Error404,
+  Tasks
+} from './index';
 import { FeatureImage } from '../components';
 import ProjectDialogs from '../dialogs';
 
@@ -100,6 +107,8 @@ function Project({ match }) {
           return componentWrapper(Discussions);
         case 'timeline':
           return componentWrapper(Timeline);
+        case 'tasks':
+          return componentWrapper(Tasks);
         case 'general':
           return componentWrapper(General);
         default:

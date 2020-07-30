@@ -79,6 +79,13 @@ export const projects = [
           title: 'About'
         },
         {
+          type: 'tasks',
+          id: '8p12k0q0',
+          showing: true,
+          sidebar: false,
+          title: 'Tasks'
+        },
+        {
           type: 'discussions',
           id: '01cb7854',
           showing: true,
@@ -117,6 +124,10 @@ export const projects = [
               }
             ]
           }
+        },
+        '8p12k0q0': {
+          type: 'tasks',
+          content: {}
         },
         '01cb7854': {
           type: 'discussions',
@@ -434,7 +445,7 @@ export const AVAILABLE_SIDEBAR_COMPONENTS = [
 export const AVAILABLE_PAGES = [
   {
     type: 'overview',
-    subtext: 'Shows the overview of the project.',
+    subtext: 'Shows the overview of the project',
     id: uuid(),
     open: false,
     unique: true,
@@ -451,6 +462,16 @@ export const AVAILABLE_PAGES = [
     showing: true,
     sidebar: false,
     title: 'Discussions'
+  },
+  {
+    type: 'tasks',
+    subtext: 'A page detailing the tasks pertinent to the project',
+    id: uuid(),
+    open: false,
+    unique: true,
+    showing: true,
+    sidebar: false,
+    title: 'Tasks'
   },
   {
     type: 'general',
