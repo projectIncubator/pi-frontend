@@ -68,7 +68,7 @@ export default function OverviewPageDialog() {
         case 'description':
           return Boolean(el.content.text);
         default:
-          return false;
+          return true;
       }
     });
 

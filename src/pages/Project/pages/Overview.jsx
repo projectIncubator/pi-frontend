@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import { Header, Sidebar } from '../components';
 import { ProjectContext } from '../../../contexts';
 import { Loading } from '../../../components';
-import { General, Description } from '../modules/main';
+import { General, Description, Milestones } from '../modules/main';
 
 export default function Overview({ pageId }) {
   const { project, page, setPageId } = useContext(ProjectContext);
@@ -19,6 +19,8 @@ export default function Overview({ pageId }) {
         return <General content={el.content} />;
       case 'description':
         return <Description content={el.content} />;
+      case 'milestones':
+        return <Milestones content={el.content} />;
       default:
         break;
     }

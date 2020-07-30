@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { DragIndicator, ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
 
-import { Description, General } from '../modules/main/settings';
+import { Description, General, Milestones } from '../modules/main/settings';
 import { useStyles } from './ComponentCardStyles';
 
 const CurrentComponent = React.memo(
@@ -47,6 +47,8 @@ const CurrentComponent = React.memo(
           return renderModule(General);
         case 'description':
           return renderModule(Description);
+        case 'milestones':
+          return renderModule(Milestones);
         default:
           return <></>;
       }

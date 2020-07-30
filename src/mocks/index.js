@@ -508,6 +508,15 @@ export const AVAILABLE_COMPONENTS = [
       header: '',
       text: ''
     }
+  },
+  {
+    type: 'milestones',
+    subtext: 'Shows a list of milestone cards.',
+    id: uuid(),
+    unique: true,
+    content: {
+      header: 'Milestones'
+    }
   }
 ];
 
