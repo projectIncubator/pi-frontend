@@ -167,7 +167,48 @@ export const projects = [
       }
     },
     events: {},
-    tasks: {}
+    tasks: {
+      1: {
+        text: 'Enforce mask usage',
+        id: 1,
+        parent: null,
+        children: [3],
+        depth: 1,
+        members: [],
+        status: 'To do',
+        startDate: new Date()
+      },
+      2: {
+        text: 'Advertise on Google',
+        id: 2,
+        parent: null,
+        children: [],
+        depth: 1,
+        members: [],
+        status: 'To do',
+        startDate: new Date()
+      },
+      3: {
+        text: 'Buy a bunch of masks',
+        id: 3,
+        parent: 1,
+        children: [4],
+        depth: 2,
+        members: [],
+        status: 'To do',
+        startDate: new Date()
+      },
+      4: {
+        text: 'Assign someone to buy the masks',
+        id: 4,
+        parent: 3,
+        children: [],
+        depth: 3,
+        members: [],
+        status: 'To do',
+        startDate: new Date()
+      }
+    }
   },
   {
     meta: {
