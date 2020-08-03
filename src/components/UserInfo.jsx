@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { userType } from '../types';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import {
   withStyles
 } from '@material-ui/core';
 import { Link as LinkIcon } from '@material-ui/icons';
+import { useAuth0 } from '../contexts/AuthProvider';
 
 const styles = (theme) => ({
   root: {
@@ -76,7 +77,7 @@ const styles = (theme) => ({
   }
 });
 
-function UserInfo({
+const UserInfo = ({
   classes,
   user: {
     id,
@@ -93,7 +94,16 @@ function UserInfo({
     contributing,
     created_projects
   }
-}) {
+}) => {
+  const { user, setUser, authenticatedFetch } = useAuth0();
+  const [isFollowing, setIsFollowing] = useState(
+    () =>
+      user &&
+      id !== user.id &&
+      user.following.map((u) => u.id === id).includes(true)
+  );
+  const [followersCount, setFollowersCount] = useState(followers_count);
+
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const avatarSection = (
@@ -126,15 +136,63 @@ function UserInfo({
     </section>
   );
 
+  const followUser = async () => {
+    try {
+      const response = await authenticatedFetch('follows/' + id, {
+        method: 'POST'
+      });
+
+      const newFollowing = [...user.following].concat([response]);
+      setUser({ ...user, following: newFollowing });
+      setIsFollowing(!isFollowing);
+      setFollowersCount(followersCount + 1);
+    } catch (e) {
+      console.log('ERROR:', e);
+    }
+  };
+
+  const unfollowUser = async () => {
+    try {
+      await authenticatedFetch('follows/' + id, { method: 'DELETE' });
+      const newFollowings = [...user.following].filter((u) => u.id !== id);
+      setUser({ ...user, following: newFollowings });
+      setIsFollowing(!isFollowing);
+      setFollowersCount(followersCount - 1);
+    } catch (e) {
+      console.log('ERROR: ', e);
+    }
+  };
+
+  const followButton =
+    user &&
+    id !== user.id &&
+    (isFollowing ? (
+      <Button
+        fullWidth
+        size={isMobile ? 'small' : 'medium'}
+        onClick={unfollowUser}
+      >
+        Unfollow
+      </Button>
+    ) : (
+      <Button
+        fullWidth
+        size={isMobile ? 'small' : 'medium'}
+        onClick={followUser}
+      >
+        Follow
+      </Button>
+    ));
+
   const socialSection = (
     <section className={classes.social}>
       <Grid container>
         <Grid item xs={6}>
           <MUILink href="">
             <Box fontWeight="fontWeightBold" component="span">
-              {followers_count}&nbsp;
+              {followersCount}&nbsp;
             </Box>
-            {followers_count === 1 ? 'Follower' : 'Followers'}
+            {followersCount === 1 ? 'Follower' : 'Followers'}
           </MUILink>
         </Grid>
         <Grid item xs={6}>
@@ -146,9 +204,7 @@ function UserInfo({
           </MUILink>
         </Grid>
       </Grid>
-      <Button fullWidth size={isMobile ? 'small' : 'medium'}>
-        Follow
-      </Button>
+      {followButton}
     </section>
   );
 
@@ -197,7 +253,7 @@ function UserInfo({
       )}
     </div>
   );
-}
+};
 
 UserInfo.propTypes = {
   classes: PropTypes.object.isRequired,

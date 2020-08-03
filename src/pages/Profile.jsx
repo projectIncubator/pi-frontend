@@ -35,7 +35,7 @@ const styles = (theme) => ({
   }
 });
 
-function Profile({ classes }) {
+const Profile = ({ classes }) => {
   const { profileId } = useParams();
   const [fetching, setFetching] = useState(true);
   const [user, setUser] = useState(null);
@@ -105,7 +105,7 @@ function Profile({ classes }) {
       </Grid>
     </Paper>
   );
-}
+};
 
 Profile.propTypes = {
   classes: PropTypes.object.isRequired
