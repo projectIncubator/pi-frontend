@@ -48,17 +48,21 @@ function ProjectSettingsGeneral() {
 
   const handleUpload = async (files) => {
     const body = new FormData();
-    body.append('file', files)
+    body.append('file', files);
     console.log('Files:', body);
-    await fetch('http://localhost:8000/project/6e2f8633-8743-4214-9115-d4e65a76b113/upload/harry',{
-      method: 'PUT',
-      body: body
-    })
-    .then((response) => response.json())
-    .catch(error => {
-      setError(error);
-      console.log(error)})
-  }
+    await fetch(
+      'http://localhost:8000/project/6e2f8633-8743-4214-9115-d4e65a76b113/upload/harry',
+      {
+        method: 'PUT',
+        body: body
+      }
+    )
+      .then((response) => response.json())
+      .catch((error) => {
+        setError(error);
+        console.log(error);
+      });
+  };
 
   return (
     <Grid container spacing={2} alignItems="center">
@@ -67,8 +71,8 @@ function ProjectSettingsGeneral() {
         dropzoneText={'Drag and drop an image here or click'}
         filesLimit={1}
         maxFileSize={5000000}
-       // onChange={(files) => console.log('Files:', files)}
-       onChange={(files) => handleUpload(files)}
+        // onChange={(files) => console.log('Files:', files)}
+        onChange={(files) => handleUpload(files)}
       />
       {renderToggles()}
     </Grid>
