@@ -6,6 +6,7 @@ export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
 export const Auth0Provider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState();
+  const [auth0user, setAuth0user] = useState();
   const [user, setUser] = useState();
   const [auth0Client, setAuth0] = useState();
   const [loading, setLoading] = useState(true);
@@ -44,7 +45,7 @@ export const Auth0Provider = ({ children }) => {
 
       if (isAuthenticated) {
         const user = await auth0FromHook.getUser();
-        setUser(user);
+        setAuth0user(user);
       }
 
       setLoading(false);
@@ -60,7 +61,7 @@ export const Auth0Provider = ({ children }) => {
       const headers = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
-        'user-id': user.sub
+        'user-id': auth0user.sub
       };
       const config = {
         method: body ? 'POST' : 'GET',
@@ -79,7 +80,10 @@ export const Auth0Provider = ({ children }) => {
         config
       );
 
-      const data = await response.json();
+      let data = null;
+      try {
+        data = await response.json();
+      } catch (err) {}
 
       if (response.ok) {
         return data;
@@ -87,7 +91,7 @@ export const Auth0Provider = ({ children }) => {
         return Promise.reject(data);
       }
     },
-    [user, auth0Client]
+    [auth0user, auth0Client]
   );
 
   useEffect(() => {
@@ -95,24 +99,27 @@ export const Auth0Provider = ({ children }) => {
       try {
         const namespace = 'https://projectincubator.com/';
         const sendUser = {
-          id_token: user.sub,
-          first_name: user[namespace + 'first_name'],
-          last_name: user[namespace + 'last_name'],
-          email: user.email
+          id_token: auth0user.sub,
+          first_name: auth0user[namespace + 'first_name'],
+          last_name: auth0user[namespace + 'last_name'],
+          email: auth0user.email
         };
 
-        authenticatedFetch('users', {
+        const data = await authenticatedFetch('users', {
           body: sendUser
         });
+
+        const newUser = { ...data, id_token: auth0user.sub };
+        setUser(newUser);
       } catch (e) {
         console.log('ERROR:', e);
       }
     };
 
-    if (user) {
+    if (isAuthenticated && auth0user) {
       loginToBackend();
     }
-  }, [user, authenticatedFetch]);
+  }, [auth0user, isAuthenticated, authenticatedFetch, setUser]);
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
@@ -124,7 +131,7 @@ export const Auth0Provider = ({ children }) => {
       setPopupOpen(false);
     }
     const user = await auth0Client.getUser();
-    setUser(user);
+    setAuth0user(user);
     setIsAuthenticated(true);
   };
 
@@ -134,14 +141,14 @@ export const Auth0Provider = ({ children }) => {
     const user = await auth0Client.getUser();
     setLoading(false);
     setIsAuthenticated(true);
-    setUser(user);
+    setAuth0user(user);
   };
 
   return (
     <Auth0Context.Provider
       value={{
         isAuthenticated,
-        user,
+        user: user,
         loading,
         popupOpen,
         loginWithPopup,
@@ -151,7 +158,8 @@ export const Auth0Provider = ({ children }) => {
         getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
         getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
         logout: (...p) => auth0Client.logout(...p),
-        authenticatedFetch
+        authenticatedFetch,
+        setUser
       }}
     >
       {children}
