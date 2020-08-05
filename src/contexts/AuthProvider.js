@@ -110,7 +110,6 @@ export const Auth0Provider = ({ children }) => {
         });
 
         const newUser = { ...data, id_token: auth0user.sub };
-        console.log(newUser);
         setUser(newUser);
       } catch (e) {
         console.log('ERROR:', e);
@@ -143,7 +142,6 @@ export const Auth0Provider = ({ children }) => {
     setLoading(false);
     setIsAuthenticated(true);
     setAuth0user(user);
-    console.log(user);
   };
 
   return (
