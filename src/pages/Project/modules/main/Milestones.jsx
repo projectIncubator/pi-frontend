@@ -20,12 +20,10 @@ export default function Milestones({ content }) {
   const { header } = content;
   const {
     project: {
-      tasks: { data }
+      tasks: { milestones }
     }
   } = useContext(ProjectContext);
-  const tasksArray = Object.keys(data).filter(
-    (taskId) => data[taskId].depth === 1
-  );
+  const milestonesArray = Object.keys(milestones);
 
   return (
     <div>
@@ -35,14 +33,14 @@ export default function Milestones({ content }) {
         </Typography>
       )}
       <Grid container spacing={2}>
-        {tasksArray.map((taskId) => {
-          const task = data[taskId];
+        {milestonesArray.map((milestoneId) => {
+          const milestone = milestones[milestoneId];
           return (
-            <Grid key={taskId} item xs={12} sm={6} md={4} lg={3}>
+            <Grid key={milestoneId} item xs={12} sm={6} md={4} lg={3}>
               <Card variant="elevation" elevation={2}>
                 <CardContent>
                   <Typography variant="body2">Milestones</Typography>
-                  <Typography variant="h5">{task.text}</Typography>
+                  <Typography variant="h5">{milestone.text}</Typography>
                 </CardContent>
               </Card>
             </Grid>

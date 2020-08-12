@@ -179,47 +179,72 @@ export const projects = [
     },
     events: {},
     tasks: {
-      statuses: ['To do', 'In progress', 'Complete'],
-      data: {
-        1: {
+      lastTaskId: 4,
+      milestones: {
+        1555: {
           text: 'Enforce mask usage',
-          id: 1,
-          parent: null,
-          children: [3],
-          depth: 1,
+          description:
+            'Masks are an important aspect of keeping everyone safe.',
+          id: 1555,
+          tasks: [3],
           members: [],
           status: 'To do',
-          startDate: new Date()
+          createdDate: new Date()
         },
-        2: {
+        2215: {
           text: 'Advertise on Google',
-          id: 2,
-          parent: null,
-          children: [],
-          depth: 1,
+          description:
+            'Google is a great platform to advertise on. We need more leads!',
+          id: 2215,
+          tasks: [],
           members: [],
           status: 'To do',
-          startDate: new Date()
+          createdDate: new Date()
+        }
+      },
+      statuses: {
+        abcd: {
+          id: 'abcd',
+          title: 'To do',
+          tasks: [3]
         },
+        uuidgoeshere: {
+          id: 'uuidgoeshere',
+          title: 'In progress',
+          tasks: []
+        },
+        qwerty: {
+          id: 'qwerty',
+          title: 'Complete',
+          tasks: [4]
+        }
+      },
+      statusOrder: ['abcd', 'uuidgoeshere', 'qwerty'],
+      tasks: {
         3: {
           text: 'Buy a bunch of masks',
           id: 3,
-          parent: 1,
-          children: [4],
-          depth: 2,
+          milestone: 1555,
+          subtasks: [
+            {
+              id: uuid(),
+              text: 'Assign someone to buy the masks',
+              assigned: [],
+              dueDate: new Date()
+            }
+          ],
           members: [],
-          status: 'To do',
-          startDate: new Date()
+          status: 'In progress',
+          createdDate: new Date()
         },
         4: {
-          text: 'Assign someone to buy the masks',
+          text: 'This is a completed task',
           id: 4,
-          parent: 3,
-          children: [],
-          depth: 3,
-          members: [],
-          status: 'To do',
-          startDate: new Date()
+          milestone: 2215,
+          subtasks: [],
+
+          status: 'Complete',
+          createdDate: new Date()
         }
       }
     }

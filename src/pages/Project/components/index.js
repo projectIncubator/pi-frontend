@@ -8,6 +8,8 @@ import CurrentPage from './CurrentPage';
 import Sidebar from './Sidebar';
 import CurrentComponent from './CurrentComponent';
 import TaskBoard from './TaskBoard';
+import TaskBoardColumn from './TaskBoardColumn';
+import TaskBoardItem from './TaskBoardItem';
 
 export {
   CurrentComponent,
@@ -19,5 +21,7 @@ export {
   AvailablePage,
   CurrentPage,
   Sidebar,
-  TaskBoard
+  TaskBoard,
+  TaskBoardColumn,
+  TaskBoardItem
 };
