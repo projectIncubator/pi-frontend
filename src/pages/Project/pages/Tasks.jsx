@@ -2,14 +2,16 @@ import React, { useContext, useEffect } from 'react';
 import { Grid, Card, CardContent, Typography } from '@material-ui/core';
 
 import { ProjectContext } from '../../../contexts';
-import { Header } from '../components';
+import { Header, TaskBoard } from '../components';
 
 export default function Tasks({ pageId }) {
   const {
-    project: { tasks },
+    project: {
+      tasks: { data }
+    },
     setPageId
   } = useContext(ProjectContext);
-  const tasksArray = Object.keys(tasks);
+  const tasksArray = Object.keys(data);
 
   const convertToLevel = (depth) => {
     switch (depth) {
@@ -30,25 +32,30 @@ export default function Tasks({ pageId }) {
 
   return (
     <div>
-      <Header page="tasks" title="Tasks" />
+      <Header page="tasks" title="Milestones" />
       <Grid container spacing={3}>
-        {tasksArray.map((taskId) => {
-          const task = tasks[taskId];
-          return (
-            <Grid key={taskId} item xs={12} sm={6} md={4} lg={3}>
-              <Card variant="elevation" elevation={2}>
-                <CardContent>
-                  <Typography variant="body2">
-                    {convertToLevel(task.depth)}
-                  </Typography>
-                  <Typography variant="h5">{task.text}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
+        {tasksArray
+          .filter((taskId) => data[taskId].depth === 1)
+          .map((taskId) => {
+            const task = data[taskId];
+            return (
+              <Grid key={taskId} item xs={12} sm={6} md={4} lg={3}>
+                <Card variant="elevation" elevation={2}>
+                  <CardContent>
+                    <Typography variant="body2">
+                      {convertToLevel(task.depth)}
+                    </Typography>
+                    <Typography variant="h5">{task.text}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
       </Grid>
+      <Typography variant="h3" style={{ marginTop: 12 }}>
+        Board
+      </Typography>
+      <TaskBoard />
     </div>
   );
 }
- 

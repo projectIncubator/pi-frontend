@@ -7,6 +7,7 @@ import AvailablePage from './AvailablePage';
 import CurrentPage from './CurrentPage';
 import Sidebar from './Sidebar';
 import CurrentComponent from './CurrentComponent';
+import TaskBoard from './TaskBoard';
 
 export {
   CurrentComponent,
@@ -17,5 +18,6 @@ export {
   AvailableCard,
   AvailablePage,
   CurrentPage,
-  Sidebar
+  Sidebar,
+  TaskBoard
 };
