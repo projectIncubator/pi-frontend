@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   columnHeader: {},
   droppableGrid: {
+    borderRadius: 4,
     minHeight: 1,
     '& > div': {
       marginBottom: theme.spacing(1)
