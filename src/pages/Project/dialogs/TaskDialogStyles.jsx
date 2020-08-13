@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme) => ({
   sidebar: {
     height: '100%',
     width: 230,
-    background: 'lightgrey',
+    background: '#efefef',
     padding: theme.spacing(2)
   },
   mainbar: {
