@@ -223,6 +223,8 @@ export const projects = [
       tasks: {
         3: {
           text: 'Buy a bunch of masks',
+          description:
+            'We need to buy some masks, but we have to keep track of our expenses since we have a tight budget.',
           id: 3,
           milestone: 1555,
           subtasks: [
@@ -233,16 +235,36 @@ export const projects = [
               dueDate: new Date()
             }
           ],
+          comments: [
+            {
+              user: {
+                username: 'hal.shin@alumni.ubc.ca',
+                nickname: 'Hal Shin'
+              },
+              createdDate: new Date('2020-08-10'),
+              text: 'This is a test comment... or is it?'
+            },
+            {
+              user: {
+                username: 'hal.shin@alumni.ubc.ca',
+                nickname: 'Hal Shin'
+              },
+              createdDate: new Date(),
+              text: 'Did I make this comment just now?'
+            }
+          ],
           members: [],
           status: 'In progress',
           createdDate: new Date()
         },
         4: {
           text: 'This is a completed task',
+          description: '',
           id: 4,
           milestone: 2215,
           subtasks: [],
-
+          comments: [],
+          members: [],
           status: 'Complete',
           createdDate: new Date()
         }

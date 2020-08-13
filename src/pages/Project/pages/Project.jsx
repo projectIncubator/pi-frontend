@@ -41,7 +41,7 @@ function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open, setOpen } = useContext(DialogContext);
+  const { setOpen } = useContext(DialogContext);
   const { project, setPageId, setProject, setProjectId } = useContext(
     ProjectContext
   );
@@ -58,7 +58,7 @@ function Project({ match }) {
     if (project) setProject({ ...project });
     setProjectId(project.meta.id);
     setFetching(false);
-  }, [projectId, open, setProjectId, setProject]);
+  }, [projectId, setProjectId, setProject]);
 
   const handleNavLinkClick = (id) => {
     setPageId(id);

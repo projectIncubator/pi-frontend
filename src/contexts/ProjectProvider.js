@@ -8,6 +8,7 @@ export function ProjectProvider({ children }) {
   const [page, setPage] = useState({ meta: { id: '' }, content: {} });
   const [pageId, setPageId] = useState('');
   const [projectId, setProjectId] = useState('');
+  const [task, setTask] = useState({});
 
   // Settings variables
   const [currentPages, setCurrPages] = useState([]);
@@ -51,7 +52,9 @@ export function ProjectProvider({ children }) {
         currentPages,
         setCurrPages,
         currentComponents,
-        setCurrComponents
+        setCurrComponents,
+        task,
+        setTask
       }}
     >
       {children}
