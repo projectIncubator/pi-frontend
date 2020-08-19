@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { getPageContentById, getPageMetaById } from '../mocks';
-import rfdc from 'rfdc';
 
 export const ProjectContext = createContext();
 
@@ -12,14 +11,12 @@ export function ProjectProvider({ children }) {
   const [task, setTask] = useState({});
 
   // Settings variables
-  const [projectClone, setProjectClone] = useState({});
   const [currentPages, setCurrPages] = useState([]);
   const [currentComponents, setCurrComponents] = useState([]);
   const [tasks, setTasks] = useState({});
 
   useEffect(() => {
     if (Object.keys(project).length > 0) {
-      setProjectClone(rfdc(project));
       setTasks(project.tasks);
       setCurrPages(project.meta.pages_order.map((el) => Object.assign({}, el)));
       setCurrComponents(
