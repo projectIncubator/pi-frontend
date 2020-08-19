@@ -63,6 +63,20 @@ function TaskBoardColumn({ statusId, index, isEditing }) {
   };
 
   const handleHeaderLeave = () => {
+    if (newTitle.length > 0) {
+      setTasks((tasks) => ({
+        ...tasks,
+        statuses: {
+          ...tasks.statuses,
+          [statusId]: {
+            ...tasks.statuses[statusId],
+            title: newTitle
+          }
+        }
+      }));
+    } else {
+      setNewTitle(title);
+    }
     setIsEditingHeader(false);
   };
 

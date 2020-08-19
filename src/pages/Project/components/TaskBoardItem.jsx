@@ -39,7 +39,8 @@ function TaskBoardItem({
   const classes = useStyles();
   const {
     tasks: { tasks },
-    setTask
+    setTask,
+    setTasks
   } = useContext(ProjectContext);
   const { setOpen } = useContext(DialogContext);
   const [taskText, setTaskText] = useState(tasks[taskId].text);
@@ -50,6 +51,16 @@ function TaskBoardItem({
   };
 
   const handleBlur = () => {
+    setTasks((tasks) => ({
+      ...tasks,
+      tasks: {
+        ...tasks.tasks,
+        [taskId]: {
+          ...tasks.tasks[taskId],
+          text: taskText
+        }
+      }
+    }));
     deselect();
   };
 

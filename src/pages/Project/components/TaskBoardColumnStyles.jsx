@@ -25,7 +25,6 @@ export const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     letterSpacing: '0.0075em',
     lineHeight: 1.6,
-    marginBottom: theme.spacing(1),
     wordWrap: 'break-word',
     wordBreak: 'break-all'
   },

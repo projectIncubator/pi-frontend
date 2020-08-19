@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { makeStyles, Paper } from '@material-ui/core';
+import { v4 as uuid } from 'uuid';
 
 import { ProjectContext } from '../../../contexts';
 import { TaskBoardColumn } from './index';
@@ -12,13 +13,24 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
     padding: theme.spacing(3),
     border: 'none',
-    overflowX: 'scroll'
+    overflow: 'scroll'
   },
   columnContainer: {
     display: 'flex',
+    overflow: 'scroll',
     alignItems: 'flex-start',
     '& > div': {
       marginRight: theme.spacing(2)
+    }
+  },
+  new: {
+    minWidth: 260,
+    maxWidth: 260,
+    padding: theme.spacing(1),
+    cursor: 'pointer',
+    borderRadius: 4,
+    '&:hover': {
+      background: '#efefef'
     }
   }
 }));
@@ -33,6 +45,22 @@ function TaskBoard({ isEditing }) {
     tasks: { statusOrder, statuses },
     setTasks
   } = useContext(ProjectContext);
+
+  const handleNewColumn = () => {
+    const newColumnId = uuid();
+    setTasks((tasks) => ({
+      ...tasks,
+      statuses: {
+        ...tasks.statuses,
+        [newColumnId]: {
+          id: newColumnId,
+          title: 'New column',
+          tasks: []
+        }
+      },
+      statusOrder: [...tasks.statusOrder, newColumnId]
+    }));
+  };
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
@@ -125,6 +153,11 @@ function TaskBoard({ isEditing }) {
                 />
               ))}
               {provided.placeholder}
+              {isEditing && (
+                <div className={classes.new} onClick={handleNewColumn}>
+                  + Add new column
+                </div>
+              )}
             </div>
           </Paper>
         )}
