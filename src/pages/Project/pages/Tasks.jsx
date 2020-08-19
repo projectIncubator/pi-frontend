@@ -1,21 +1,37 @@
-import React, { useContext, useEffect } from 'react';
-import { Grid, Card, CardContent, Typography } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
+import { Grid, Card, CardContent, Typography, Button } from '@material-ui/core';
 
 import { ProjectContext } from '../../../contexts';
 import { Header, TaskBoard } from '../components';
+import { Loading } from '../../../components';
+import { getProjectIndexById, projects } from '../../../mocks';
 
 export default function Tasks({ pageId }) {
-  const {
-    project: {
-      tasks: { milestones }
-    },
-    setPageId
-  } = useContext(ProjectContext);
+  const { project, setProject, tasks, setTasks, setPageId } = useContext(
+    ProjectContext
+  );
+  const [isEditing, setIsEditing] = useState(false);
+  const { milestones } = project.tasks;
   const milestonesArray = Object.keys(milestones);
 
   useEffect(() => {
     setPageId(pageId);
   }, [pageId, setPageId]);
+
+  const handleCancel = () => {
+    setTasks(project.tasks);
+    setIsEditing(false);
+  };
+
+  const handleSave = () => {
+    const projIndex = getProjectIndexById(project.meta.id);
+    projects[projIndex].tasks = tasks;
+    setProject((project) => ({
+      ...project,
+      tasks
+    }));
+    setIsEditing(false);
+  };
 
   return (
     <div>
@@ -39,10 +55,32 @@ export default function Tasks({ pageId }) {
           );
         })}
       </Grid>
-      <Typography variant="h4" style={{ marginTop: 16 }}>
-        Board
-      </Typography>
-      <TaskBoard />
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Typography variant="h4" style={{ marginTop: 16 }}>
+          Board
+        </Typography>
+        <div>
+          {isEditing ? (
+            <div>
+              <Button
+                color="secondary"
+                style={{ marginRight: 8 }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleSave}>Save</Button>
+            </div>
+          ) : (
+            <Button onClick={() => setIsEditing(true)}>Edit Board</Button>
+          )}
+        </div>
+      </div>
+      {Object.keys(tasks).length > 0 ? (
+        <TaskBoard isEditing={isEditing} />
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

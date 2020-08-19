@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core';
 export const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'relative',
-    width: 750,
+    width: 780,
     height: 800,
     display: 'flex',
     flexDirection: 'row',
@@ -33,6 +33,29 @@ export const useStyles = makeStyles((theme) => ({
     '& > div': {
       marginBottom: theme.spacing(1)
     }
+  },
+  header: {
+    minHeight: 31.2,
+    width: '100%',
+    paddingRight: '50px',
+    marginBottom: theme.spacing(1),
+    wordWrap: 'break-word',
+    wordBreak: 'break-all',
+    cursor: 'pointer'
+  },
+  headerInput: {
+    marginRight: '50px',
+    fontSize: '1.5rem',
+    marginBottom: theme.spacing(1),
+    padding: 0,
+    height: '31.2px',
+    letterSpacing: 0,
+    wordWrap: 'break-word',
+    wordBreak: 'break-all',
+    lineHeight: 1.333
+  },
+  headerInputBase: {
+    padding: 0
   },
   descriptionContent: {
     background: '#efefef',

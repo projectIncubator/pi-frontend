@@ -1,55 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Typography, InputBase } from '@material-ui/core';
 
 import { ProjectContext } from '../../../contexts';
 import { TaskBoardItem } from './index';
-
-const useStyles = makeStyles((theme) => ({
-  column: {
-    background: theme.palette.background.paper,
-    padding: theme.spacing(1),
-    minWidth: 260,
-    borderRadius: 4
-  },
-  columnHeader: {},
-  droppableGrid: {
-    borderRadius: 4,
-    minHeight: 1,
-    '& > div': {
-      marginBottom: theme.spacing(1)
-    }
-  },
-  new: {
-    padding: theme.spacing(1),
-    cursor: 'pointer',
-    borderRadius: 4,
-    '&:hover': {
-      background: '#efefef'
-    }
-  }
-}));
+import { useStyles } from './TaskBoardColumnStyles';
 
 const getDroppableStyle = (isDraggingOver) => ({
   background: isDraggingOver ? 'lightgrey' : ''
 });
 
-function TaskBoardColumn({ statusId, index }) {
+function TaskBoardColumn({ statusId, index, isEditing }) {
   const classes = useStyles();
   const {
-    project: {
-      tasks: { statuses, lastTaskId }
-    },
-    setProject
+    tasks: { statuses, lastTaskId },
+    setTasks
   } = useContext(ProjectContext);
   const { title, tasks } = statuses[statusId];
+  const [isEditingHeader, setIsEditingHeader] = useState(false);
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [newTitle, setNewTitle] = useState(title);
 
   const handleNewTask = () => {
     const newStatusTasks = [...tasks];
     const newTaskId = lastTaskId + 1;
     newStatusTasks.push(newTaskId);
     const newTask = {
-      text: 'Text goes here',
+      text: '',
       id: newTaskId,
       milestone: null,
       subtasks: [],
@@ -58,28 +35,43 @@ function TaskBoardColumn({ statusId, index }) {
       createdDate: new Date()
     };
 
-    setProject((project) => ({
-      ...project,
+    setTasks((tasks) => ({
+      ...tasks,
+      lastTaskId: lastTaskId + 1,
       tasks: {
-        ...project.tasks,
-        lastTaskId: lastTaskId + 1,
-        tasks: {
-          ...project.tasks.tasks,
-          [newTaskId]: newTask
-        },
-        statuses: {
-          ...project.tasks.statuses,
-          [statusId]: {
-            ...project.tasks.statuses[statusId],
-            tasks: newStatusTasks
-          }
+        ...tasks.tasks,
+        [newTaskId]: newTask
+      },
+      statuses: {
+        ...tasks.statuses,
+        [statusId]: {
+          ...tasks.statuses[statusId],
+          tasks: newStatusTasks
         }
       }
     }));
+
+    setEditingTaskId(newTaskId);
+  };
+
+  const handleHeaderChange = (event) => {
+    if (event.target.value.length < 100) setNewTitle(event.target.value);
+  };
+
+  const handleHeaderClick = () => {
+    setIsEditingHeader(true);
+  };
+
+  const handleHeaderLeave = () => {
+    setIsEditingHeader(false);
+  };
+
+  const handleDeselect = () => {
+    setEditingTaskId(null);
   };
 
   return (
-    <Draggable draggableId={statusId} index={index}>
+    <Draggable draggableId={statusId} index={index} isDragDisabled={!isEditing}>
       {(provided) => (
         <div
           ref={provided.innerRef}
@@ -87,9 +79,28 @@ function TaskBoardColumn({ statusId, index }) {
           className={classes.column}
         >
           <div {...provided.dragHandleProps} className={classes.columnHeader}>
-            <Typography variant="h6" gutterBottom>
-              {title}
-            </Typography>
+            {isEditingHeader ? (
+              <InputBase
+                classes={{
+                  input: classes.headerInput,
+                  multiline: classes.headerMultiline
+                }}
+                onChange={handleHeaderChange}
+                value={newTitle}
+                onBlur={handleHeaderLeave}
+                autoFocus
+                fullWidth
+                multiline
+              />
+            ) : (
+              <Typography
+                onClick={handleHeaderClick}
+                variant="h6"
+                className={classes.headerText}
+              >
+                {newTitle}
+              </Typography>
+            )}
           </div>
           <Droppable droppableId={statusId}>
             {(provided, snapshot) => (
@@ -104,15 +115,20 @@ function TaskBoardColumn({ statusId, index }) {
                     key={taskId}
                     taskId={taskId}
                     index={taskIndex}
+                    deselect={handleDeselect}
+                    isEditingHeader={taskId === editingTaskId}
+                    isEditing={isEditing}
                   />
                 ))}
                 {provided.placeholder}
               </div>
             )}
           </Droppable>
-          <div className={classes.new} onClick={handleNewTask}>
-            + Add new task
-          </div>
+          {isEditing && (
+            <div className={classes.new} onClick={handleNewTask}>
+              + Add new task
+            </div>
+          )}
         </div>
       )}
     </Draggable>

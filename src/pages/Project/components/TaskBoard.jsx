@@ -27,13 +27,11 @@ const getDroppableStyle = (isDraggingOver) => ({
   background: isDraggingOver ? 'darkgrey' : ''
 });
 
-function TaskBoard() {
+function TaskBoard({ isEditing }) {
   const classes = useStyles();
   const {
-    project: {
-      tasks: { statusOrder, statuses }
-    },
-    setProject
+    tasks: { statusOrder, statuses },
+    setTasks
   } = useContext(ProjectContext);
 
   const onDragEnd = (result) => {
@@ -56,9 +54,9 @@ function TaskBoard() {
       newStatusOrder.splice(source.index, 1);
       newStatusOrder.splice(destination.index, 0, draggableId);
 
-      setProject((project) => ({
-        ...project,
-        tasks: { ...project.tasks, statusOrder: newStatusOrder }
+      setTasks((tasks) => ({
+        ...tasks,
+        statusOrder: newStatusOrder
       }));
       return;
     }
@@ -69,16 +67,13 @@ function TaskBoard() {
       newTasksOrder.splice(source.index, 1);
       newTasksOrder.splice(destination.index, 0, draggableId);
 
-      setProject((project) => ({
-        ...project,
-        tasks: {
-          ...project.tasks,
-          statuses: {
-            ...project.tasks.statuses,
-            [start]: {
-              ...project.tasks.statuses[start],
-              tasks: newTasksOrder
-            }
+      setTasks((tasks) => ({
+        ...tasks,
+        statuses: {
+          ...tasks.statuses,
+          [start]: {
+            ...tasks.statuses[start],
+            tasks: newTasksOrder
           }
         }
       }));
@@ -92,20 +87,17 @@ function TaskBoard() {
     newStartTasksOrder.splice(source.index, 1);
     newEndTasksOrder.splice(destination.index, 0, draggableId);
 
-    setProject((project) => ({
-      ...project,
-      tasks: {
-        ...project.tasks,
-        statuses: {
-          ...project.tasks.statuses,
-          [start]: {
-            ...project.tasks.statuses[start],
-            tasks: newStartTasksOrder
-          },
-          [finish]: {
-            ...project.tasks.statuses[finish],
-            tasks: newEndTasksOrder
-          }
+    setTasks((tasks) => ({
+      ...tasks,
+      statuses: {
+        ...tasks.statuses,
+        [start]: {
+          ...tasks.statuses[start],
+          tasks: newStartTasksOrder
+        },
+        [finish]: {
+          ...tasks.statuses[finish],
+          tasks: newEndTasksOrder
         }
       }
     }));
@@ -129,6 +121,7 @@ function TaskBoard() {
                   statusId={statusId}
                   key={statusId}
                   index={index}
+                  isEditing={isEditing}
                 />
               ))}
               {provided.placeholder}

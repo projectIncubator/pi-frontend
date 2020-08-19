@@ -96,7 +96,7 @@ function Project({ match }) {
         : match.url;
 
     const renderComponent = (type, pageId, props) => {
-      const componentWrapper = (Component) => {
+      const componentWrapper = (Component, fullWidth = false) => {
         return <Component project={project} pageId={pageId} {...props} />;
       };
 

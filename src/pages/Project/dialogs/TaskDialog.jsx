@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Dialog,
-  DialogTitle,
-  DialogContent,
+  InputBase,
   Avatar,
   Paper,
-  Grid,
   Divider,
   Typography,
   useMediaQuery,
@@ -15,17 +13,59 @@ import {
 import { DialogContext, ProjectContext } from '../../../contexts';
 import timeSince from '../../../utils/timeSince';
 import { useStyles } from './TaskDialogStyles';
+import { getProjectIndexById, projects } from '../../../mocks';
+
+const initialEditingObj = {
+  header: false
+};
 
 function TaskDialog() {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const { task, setTask } = useContext(ProjectContext);
+  const {
+    task: contextTask,
+    setTask: setContextTask,
+    projectId,
+    setProject
+  } = useContext(ProjectContext);
   const { open, setOpen } = useContext(DialogContext);
 
+  const [task, setTask] = useState({});
+  const [editing, setEditing] = useState(initialEditingObj);
+
+  useEffect(() => {
+    if (Object.keys(contextTask).length > 0) {
+      setTask({ ...contextTask });
+    }
+  }, [contextTask]);
+
   const handleClose = () => {
-    setTask({});
+    const projectIndex = getProjectIndexById(projectId);
+    if (projectIndex !== -1) {
+      projects[projectIndex].tasks.tasks[task.id] = { ...task };
+      setProject(projects[projectIndex]);
+    }
+    setContextTask({});
+    setEditing(initialEditingObj);
     setOpen(false);
+  };
+
+  const handleHeaderClick = () => {
+    setEditing((state) => ({ ...state, header: true }));
+  };
+
+  const handleHeaderChange = (event) => {
+    if (event.target.value.length < 400)
+      setTask({ ...task, text: event.target.value });
+  };
+
+  const handleHeaderLeave = () => {
+    setEditing((state) => ({ ...state, header: false }));
+  };
+
+  const handleHeaderKeyDown = (event) => {
+    if (event.key === 'Enter') handleHeaderLeave();
   };
 
   return (
@@ -42,9 +82,30 @@ function TaskDialog() {
         <Typography variant="h6">Members</Typography>
       </div>
       <div className={classes.mainbar}>
-        <Typography variant="h5" gutterBottom>
-          Overview Page Settings
-        </Typography>
+        {editing.header ? (
+          <InputBase
+            classes={{
+              input: classes.headerInput,
+              multiline: classes.headerInputBase
+            }}
+            onChange={handleHeaderChange}
+            onKeyDown={handleHeaderKeyDown}
+            value={task.text}
+            onBlur={handleHeaderLeave}
+            autoFocus
+            fullWidth
+            multiline
+          />
+        ) : (
+          <Typography
+            onClick={handleHeaderClick}
+            variant="h5"
+            className={classes.header}
+          >
+            {task.text}
+          </Typography>
+        )}
+
         <Divider style={{ marginBottom: 8 }} />
         <div className={classes.mainbarContent}>
           <div className={classes.description}>
