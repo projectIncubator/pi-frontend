@@ -11,7 +11,7 @@ const getDroppableStyle = (isDraggingOver) => ({
 });
 
 function TaskBoardColumn({ statusId, index, isEditing }) {
-  const classes = useStyles();
+  const classes = useStyles(isEditing);
   const {
     tasks: { statuses, lastTaskId },
     setTasks
@@ -59,7 +59,7 @@ function TaskBoardColumn({ statusId, index, isEditing }) {
   };
 
   const handleHeaderClick = () => {
-    setIsEditingHeader(true);
+    if (isEditing) setIsEditingHeader(true);
   };
 
   const handleHeaderLeave = () => {

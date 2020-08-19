@@ -13,11 +13,10 @@ export const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
     minHeight: 1,
     '& > div': {
-      marginBottom: theme.spacing(1)
+      marginTop: theme.spacing(1)
     }
   },
   headerText: {
-    marginBottom: theme.spacing(1),
     wordWrap: 'break-word',
     wordBreak: 'break-all'
   },
@@ -34,6 +33,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: 0
   },
   new: {
+    marginTop: theme.spacing(1),
     padding: theme.spacing(1),
     cursor: 'pointer',
     borderRadius: 4,
