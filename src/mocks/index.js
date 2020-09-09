@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 
-const themes = {
+// TODO: Find a better way to expose this
+export const themes = {
   health: {
     name: 'health',
     logo: '',
@@ -272,6 +273,18 @@ export const projectStubs = projects.map((project) => ({
   start_date: project.meta.start_date,
   end_date: project.meta.end_date,
   oneliner: project.meta.oneliner
+}));
+
+export const projectStubsFeatured = projects.map((project) => ({
+  id: project.meta.id,
+  title: project.meta.title,
+  status: project.meta.status,
+  logo: project.meta.logo,
+  themes: project.meta.themes,
+  member_count: project.meta.member_count,
+  interested_count: project.meta.interested_count,
+  oneliner: project.meta.oneliner,
+  cover_photo: project.meta.cover_photo
 }));
 
 export const users = [
