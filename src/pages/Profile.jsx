@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import UserInfo from '../components/UserInfo';
 import ProjectCard from '../components/ProjectCard';
+import { useAuth0 } from '../contexts/AuthProvider';
 
 const styles = (theme) => ({
   root: {
@@ -36,6 +37,7 @@ const styles = (theme) => ({
 });
 
 const Profile = ({ classes }) => {
+  const { user: clientUser } = useAuth0();
   const { profileId } = useParams();
   const [fetching, setFetching] = useState(true);
   const [user, setUser] = useState(null);
@@ -56,7 +58,7 @@ const Profile = ({ classes }) => {
     };
 
     getUser(profileId);
-  }, [profileId]);
+  }, [profileId, clientUser]);
 
   if (fetching) return <></>;
 

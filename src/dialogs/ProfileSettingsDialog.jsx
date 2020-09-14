@@ -8,16 +8,16 @@ import {
   DialogContent
 } from '@material-ui/core';
 import { DropzoneArea } from 'material-ui-dropzone';
-import { DialogContext, AuthContext } from '../../../contexts';
+import { DialogContext, AuthContext } from '../contexts';
 import TextField from '@material-ui/core/TextField';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-export default function ProjectSettingsDialog() {
+export default function ProfileSettingsDialog() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { open, setOpen } = useContext(DialogContext);
-  const { user } = useContext(AuthContext);
+  const { user, setUser, authenticatedFetch } = useContext(AuthContext);
   const [userCopy, setUserCopy] = useState();
 
   const handleFillin = () => {
@@ -39,17 +39,39 @@ export default function ProjectSettingsDialog() {
     setUserCopy({ ...userCopy, [e.target.name]: e.target.value });
   };
   //TODO: Call the backend api to send the userCopy object into the backend;
-  const handleSave = () => {
-    setOpen(false);
+  const handleSave = async () => {
+    try {
+      const sendUser = {
+        first_name: userCopy.first_name,
+        last_name: userCopy.last_name,
+        profile_id: userCopy.profile_id,
+        image: userCopy.image,
+        bio: userCopy.bio
+      };
+
+      await authenticatedFetch('users/profile', {
+        method: 'PATCH',
+        body: sendUser
+      });
+
+      setUser(userCopy);
+      setOpen(false);
+    } catch (e) {
+      //TODO handle unique key error (helper text)
+      //TODO variant = outline
+      //TODO url change
+      //TODO default
+      console.log('ERROR:', e);
+    }
   };
 
   return (
     <Dialog
       fullScreen={fullScreen}
-      open={open === 'project-settings'}
+      open={open === 'profile-settings'}
       onClose={handleClose}
-      aria-labelledby="project-settings-dialog"
-      aria-describedby="project-settings-dialog-description"
+      aria-labelledby="profile-settings-dialog"
+      aria-describedby="profile-settings-dialog-description"
       maxWidth="lg"
     >
       <DialogTitle id="form-dialog-title">User Update</DialogTitle>
@@ -64,6 +86,7 @@ export default function ProjectSettingsDialog() {
           type="first name"
           fullWidth
           name="first_name"
+          value={userCopy ? userCopy.first_name : 'First Name'}
           onChange={(e) => handleChange(e)}
         />
         <TextField
@@ -77,21 +100,11 @@ export default function ProjectSettingsDialog() {
           onChange={(e) => handleChange(e)}
         />
         <TextField
-          // defaultValue = {user.email}
-          autoFocus
-          margin="dense"
-          name="email"
-          label="Email"
-          type="email"
-          fullWidth
-          onChange={(e) => handleChange(e)}
-        />
-        <TextField
           // defaultValue = {user.profile_id}
           autoFocus
           margin="dense"
           name="profile_id"
-          label="Profile_ID"
+          label="URL"
           type="profile_id"
           fullWidth
           onChange={(e) => handleChange(e)}
@@ -103,16 +116,6 @@ export default function ProjectSettingsDialog() {
           name="bio"
           label="Bio"
           type="bio"
-          fullWidth
-          onChange={(e) => handleChange(e)}
-        />
-        <TextField
-          // defaultValue = {user.link}
-          autoFocus
-          margin="dense"
-          name="link"
-          label="Link"
-          type="link"
           fullWidth
           onChange={(e) => handleChange(e)}
         />

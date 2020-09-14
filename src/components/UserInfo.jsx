@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { userType } from '../types';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import { Link as LinkIcon } from '@material-ui/icons';
 import { useAuth0 } from '../contexts/AuthProvider';
+import { DialogContext } from '../contexts';
 
 const styles = (theme) => ({
   root: {
@@ -96,6 +97,8 @@ const UserInfo = ({
   }
 }) => {
   const { user, setUser, authenticatedFetch } = useAuth0();
+  const { open, setOpen } = useContext(DialogContext);
+
   const [isFollowing, setIsFollowing] = useState(
     () =>
       user &&
@@ -108,6 +111,7 @@ const UserInfo = ({
 
   const avatarSection = (
     <section>
+      .
       <Paper className={classes.avatar}>
         <Avatar alt={profile_id} src={image} variant="square" />
       </Paper>
@@ -165,22 +169,33 @@ const UserInfo = ({
 
   const followButton =
     user &&
-    id !== user.id &&
-    (isFollowing ? (
-      <Button
-        fullWidth
-        size={isMobile ? 'small' : 'medium'}
-        onClick={unfollowUser}
-      >
-        Unfollow
-      </Button>
+    (id !== user.id ? (
+      isFollowing ? (
+        <Button
+          fullWidth
+          size={isMobile ? 'small' : 'medium'}
+          onClick={unfollowUser}
+        >
+          Unfollow
+        </Button>
+      ) : (
+        <Button
+          fullWidth
+          size={isMobile ? 'small' : 'medium'}
+          onClick={followUser}
+        >
+          Follow
+        </Button>
+      )
     ) : (
       <Button
         fullWidth
         size={isMobile ? 'small' : 'medium'}
-        onClick={followUser}
+        onClick={() => {
+          setOpen('profile-settings');
+        }}
       >
-        Follow
+        Edit Profile
       </Button>
     ));
 

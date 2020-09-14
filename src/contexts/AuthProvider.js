@@ -44,8 +44,8 @@ export const Auth0Provider = ({ children }) => {
       setIsAuthenticated(isAuthenticated);
 
       if (isAuthenticated) {
-        const user = await auth0FromHook.getUser();
-        setAuth0user(user);
+        const authUser = await auth0FromHook.getUser();
+        setAuth0user(authUser);
       }
 
       setLoading(false);
@@ -106,10 +106,12 @@ export const Auth0Provider = ({ children }) => {
         };
 
         const data = await authenticatedFetch('users', {
-          body: sendUser
+          body: sendUser,
+          method: 'POST'
         });
 
         const newUser = { ...data, id_token: auth0user.sub };
+        console.log(newUser);
         setUser(newUser);
       } catch (e) {
         console.log('ERROR:', e);
