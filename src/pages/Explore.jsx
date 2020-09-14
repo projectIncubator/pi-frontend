@@ -64,24 +64,22 @@ function Explore(props) {
   const classes = useStyles();
 
   const [projects, setProjects] = useState([]);
+  const [themeMocks, setThemes] = useState(null);
+  const [projectsFeatured, setProjectsFeatured] = useState([]);
+
   useEffect(() => {
     setProjects(projectStubs);
-  }, []);
-
-  // TODO: figure out how to correctly couple themes
-  const [, setThemes] = useState(null);
-  useEffect(() => {
     setThemes(themes);
-  }, []);
-
-  const [projectsFeatured, setProjectsFeatured] = useState([]);
-  useEffect(() => {
     setProjectsFeatured(projectStubsFeatured);
   }, []);
 
+  // TODO: figure out how to correctly couple themes
+
   const renderThemeSelectors = () => {
+    console.log(projects);
+    console.log(themeMocks);
     return (
-      Object.keys(themes).map((key, index) => (
+      Object.keys(themeMocks).map((key, index) => (
         <div className={classes.themeSelectButton}>
           <Button
               key={"theme-"+key+"-button"}
@@ -89,7 +87,7 @@ function Explore(props) {
               color={index % 2 === 0 ? 'primary' : 'secondary'}
               size="large"
           >
-            {themes[key].name}
+            {themeMocks[key].name}
           </Button>
         </div>
       ))
@@ -104,16 +102,16 @@ function Explore(props) {
         <Typography variant="h5" className={classes.header}>
         Explore
         </Typography>
-        {Object.keys(themes).map((key) => (
+        {Object.keys(themeMocks).map((key) => (
           <div key={key}>
             <Typography variant="h6" color="primary" className={classes.themeTitle}>
-            {themes[key].name}
+            {themeMocks[key].name}
             </Typography>
             <div>
             {projects
-              .filter((proj) => proj.themes.includes(themes[key]))
+              .filter((proj) => proj.themes.includes(themeMocks[key]))
               .map((item, index) => (
-                <ExploreCard key={"explore-"+themes[key].name+"-"+index} project={item} />
+                <ExploreCard key={"explore-"+themeMocks[key].name+"-"+index} project={item} />
               ))}
             </div>
             <div className={classes.seeMoreButton}>
@@ -139,7 +137,7 @@ function Explore(props) {
           Featured
         </Typography>
         {/* todo: de-couple projectStubsFeatured */}
-        <FeaturedCard key={"featured"} featured={projectStubsFeatured[0]} />
+        <FeaturedCard key={"featured"} featured={projectsFeatured[0]} />
       </div>
     )
   }

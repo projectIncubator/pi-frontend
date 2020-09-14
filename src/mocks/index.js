@@ -19,6 +19,25 @@ export const themes = {
   }
 };
 
+// array representation of themes
+export const themeArray = [
+  {
+    name: 'health',
+    logo: '',
+    description: 'Good Health and Well-being'
+  },
+  {
+    name: 'education',
+    logo: '',
+    description: 'Quality Education'
+  },
+  {
+    name: 'sustainability',
+    logo: '',
+    description: 'Sustainable Cities and Communities'
+  }
+];
+
 const userStubs = [
   {
     id: '123',
