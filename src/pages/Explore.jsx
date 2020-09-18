@@ -64,37 +64,41 @@ function Explore(props) {
   const classes = useStyles();
 
   const [projects, setProjects] = useState([]);
-  const [themeMocks, setThemes] = useState(null);
-  const [projectsFeatured, setProjectsFeatured] = useState([]);
 
   useEffect(() => {
     setProjects(projectStubs);
+  }, []);
+
+  const [themeMocks, setThemes] = useState([]);
+
+  useEffect(() => {
     setThemes(themes);
+  }, []);
+
+  const [projectsFeatured, setProjectsFeatured] = useState([]);
+
+  useEffect(() => {
     setProjectsFeatured(projectStubsFeatured);
   }, []);
 
   // TODO: figure out how to correctly couple themes
 
   const renderThemeSelectors = () => {
-    console.log(projects);
-    console.log(themeMocks);
     return (
-      Object.keys(themeMocks).map((key, index) => (
+      themeMocks.map((item, index) => (
         <div className={classes.themeSelectButton}>
           <Button
-              key={"theme-"+key+"-button"}
+              key={"theme-"+item.name+"-button"}
               variant="contained"
               color={index % 2 === 0 ? 'primary' : 'secondary'}
               size="large"
           >
-            {themeMocks[key].name}
+            {item.name}
           </Button>
         </div>
       ))
     )
   };
-
-
 
   const renderCategories = () => {
     return (
@@ -102,21 +106,21 @@ function Explore(props) {
         <Typography variant="h5" className={classes.header}>
         Explore
         </Typography>
-        {Object.keys(themeMocks).map((key) => (
-          <div key={key}>
+        {themeMocks.map((item) => (
+          <div key={item.name}>
             <Typography variant="h6" color="primary" className={classes.themeTitle}>
-            {themeMocks[key].name}
+            {item.name}
             </Typography>
             <div>
             {projects
-              .filter((proj) => proj.themes.includes(themeMocks[key]))
+              .filter((proj) => proj.themes.some((theme) => theme.name == item.name))
               .map((item, index) => (
-                <ExploreCard key={"explore-"+themeMocks[key].name+"-"+index} project={item} />
+                <ExploreCard key={"explore-"+item.name+"-"+index} project={item} />
               ))}
             </div>
             <div className={classes.seeMoreButton}>
               <Button
-                key={"explore-"+key+"-button"}
+                key={"explore-"+item.name+"-button"}
                 variant="outlined"
                 color="primary"
                 size="large"
@@ -131,12 +135,11 @@ function Explore(props) {
   };
 
   const renderFeatured = () => {
-    return (
+    return !projectsFeatured.length ? (<div></div>) : (
       <div>
         <Typography variant="h5" className={classes.header}>
           Featured
         </Typography>
-        {/* todo: de-couple projectStubsFeatured */}
         <FeaturedCard key={"featured"} featured={projectsFeatured[0]} />
       </div>
     )

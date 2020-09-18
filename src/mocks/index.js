@@ -1,26 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-// TODO: Find a better way to expose this
-export const themes = {
-  health: {
-    name: 'health',
-    logo: '',
-    description: 'Good Health and Well-being'
-  },
-  education: {
-    name: 'education',
-    logo: '',
-    description: 'Quality Education'
-  },
-  sustainability: {
-    name: 'sustainability',
-    logo: '',
-    description: 'Sustainable Cities and Communities'
-  }
-};
-
-// array representation of themes
-export const themeArray = [
+export const themes = [
   {
     name: 'health',
     logo: '',
@@ -71,7 +51,11 @@ export const projects = [
       title: 'Coronavirus Testing BC',
       status: 'ongoing',
       logo: '',
-      themes: [themes['health']],
+      themes: [{
+        name: 'health',
+        logo: '',
+        description: 'Good Health and Well-being'
+      }],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -195,7 +179,16 @@ export const projects = [
       title: 'Kitsilano Community Engagement',
       status: 'completed',
       logo: '',
-      themes: [themes['education'], themes['sustainability']],
+      themes: [{
+        name: 'education',
+        logo: '',
+        description: 'Quality Education'
+      },
+      {
+        name: 'sustainability',
+        logo: '',
+        description: 'Sustainable Cities and Communities'
+      }],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],

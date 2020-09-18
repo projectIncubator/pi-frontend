@@ -188,7 +188,7 @@ function FeaturedCard({
 }
 
 FeaturedCard.propTypes = {
-  featured: PropTypes.string
+  featured: PropTypes.object.isRequired
 };
 
 export default FeaturedCard;
