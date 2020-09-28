@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { projectStubType } from '../types';
 import {
   Avatar,
@@ -8,7 +7,6 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {

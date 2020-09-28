@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { projectStubType } from '../types';
 import {
   Button,
   Paper,
   Typography,
   makeStyles
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -101,7 +99,6 @@ function FeaturedCard({
   }
 }) {
 
-  // TODO: find a better way to do this?
   const classes = useStyles({featured: {
     id,
     title,
@@ -112,12 +109,12 @@ function FeaturedCard({
     interested_count,
     oneliner,
     cover_photo
-  }
-  });
+  }});
 
-  const getProjectLink = (title) => {
-    return `/project/${title.split(' ').join('-')}`;
-  };
+  // Use this when connecting FeaturedCard to backend
+  // const getProjectLink = (title) => {
+  //   return `/project/${title.split(' ').join('-')}`;
+  // };
 
   const projectPicture = (
     <div className={classes.projectPicture}></div>

@@ -11,7 +11,6 @@ import ExploreCard from '../components/ExploreCard';
 import FeaturedCard from '../components/FeaturedCard';
 
 import { themes, projectStubs, projectStubsFeatured } from '../mocks';
-import { projectStubType } from '../types';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -113,7 +112,7 @@ function Explore(props) {
             </Typography>
             <div>
             {projects
-              .filter((proj) => proj.themes.some((theme) => theme.name == item.name))
+              .filter((proj) => proj.themes.some((theme) => theme.name === item.name))
               .map((item, index) => (
                 <ExploreCard key={"explore-"+item.name+"-"+index} project={item} />
               ))}
