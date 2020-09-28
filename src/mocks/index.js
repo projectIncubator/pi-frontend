@@ -1,22 +1,22 @@
 import { v4 as uuid } from 'uuid';
 
-const themes = {
-  health: {
+export const themes = [
+  {
     name: 'health',
     logo: '',
     description: 'Good Health and Well-being'
   },
-  education: {
+  {
     name: 'education',
     logo: '',
     description: 'Quality Education'
   },
-  sustainability: {
+  {
     name: 'sustainability',
     logo: '',
     description: 'Sustainable Cities and Communities'
   }
-};
+];
 
 const userStubs = [
   {
@@ -51,7 +51,11 @@ export const projects = [
       title: 'Coronavirus Testing BC',
       status: 'ongoing',
       logo: '',
-      themes: [themes['health']],
+      themes: [{
+        name: 'health',
+        logo: '',
+        description: 'Good Health and Well-being'
+      }],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -175,7 +179,16 @@ export const projects = [
       title: 'Kitsilano Community Engagement',
       status: 'completed',
       logo: '',
-      themes: [themes['education'], themes['sustainability']],
+      themes: [{
+        name: 'education',
+        logo: '',
+        description: 'Quality Education'
+      },
+      {
+        name: 'sustainability',
+        logo: '',
+        description: 'Sustainable Cities and Communities'
+      }],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -272,6 +285,18 @@ export const projectStubs = projects.map((project) => ({
   start_date: project.meta.start_date,
   end_date: project.meta.end_date,
   oneliner: project.meta.oneliner
+}));
+
+export const projectStubsFeatured = projects.map((project) => ({
+  id: project.meta.id,
+  title: project.meta.title,
+  status: project.meta.status,
+  logo: project.meta.logo,
+  themes: project.meta.themes,
+  member_count: project.meta.member_count,
+  interested_count: project.meta.interested_count,
+  oneliner: project.meta.oneliner,
+  cover_photo: project.meta.cover_photo
 }));
 
 export const users = [

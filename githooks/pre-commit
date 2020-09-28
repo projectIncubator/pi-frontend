@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 FILES=$(prettier --no-editorconfig -l .)
 if [ ! -z "$FILES" ]
 then
