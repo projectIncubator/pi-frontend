@@ -150,7 +150,7 @@ export const Auth0Provider = ({ children }) => {
     <Auth0Context.Provider
       value={{
         isAuthenticated,
-        user: user,
+        user,
         loading,
         popupOpen,
         loginWithPopup,

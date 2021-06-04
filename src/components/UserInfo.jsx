@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { userType } from '../types';
 import { Link } from 'react-router-dom';
@@ -97,7 +97,7 @@ const UserInfo = ({
   }
 }) => {
   const { user, setUser, authenticatedFetch } = useAuth0();
-  const { open, setOpen } = useContext(DialogContext);
+  const { setOpen } = useContext(DialogContext);
 
   const [isFollowing, setIsFollowing] = useState(
     () =>
@@ -108,37 +108,6 @@ const UserInfo = ({
   const [followersCount, setFollowersCount] = useState(followers_count);
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-
-  const avatarSection = (
-    <section>
-      .
-      <Paper className={classes.avatar}>
-        <Avatar alt={profile_id} src={image} variant="square" />
-      </Paper>
-    </section>
-  );
-
-  const identitySection = (
-    <section>
-      <Typography variant="h5">
-        {first_name} {last_name}
-      </Typography>
-      {Boolean(link) && (
-        <div className={classes.link}>
-          <LinkIcon />
-          <MUILink
-            className={classes.ellipsis}
-            color="textSecondary"
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {link}
-          </MUILink>
-        </div>
-      )}
-    </section>
-  );
 
   const followUser = async () => {
     try {
@@ -166,6 +135,37 @@ const UserInfo = ({
       console.log('ERROR: ', e);
     }
   };
+
+  const avatarSection = (
+      <section>
+        .
+        <Paper className={classes.avatar}>
+          <Avatar alt={profile_id} src={image} variant="square" />
+        </Paper>
+      </section>
+  );
+
+  const identitySection = (
+      <section>
+        <Typography variant="h5">
+          {first_name} {last_name}
+        </Typography>
+        {Boolean(link) && (
+            <div className={classes.link}>
+              <LinkIcon />
+              <MUILink
+                  className={classes.ellipsis}
+                  color="textSecondary"
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+              >
+                {link}
+              </MUILink>
+            </div>
+        )}
+      </section>
+  );
 
   const followButton =
     user &&

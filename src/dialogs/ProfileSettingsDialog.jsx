@@ -25,7 +25,7 @@ export default function ProfileSettingsDialog() {
   };
 
   useEffect(() => {
-    if (user != undefined) {
+    if (user !== undefined) {
       handleFillin();
     }
   }, [user]);
