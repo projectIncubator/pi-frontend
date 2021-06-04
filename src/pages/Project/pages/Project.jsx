@@ -17,7 +17,14 @@ import {
   DialogContext
 } from '../../../contexts';
 import { useStyles, activeLink } from './ProjectStyles';
-import { Overview, General, Timeline, Discussions, Error404 } from './index';
+import {
+  Overview,
+  General,
+  Timeline,
+  Discussions,
+  Error404,
+  Tasks
+} from './index';
 import { FeatureImage } from '../components';
 import ProjectDialogs from '../dialogs';
 
@@ -34,8 +41,10 @@ function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open, setOpen } = useContext(DialogContext);
-  const { project, setProject, setProjectId } = useContext(ProjectContext);
+  const { setOpen } = useContext(DialogContext);
+  const { project, setPageId, setProject, setProjectId } = useContext(
+    ProjectContext
+  );
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
@@ -49,9 +58,10 @@ function Project({ match }) {
     if (project) setProject({ ...project });
     setProjectId(project.meta.id);
     setFetching(false);
-  }, [projectId, open, setProjectId, setProject]);
+  }, [projectId, setProjectId, setProject]);
 
-  const scrollToTop = () => {
+  const handleNavLinkClick = (id) => {
+    setPageId(id);
     window.scrollTo(0, 0);
   };
 
@@ -62,7 +72,7 @@ function Project({ match }) {
         <NavLink
           key={el.id}
           to={`${match.url}/${el.title.toLowerCase().split(' ').join('-')}`}
-          onClick={scrollToTop}
+          onClick={() => handleNavLinkClick(el.id)}
           activeStyle={activeLink}
         >
           {el.title[0].toUpperCase() + el.title.slice(1)}
@@ -86,7 +96,7 @@ function Project({ match }) {
         : match.url;
 
     const renderComponent = (type, pageId, props) => {
-      const componentWrapper = (Component) => {
+      const componentWrapper = (Component, fullWidth = false) => {
         return <Component project={project} pageId={pageId} {...props} />;
       };
 
@@ -97,6 +107,8 @@ function Project({ match }) {
           return componentWrapper(Discussions);
         case 'timeline':
           return componentWrapper(Timeline);
+        case 'tasks':
+          return componentWrapper(Tasks);
         case 'general':
           return componentWrapper(General);
         default:
@@ -108,6 +120,7 @@ function Project({ match }) {
       return (
         <Route
           key={pageId}
+          pageId={pageId}
           exact
           path={currentUrl + '/' + title.toLowerCase().split(' ').join('-')}
           render={(props) => renderComponent(type, pageId, props)}

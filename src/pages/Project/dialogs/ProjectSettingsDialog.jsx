@@ -23,9 +23,13 @@ export default function ProjectSettingsDialog() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { open, setOpen } = useContext(DialogContext);
-  const { project, projectId, currentPages, currentComponents } = useContext(
-    ProjectContext
-  );
+  const {
+    project,
+    setProject,
+    projectId,
+    currentPages,
+    currentComponents
+  } = useContext(ProjectContext);
   const [tabValue, setTabValue] = useState(0);
 
   const handleClose = () => {
@@ -72,6 +76,8 @@ export default function ProjectSettingsDialog() {
     projects[foundIndex].meta.pages_order = newPagesOrder;
     projects[foundIndex].sidebar_modules = newSidebarModules;
     projects[foundIndex].pages_modules.pages = newPagesModules;
+
+    setProject(projects[foundIndex]);
 
     setOpen(false);
   };
