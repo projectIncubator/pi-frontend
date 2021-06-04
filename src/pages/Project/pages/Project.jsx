@@ -17,7 +17,14 @@ import {
   DialogContext
 } from '../../../contexts';
 import { useStyles, activeLink } from './ProjectStyles';
-import { Overview, General, Timeline, Discussions, Error404 } from './index';
+import {
+  Overview,
+  General,
+  Timeline,
+  Discussions,
+  Error404,
+  Tasks
+} from './index';
 import { FeatureImage } from '../components';
 import ProjectDialogs from '../dialogs';
 
@@ -34,7 +41,7 @@ function Project({ match }) {
   const classes = useStyles();
   const projectId = useParams().projectId.toLowerCase();
 
-  const { open, setOpen } = useContext(DialogContext);
+  const { setOpen } = useContext(DialogContext);
   const { project, setPageId, setProject, setProjectId } = useContext(
     ProjectContext
   );
@@ -51,7 +58,7 @@ function Project({ match }) {
     if (project) setProject({ ...project });
     setProjectId(project.meta.id);
     setFetching(false);
-  }, [projectId, open, setProjectId, setProject]);
+  }, [projectId, setProjectId, setProject]);
 
   const handleNavLinkClick = (id) => {
     setPageId(id);
@@ -89,7 +96,7 @@ function Project({ match }) {
         : match.url;
 
     const renderComponent = (type, pageId, props) => {
-      const componentWrapper = (Component) => {
+      const componentWrapper = (Component, fullWidth = false) => {
         return <Component project={project} pageId={pageId} {...props} />;
       };
 
@@ -100,6 +107,8 @@ function Project({ match }) {
           return componentWrapper(Discussions);
         case 'timeline':
           return componentWrapper(Timeline);
+        case 'tasks':
+          return componentWrapper(Tasks);
         case 'general':
           return componentWrapper(General);
         default:

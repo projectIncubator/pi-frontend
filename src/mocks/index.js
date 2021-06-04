@@ -1,22 +1,22 @@
 import { v4 as uuid } from 'uuid';
 
-export const themes = [
-  {
+const themes = {
+  health: {
     name: 'health',
     logo: '',
     description: 'Good Health and Well-being'
   },
-  {
+  education: {
     name: 'education',
     logo: '',
     description: 'Quality Education'
   },
-  {
+  sustainability: {
     name: 'sustainability',
     logo: '',
     description: 'Sustainable Cities and Communities'
   }
-];
+};
 
 const userStubs = [
   {
@@ -51,11 +51,7 @@ export const projects = [
       title: 'Coronavirus Testing BC',
       status: 'ongoing',
       logo: '',
-      themes: [{
-        name: 'health',
-        logo: '',
-        description: 'Good Health and Well-being'
-      }],
+      themes: [themes['health']],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -81,6 +77,13 @@ export const projects = [
           showing: true,
           sidebar: true,
           title: 'About'
+        },
+        {
+          type: 'tasks',
+          id: '8p12k0q0',
+          showing: true,
+          sidebar: false,
+          title: 'Tasks'
         },
         {
           type: 'discussions',
@@ -121,6 +124,10 @@ export const projects = [
               }
             ]
           }
+        },
+        '8p12k0q0': {
+          type: 'tasks',
+          content: {}
         },
         '01cb7854': {
           type: 'discussions',
@@ -171,7 +178,99 @@ export const projects = [
       }
     },
     events: {},
-    tasks: {}
+    tasks: {
+      lastTaskId: 4,
+      milestones: {
+        1555: {
+          text: 'Enforce mask usage',
+          description:
+            'Masks are an important aspect of keeping everyone safe.',
+          id: 1555,
+          tasks: [3],
+          members: [],
+          status: 'To do',
+          createdDate: new Date()
+        },
+        2215: {
+          text: 'Advertise on Google',
+          description:
+            'Google is a great platform to advertise on. We need more leads!',
+          id: 2215,
+          tasks: [],
+          members: [],
+          status: 'To do',
+          createdDate: new Date()
+        }
+      },
+      statuses: {
+        abcd: {
+          id: 'abcd',
+          title: 'To do',
+          tasks: [3]
+        },
+        uuidgoeshere: {
+          id: 'uuidgoeshere',
+          title: 'In progress',
+          tasks: []
+        },
+        qwerty: {
+          id: 'qwerty',
+          title: 'Complete',
+          tasks: [4]
+        }
+      },
+      statusOrder: ['abcd', 'uuidgoeshere', 'qwerty'],
+      tasks: {
+        3: {
+          text:
+            'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
+          description:
+            'We need to buy some masks, but we have to keep track of our expenses since we have a tight budget.',
+          id: 3,
+          milestone: 1555,
+          subtasks: [
+            {
+              id: uuid(),
+              text: 'Assign someone to buy the masks',
+              assigned: [],
+              dueDate: new Date()
+            }
+          ],
+          comments: [
+            {
+              user: {
+                username: 'hal.shin@alumni.ubc.ca',
+                nickname: 'Hal Shin'
+              },
+              createdDate: new Date('2020-08-10'),
+              text: 'This is a test comment... or is it?'
+            },
+            {
+              user: {
+                username: 'hal.shin@alumni.ubc.ca',
+                nickname: 'Hal Shin'
+              },
+              createdDate: new Date(),
+              text: 'Did I make this comment just now?'
+            }
+          ],
+          members: [],
+          status: 'In progress',
+          createdDate: new Date()
+        },
+        4: {
+          text: 'This is a completed task',
+          description: '',
+          id: 4,
+          milestone: 2215,
+          subtasks: [],
+          comments: [],
+          members: [],
+          status: 'Complete',
+          createdDate: new Date()
+        }
+      }
+    }
   },
   {
     meta: {
@@ -179,16 +278,7 @@ export const projects = [
       title: 'Kitsilano Community Engagement',
       status: 'completed',
       logo: '',
-      themes: [{
-        name: 'education',
-        logo: '',
-        description: 'Quality Education'
-      },
-      {
-        name: 'sustainability',
-        logo: '',
-        description: 'Sustainable Cities and Communities'
-      }],
+      themes: [themes['education'], themes['sustainability']],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -285,18 +375,6 @@ export const projectStubs = projects.map((project) => ({
   start_date: project.meta.start_date,
   end_date: project.meta.end_date,
   oneliner: project.meta.oneliner
-}));
-
-export const projectStubsFeatured = projects.map((project) => ({
-  id: project.meta.id,
-  title: project.meta.title,
-  status: project.meta.status,
-  logo: project.meta.logo,
-  themes: project.meta.themes,
-  member_count: project.meta.member_count,
-  interested_count: project.meta.interested_count,
-  oneliner: project.meta.oneliner,
-  cover_photo: project.meta.cover_photo
 }));
 
 export const users = [
@@ -418,7 +496,7 @@ export const AVAILABLE_SIDEBAR_COMPONENTS = [
 export const AVAILABLE_PAGES = [
   {
     type: 'overview',
-    subtext: 'Shows the overview of the project.',
+    subtext: 'Shows the overview of the project',
     id: uuid(),
     open: false,
     unique: true,
@@ -435,6 +513,16 @@ export const AVAILABLE_PAGES = [
     showing: true,
     sidebar: false,
     title: 'Discussions'
+  },
+  {
+    type: 'tasks',
+    subtext: 'A page detailing the tasks pertinent to the project',
+    id: uuid(),
+    open: false,
+    unique: true,
+    showing: true,
+    sidebar: false,
+    title: 'Tasks'
   },
   {
     type: 'general',
@@ -470,6 +558,15 @@ export const AVAILABLE_COMPONENTS = [
     content: {
       header: '',
       text: ''
+    }
+  },
+  {
+    type: 'milestones',
+    subtext: 'Shows a list of milestone cards.',
+    id: uuid(),
+    unique: true,
+    content: {
+      header: 'Milestones'
     }
   }
 ];
