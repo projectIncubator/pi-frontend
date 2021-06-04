@@ -1,11 +1,6 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import {
-  Paper,
-  Typography,
-  Button,
-  Divider
-} from '@material-ui/core';
+import { Paper, Typography, Button, Divider } from '@material-ui/core';
 
 import ExploreCard from '../components/ExploreCard';
 import FeaturedCard from '../components/FeaturedCard';
@@ -50,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: 'capitalize'
   },
   seeMoreButton: {
-    display: 'flex', 
+    display: 'flex',
     justifyContent: 'center'
   },
   featured: {
@@ -83,43 +78,50 @@ function Explore(props) {
   // TODO: figure out how to correctly couple themes
 
   const renderThemeSelectors = () => {
-    return (
-      themeMocks.map((item, index) => (
-        <div className={classes.themeSelectButton}>
-          <Button
-              key={"theme-"+item.name+"-button"}
-              variant="contained"
-              color={index % 2 === 0 ? 'primary' : 'secondary'}
-              size="large"
-          >
-            {item.name}
-          </Button>
-        </div>
-      ))
-    )
+    return themeMocks.map((item, index) => (
+      <div className={classes.themeSelectButton}>
+        <Button
+          key={'theme-' + item.name + '-button'}
+          variant="contained"
+          color={index % 2 === 0 ? 'primary' : 'secondary'}
+          size="large"
+        >
+          {item.name}
+        </Button>
+      </div>
+    ));
   };
 
   const renderCategories = () => {
     return (
       <div>
         <Typography variant="h5" className={classes.header}>
-        Explore
+          Explore
         </Typography>
         {themeMocks.map((item) => (
           <div key={item.name}>
-            <Typography variant="h6" color="primary" className={classes.themeTitle}>
-            {item.name}
+            <Typography
+              variant="h6"
+              color="primary"
+              className={classes.themeTitle}
+            >
+              {item.name}
             </Typography>
             <div>
-            {projects
-              .filter((proj) => proj.themes.some((theme) => theme.name === item.name))
-              .map((item, index) => (
-                <ExploreCard key={"explore-"+item.name+"-"+index} project={item} />
-              ))}
+              {projects
+                .filter((proj) =>
+                  proj.themes.some((theme) => theme.name === item.name)
+                )
+                .map((item, index) => (
+                  <ExploreCard
+                    key={'explore-' + item.name + '-' + index}
+                    project={item}
+                  />
+                ))}
             </div>
             <div className={classes.seeMoreButton}>
               <Button
-                key={"explore-"+item.name+"-button"}
+                key={'explore-' + item.name + '-button'}
                 variant="outlined"
                 color="primary"
                 size="large"
@@ -130,19 +132,21 @@ function Explore(props) {
           </div>
         ))}
       </div>
-    )
+    );
   };
 
   const renderFeatured = () => {
-    return !projectsFeatured.length ? (<div></div>) : (
+    return !projectsFeatured.length ? (
+      <div></div>
+    ) : (
       <div>
         <Typography variant="h5" className={classes.header}>
           Featured
         </Typography>
-        <FeaturedCard key={"featured"} featured={projectsFeatured[0]} />
+        <FeaturedCard key={'featured'} featured={projectsFeatured[0]} />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <Paper className={classes.content}>
@@ -150,16 +154,22 @@ function Explore(props) {
       <Divider />
       <div className={classes.container}>
         <div className={classes.sidebar}>
-          <Typography variant="h6" align="right">Hot</Typography>
-          <Typography variant="h6" align="right">Top</Typography>
-          <Typography variant="h6" align="right">Rising</Typography>
+          <Typography variant="h6" align="right">
+            Hot
+          </Typography>
+          <Typography variant="h6" align="right">
+            Top
+          </Typography>
+          <Typography variant="h6" align="right">
+            Rising
+          </Typography>
         </div>
-        <Divider orientation="vertical" flexItem="true"/>
+        <Divider orientation="vertical" flexItem="true" />
         <div className={classes.categories}>{renderCategories()}</div>
         <div className={classes.featured}>{renderFeatured()}</div>
       </div>
     </Paper>
-  )
+  );
 }
 
 export default Explore;

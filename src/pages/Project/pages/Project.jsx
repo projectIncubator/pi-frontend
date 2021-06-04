@@ -42,9 +42,8 @@ function Project({ match }) {
   const projectId = useParams().projectId.toLowerCase();
 
   const { setOpen } = useContext(DialogContext);
-  const { project, setPageId, setProject, setProjectId } = useContext(
-    ProjectContext
-  );
+  const { project, setPageId, setProject, setProjectId } =
+    useContext(ProjectContext);
   const [fetching, setFetching] = useState(true);
 
   useEffect(() => {

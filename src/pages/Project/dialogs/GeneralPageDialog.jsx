@@ -38,11 +38,10 @@ export default function GeneralPageDialog() {
   const handleSave = () => {
     if (contentState) {
       const index = getProjectIndexById(projectId);
-      projects[index].pages_modules.pages[
-        page.meta.id
-      ].content.contentState = JSON.stringify({
-        ...contentState
-      });
+      projects[index].pages_modules.pages[page.meta.id].content.contentState =
+        JSON.stringify({
+          ...contentState
+        });
       setContentState(false);
     }
 

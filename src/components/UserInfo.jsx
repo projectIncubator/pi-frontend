@@ -137,34 +137,34 @@ const UserInfo = ({
   };
 
   const avatarSection = (
-      <section>
-        .
-        <Paper className={classes.avatar}>
-          <Avatar alt={profile_id} src={image} variant="square" />
-        </Paper>
-      </section>
+    <section>
+      .
+      <Paper className={classes.avatar}>
+        <Avatar alt={profile_id} src={image} variant="square" />
+      </Paper>
+    </section>
   );
 
   const identitySection = (
-      <section>
-        <Typography variant="h5">
-          {first_name} {last_name}
-        </Typography>
-        {Boolean(link) && (
-            <div className={classes.link}>
-              <LinkIcon />
-              <MUILink
-                  className={classes.ellipsis}
-                  color="textSecondary"
-                  href={link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-              >
-                {link}
-              </MUILink>
-            </div>
-        )}
-      </section>
+    <section>
+      <Typography variant="h5">
+        {first_name} {last_name}
+      </Typography>
+      {Boolean(link) && (
+        <div className={classes.link}>
+          <LinkIcon />
+          <MUILink
+            className={classes.ellipsis}
+            color="textSecondary"
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {link}
+          </MUILink>
+        </div>
+      )}
+    </section>
   );
 
   const followButton =
