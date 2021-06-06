@@ -51,11 +51,13 @@ export const projects = [
       title: 'Coronavirus Testing BC',
       status: 'ongoing',
       logo: '',
-      themes: [{
-        name: 'health',
-        logo: '',
-        description: 'Good Health and Well-being'
-      }],
+      themes: [
+        {
+          name: 'health',
+          logo: '',
+          description: 'Good Health and Well-being'
+        }
+      ],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -104,8 +106,7 @@ export const projects = [
                 unique: true,
                 content: {
                   header: '',
-                  text:
-                    'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
+                  text: 'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
                 }
               },
               {
@@ -165,7 +166,7 @@ export const projects = [
       }
     ],
     members: {
-      '789': {
+      789: {
         role: 'admin',
         contributions: {}
       }
@@ -179,16 +180,18 @@ export const projects = [
       title: 'Kitsilano Community Engagement',
       status: 'completed',
       logo: '',
-      themes: [{
-        name: 'education',
-        logo: '',
-        description: 'Quality Education'
-      },
-      {
-        name: 'sustainability',
-        logo: '',
-        description: 'Sustainable Cities and Communities'
-      }],
+      themes: [
+        {
+          name: 'education',
+          logo: '',
+          description: 'Quality Education'
+        },
+        {
+          name: 'sustainability',
+          logo: '',
+          description: 'Sustainable Cities and Communities'
+        }
+      ],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -264,7 +267,7 @@ export const projects = [
       }
     ],
     members: {
-      '789': {
+      789: {
         role: 'admin',
         contributions: {}
       }
@@ -322,8 +325,7 @@ export const users = [
     image:
       'https://media-exp1.licdn.com/dms/image/C4D03AQGs85aYF34VTw/profile-displayphoto-shrink_400_400/0?e=1595462400&v=beta&t=XlhgJCJ2zmKVK59QYuVvm4BRRZTX1rJUrsyT6NFOonU',
     profile_id: 'bergholma',
-    bio:
-      'Machine Learning enthusiast, applied in a Medical and Healthcare environment',
+    bio: 'Machine Learning enthusiast, applied in a Medical and Healthcare environment',
     link: '',
     following_count: 2,
     followers_count: 1,
@@ -348,8 +350,8 @@ export const users = [
 ];
 
 export const members = {
-  '111': [userStubs[1], userStubs[2]],
-  '222': [userStubs[1], userStubs[0]]
+  111: [userStubs[1], userStubs[2]],
+  222: [userStubs[1], userStubs[0]]
 };
 
 export const AVAILABLE_SIDEBAR_COMPONENTS = [
