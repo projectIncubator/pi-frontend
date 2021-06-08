@@ -227,7 +227,8 @@ export const projects = [
       statusOrder: ['abcd', 'uuidgoeshere', 'qwerty'],
       tasks: {
         3: {
-          text: 'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
+          text:
+            'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
           description:
             'We need to buy some masks, but we have to keep track of our expenses since we have a tight budget.',
           id: 3,
