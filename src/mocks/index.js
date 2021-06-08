@@ -107,8 +107,7 @@ export const projects = [
                 unique: true,
                 content: {
                   header: '',
-                  text:
-                    'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
+                  text: 'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
                 }
               },
               {
@@ -172,7 +171,7 @@ export const projects = [
       }
     ],
     members: {
-      '789': {
+      789: {
         role: 'admin',
         contributions: {}
       }
@@ -222,8 +221,7 @@ export const projects = [
       statusOrder: ['abcd', 'uuidgoeshere', 'qwerty'],
       tasks: {
         3: {
-          text:
-            'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
+          text: 'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
           description:
             'We need to buy some masks, but we have to keep track of our expenses since we have a tight budget.',
           id: 3,
@@ -354,7 +352,7 @@ export const projects = [
       }
     ],
     members: {
-      '789': {
+      789: {
         role: 'admin',
         contributions: {}
       }
@@ -400,8 +398,7 @@ export const users = [
     image:
       'https://media-exp1.licdn.com/dms/image/C4D03AQGs85aYF34VTw/profile-displayphoto-shrink_400_400/0?e=1595462400&v=beta&t=XlhgJCJ2zmKVK59QYuVvm4BRRZTX1rJUrsyT6NFOonU',
     profile_id: 'bergholma',
-    bio:
-      'Machine Learning enthusiast, applied in a Medical and Healthcare environment',
+    bio: 'Machine Learning enthusiast, applied in a Medical and Healthcare environment',
     link: '',
     following_count: 2,
     followers_count: 1,
@@ -426,8 +423,8 @@ export const users = [
 ];
 
 export const members = {
-  '111': [userStubs[1], userStubs[2]],
-  '222': [userStubs[1], userStubs[0]]
+  111: [userStubs[1], userStubs[2]],
+  222: [userStubs[1], userStubs[0]]
 };
 
 export const AVAILABLE_SIDEBAR_COMPONENTS = [
