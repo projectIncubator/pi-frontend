@@ -7,9 +7,8 @@ import { Loading } from '../../../components';
 import { getProjectIndexById, projects } from '../../../mocks';
 
 export default function Tasks({ pageId }) {
-  const { project, setProject, tasks, setTasks, setPageId } = useContext(
-    ProjectContext
-  );
+  const { project, setProject, tasks, setTasks, setPageId } =
+    useContext(ProjectContext);
   const [isEditing, setIsEditing] = useState(false);
   const { milestones } = project.tasks;
   const milestonesArray = Object.keys(milestones);

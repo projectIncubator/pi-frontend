@@ -1,22 +1,22 @@
 import { v4 as uuid } from 'uuid';
 
-const themes = {
-  health: {
+export const themes = [
+  {
     name: 'health',
     logo: '',
     description: 'Good Health and Well-being'
   },
-  education: {
+  {
     name: 'education',
     logo: '',
     description: 'Quality Education'
   },
-  sustainability: {
+  {
     name: 'sustainability',
     logo: '',
     description: 'Sustainable Cities and Communities'
   }
-};
+];
 
 const userStubs = [
   {
@@ -51,7 +51,13 @@ export const projects = [
       title: 'Coronavirus Testing BC',
       status: 'ongoing',
       logo: '',
-      themes: [themes['health']],
+      themes: [
+        {
+          name: 'health',
+          logo: '',
+          description: 'Good Health and Well-being'
+        }
+      ],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -107,8 +113,7 @@ export const projects = [
                 unique: true,
                 content: {
                   header: '',
-                  text:
-                    'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
+                  text: 'This project serves to inform and educate the public regarding the novel virus, COVID-19.'
                 }
               },
               {
@@ -172,7 +177,7 @@ export const projects = [
       }
     ],
     members: {
-      '789': {
+      789: {
         role: 'admin',
         contributions: {}
       }
@@ -222,8 +227,7 @@ export const projects = [
       statusOrder: ['abcd', 'uuidgoeshere', 'qwerty'],
       tasks: {
         3: {
-          text:
-            'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
+          text: 'Buy a bunch of masks laksdf alokdjf opiawjfe poiasfo pijaesfoi jaseofi jasoifj asoiejoiajf oijefoij',
           description:
             'We need to buy some masks, but we have to keep track of our expenses since we have a tight budget.',
           id: 3,
@@ -278,7 +282,18 @@ export const projects = [
       title: 'Kitsilano Community Engagement',
       status: 'completed',
       logo: '',
-      themes: [themes['education'], themes['sustainability']],
+      themes: [
+        {
+          name: 'education',
+          logo: '',
+          description: 'Quality Education'
+        },
+        {
+          name: 'sustainability',
+          logo: '',
+          description: 'Sustainable Cities and Communities'
+        }
+      ],
       member_count: 2,
       interested_count: 2,
       creator: userStubs[1],
@@ -354,7 +369,7 @@ export const projects = [
       }
     ],
     members: {
-      '789': {
+      789: {
         role: 'admin',
         contributions: {}
       }
@@ -375,6 +390,18 @@ export const projectStubs = projects.map((project) => ({
   start_date: project.meta.start_date,
   end_date: project.meta.end_date,
   oneliner: project.meta.oneliner
+}));
+
+export const projectStubsFeatured = projects.map((project) => ({
+  id: project.meta.id,
+  title: project.meta.title,
+  status: project.meta.status,
+  logo: project.meta.logo,
+  themes: project.meta.themes,
+  member_count: project.meta.member_count,
+  interested_count: project.meta.interested_count,
+  oneliner: project.meta.oneliner,
+  cover_photo: project.meta.cover_photo
 }));
 
 export const users = [
@@ -400,8 +427,7 @@ export const users = [
     image:
       'https://media-exp1.licdn.com/dms/image/C4D03AQGs85aYF34VTw/profile-displayphoto-shrink_400_400/0?e=1595462400&v=beta&t=XlhgJCJ2zmKVK59QYuVvm4BRRZTX1rJUrsyT6NFOonU',
     profile_id: 'bergholma',
-    bio:
-      'Machine Learning enthusiast, applied in a Medical and Healthcare environment',
+    bio: 'Machine Learning enthusiast, applied in a Medical and Healthcare environment',
     link: '',
     following_count: 2,
     followers_count: 1,
@@ -426,8 +452,8 @@ export const users = [
 ];
 
 export const members = {
-  '111': [userStubs[1], userStubs[2]],
-  '222': [userStubs[1], userStubs[0]]
+  111: [userStubs[1], userStubs[2]],
+  222: [userStubs[1], userStubs[0]]
 };
 
 export const AVAILABLE_SIDEBAR_COMPONENTS = [

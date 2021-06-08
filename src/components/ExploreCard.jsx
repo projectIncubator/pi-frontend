@@ -9,70 +9,70 @@ import {
 } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      margin: theme.spacing(0, 0, 1),
-      padding: theme.spacing(1, 1),
-      borderWidth: 'medium',
-      borderColor: 'green',
-      borderRadius: '1em'
-    },
-    icon: {
-      paddingRight: theme.spacing(2),
-      display: 'flex',
-      alignSelf: 'flex-start'
-    },
-    projectHeader: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      margin: theme.spacing(0, 0, 0.5)
-    },
-    projectName: {
-      lineHeight: 1.2,
-      fontWeight: 400,
-      fontSize: '1.25rem'
-    },
-    projectTags: {
-      flex: 1,
-      display: 'flex',
-      flexFlow: 'row wrap',
-      justifyContent: 'space-between'
-    },
-    projectMeta: {
-      color: theme.palette.text.secondary,
-      display: 'flex',
-      alignItems: 'center',
-      '& > * + *': {
-        margin: theme.spacing(0, 0, 0, 1)
-      }
-    },
-    projectStatus: {
-      textTransform: 'capitalize',
-      display: 'inline'
-    },
-    separator: {
-      width: 3,
-      height: 3,
-      display: 'inline-block',
-      backgroundColor: theme.palette.text.secondary,
-      borderRadius: '50%'
-    },
-    themes: {
-      margin: theme.spacing(0, 0, 0.5),
-      '& > * + *': {
-        marginLeft: theme.spacing(1)
-      }
-    },
-    container: {
-      display: 'flex',
-      flexFlow: 'column wrap',
-      justifyContent: 'space-between'
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: theme.spacing(0, 0, 1),
+    padding: theme.spacing(1, 1),
+    borderWidth: 'medium',
+    borderColor: 'green',
+    borderRadius: '1em'
+  },
+  icon: {
+    paddingRight: theme.spacing(2),
+    display: 'flex',
+    alignSelf: 'flex-start'
+  },
+  projectHeader: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    margin: theme.spacing(0, 0, 0.5)
+  },
+  projectName: {
+    lineHeight: 1.2,
+    fontWeight: 400,
+    fontSize: '1.25rem'
+  },
+  projectTags: {
+    flex: 1,
+    display: 'flex',
+    flexFlow: 'row wrap',
+    justifyContent: 'space-between'
+  },
+  projectMeta: {
+    color: theme.palette.text.secondary,
+    display: 'flex',
+    alignItems: 'center',
+    '& > * + *': {
+      margin: theme.spacing(0, 0, 0, 1)
     }
-  }));
+  },
+  projectStatus: {
+    textTransform: 'capitalize',
+    display: 'inline'
+  },
+  separator: {
+    width: 3,
+    height: 3,
+    display: 'inline-block',
+    backgroundColor: theme.palette.text.secondary,
+    borderRadius: '50%'
+  },
+  themes: {
+    margin: theme.spacing(0, 0, 0.5),
+    '& > * + *': {
+      marginLeft: theme.spacing(1)
+    }
+  },
+  container: {
+    display: 'flex',
+    flexFlow: 'column wrap',
+    justifyContent: 'space-between'
+  }
+}));
 
 function ExploreCard({
   project: {
@@ -88,7 +88,6 @@ function ExploreCard({
     oneliner
   }
 }) {
-
   const classes = useStyles();
 
   const getProjectLink = (title) => {
@@ -97,19 +96,21 @@ function ExploreCard({
 
   const projectLogo = (
     <div className={classes.icon}>
-      <Avatar alt={title} src={logo} /> 
+      <Avatar alt={title} src={logo} />
     </div>
   );
 
   const projectTags = (
     <div className={classes.projectTags}>
       <div className={classes.themes}>
-        <Typography variant="caption" component="span">Tags: </Typography>
+        <Typography variant="caption" component="span">
+          Tags:{' '}
+        </Typography>
         {themes.map((theme, index) => (
           <Button
             key={theme.name}
             variant="outlined"
-            color={index % 2 === 0? 'primary' : 'secondary'}
+            color={index % 2 === 0 ? 'primary' : 'secondary'}
             size="small"
           >
             {theme.name}

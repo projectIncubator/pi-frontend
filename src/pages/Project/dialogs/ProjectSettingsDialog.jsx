@@ -23,13 +23,8 @@ export default function ProjectSettingsDialog() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { open, setOpen } = useContext(DialogContext);
-  const {
-    project,
-    setProject,
-    projectId,
-    currentPages,
-    currentComponents
-  } = useContext(ProjectContext);
+  const { project, setProject, projectId, currentPages, currentComponents } =
+    useContext(ProjectContext);
   const [tabValue, setTabValue] = useState(0);
 
   const handleClose = () => {
