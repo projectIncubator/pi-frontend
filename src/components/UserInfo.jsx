@@ -138,7 +138,6 @@ const UserInfo = ({
 
   const avatarSection = (
     <section>
-      .
       <Paper className={classes.avatar}>
         <Avatar alt={profile_id} src={image} variant="square" />
       </Paper>
