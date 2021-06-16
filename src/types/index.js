@@ -34,8 +34,7 @@ export const userType = exact({
   image: string.isRequired,
   profile_id: string.isRequired,
   email: string.isRequired,
-  deactivated: bool.isRequired,
-  banned: bool.isRequired,
+  status: string.isRequired, // TODO is it a string?
   bio: string.isRequired,
   link: string,
   following_count: number.isRequired,
