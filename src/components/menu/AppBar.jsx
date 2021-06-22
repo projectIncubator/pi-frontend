@@ -72,7 +72,12 @@ export default function AppBar() {
           </Hidden>
         )}
       </MiddleWare>
-      <MenuItem icon={<PersonIcon />} text="Profile" />
+      <MenuItem
+        icon={<PersonIcon />}
+        text="Profile"
+        component={NavLink}
+        to={'/user/' + (user ? user.profile_id : 'user_not_yet_loaded')}
+      />
       <MenuItem
         onClick={() => setIsDarkMode(!isDarkMode)}
         icon={isDarkMode ? <WbSunnyIcon /> : <Brightness2Icon />}
